@@ -1,0 +1,272 @@
+/* styles.css */
+:root {
+  --purple: #9c27b0; /* Cor roxa principal */
+  --dark-purple: #6a1b9a; /* Tom escuro de roxo */
+  --light-purple: #d1c4e9; /* Tom claro de roxo */
+}
+
+.nome-usuario {
+  margin-top: 10%;
+}
+
+.icone-usuario {
+  margin-right: 5px;
+}
+
+.row-usuario {
+  display: flex;
+  align-items: center;
+}
+
+.navlink-usuario {
+  background: linear-gradient(to right, var(--dark-purple), var(--purple));
+  border-radius: 5px;
+  padding: 10px;
+  margin: 2px;
+  color: white;
+  text-align: center;
+}
+
+.edit-button {
+  text-decoration: none;
+  color: rgba(255, 255, 255, 0.0);
+  transition: color 0.3s ease-in-out;
+}
+
+.edit-button:hover {
+  color:  rgba(255, 255, 255, 0.6);
+}
+
+.profile-red-text {
+  color: rgba(255, 255, 255, 0.85);
+}
+
+.titulo-editar {
+  color: white;
+  border-bottom: 2px solid var(--purple);
+  padding-bottom: 5px;
+  box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.2);
+  margin-bottom: 20px;
+}
+
+.label-editar {
+  color: white;
+  font-weight: bold;
+  margin-top: 10px;
+}
+
+.input-editar {
+  border-color: var(--dark-purple);
+  outline-color: var(--dark-purple);
+  box-shadow: none;
+  border-radius: 5px;
+  padding: 8px;
+  margin-bottom: 10px;
+  background-color: #F5F5F5;
+  color: purple;
+}
+
+.dropdown-editar {
+  border-color: var(--dark-purple);
+  outline-color: var(--dark-purple);
+  box-shadow: none;
+  border-radius: 5px;
+  padding: 8px;
+  margin-bottom: 10px;
+  color: purple;
+  background-color: #f5f5f5;
+}
+
+.textarea-editar {
+  border-color: var(--dark-purple);
+  outline-color: var(--dark-purple);
+  box-shadow: none;
+  border-radius: 5px;
+  padding: 8px;
+  margin-bottom: 10px;
+  resize: vertical;
+}
+
+.btn-editar {
+  background-color: var(--dark-purple);
+  border-color: var(--dark-purple);
+  border-radius: 5px;
+  padding: 8px 16px;
+  transition: background-color 0.3s, color 0.3s;
+  margin-top: 20px;
+}
+
+.btn-editar:hover {
+  background-color: var(--purple);
+  border-color: var(--purple);
+  color: white;
+  cursor: pointer;
+}
+
+#div-salvo {
+  margin-top: 20px;
+  color: var(--dark-purple);
+  font-weight: bold;
+}
+
+.container {
+  background: linear-gradient(to right, #000000, #330033);
+}
+
+.login-card {
+  background: linear-gradient(to bottom, #4a148c, #38006b);
+  color: #fff;
+}
+
+.tabs-content-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+}
+
+.login-button {
+  background: linear-gradient(to bottom, #4a148c, #38006b);
+  color: #fff;
+  border: 2px solid white;
+  border-radius: 5px;
+  transition: background-color 0.3s, color 0.3s;
+}
+
+.login-button:hover {
+  background: linear-gradient(to bottom, #fff, #fff);
+  color: #4a148c;
+}
+
+.cadastrar-button {
+  background: linear-gradient(to bottom, #fff, #fff);
+  color: #4a148c;
+  border: 2px solid #4a148c;
+  border-radius: 5px;
+  transition: background-color 0.3s, color 0.3s;
+}
+
+.cadastrar-button:hover {
+  background: linear-gradient(to bottom, #4a148c, #38006b);
+  color: #fff;
+}
+
+.login-error-message {
+  background-image: linear-gradient(to right, #ffffff, #9e4dff);
+  color: white;
+  padding: 10px;
+  border-radius: 5px;
+  margin-top: 10px;
+}
+
+.login-popup {
+  display: none;
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background-image: linear-gradient(to right, #ffffff, #9e4dff);
+  color: white;
+  padding: 20px;
+  border-radius: 5px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  z-index: 1;
+}
+
+.login-popup-close {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  color: white;
+  cursor: pointer;
+}
+
+.login-popup-overlay {
+  display: none;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.4);
+  z-index: 1;
+}
+
+.login-card-header {
+  background: linear-gradient(to left, #222, #000);
+  color: var(--purple);
+  padding: 15px;
+  border-bottom: none;
+}
+
+.fade-in {
+  opacity: 0;
+  animation: fadeIn 0.333s ease-in-out 0.166s forwards;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+.slide-in-right {
+  animation: slideInRight 0.5s ease-in-out both;
+}
+
+.slide-in-left {
+  animation: slideInLeft 0.5s ease-in-out both;
+}
+
+@keyframes slideInRight {
+  from {
+    transform: translateX(100%);
+  }
+  to {
+    transform: translateX(0);
+  }
+}
+
+@keyframes slideInLeft {
+  from {
+    transform: translateX(-100%);
+  }
+  to {
+    transform: translateX(0);
+  }
+}
+
+.tab-style .nav-item .nav-link {
+  background-color: black;
+  color: var(--purple);
+  border-color: black;
+}
+
+.tab-style .nav-item .nav-link.active {
+  background-color: var(--purple);
+  color: #333;
+  border-color: var(--purple);
+}
+
+.tab-style .nav-item .nav-link:hover {
+  background-color: var(--purple);
+  color: #333;
+  border-color: var(--purple);
+}
+
+.div-panel, #profile-page {
+  background: linear-gradient(to right, #000000, #330033);
+}
+
+.img-responsive {
+  max-width: 150px;
+  height: auto;
+  border: 2px solid white;
+}
+
+p, li {
+  color: var(--light-purple);
+}
