@@ -3,7 +3,7 @@
 <h3>Joshua da Silva Cavazzani</h3>
 
 <h2>Tema:</h2>
-<p>.</p>
+<p></p>
 
 <h2>Problema:</h2>
 <p></p>
