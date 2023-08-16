@@ -90,7 +90,7 @@ def salvar_informacoes(nome, nascimento, email, genero, idioma):
 servidor = Flask(__name__)
 # Layout do painel
 painel = Dash(__name__, external_stylesheets=[dbc.themes.VAPOR, dbc.icons.FONT_AWESOME], server=servidor,
-              url_base_pathname='/')
+              url_base_pathname='/painel/')
 
 painel.layout = html.Div([
     dbc.Row([
@@ -167,13 +167,22 @@ perfil.layout = dbc.Container([
 
 
 # Rota Flask para a página principal
-@servidor.route("/")
+@servidor.route("/painel")
 @login_required
 def redirecionar_para_painel():
-    return painel.index()
+    token = request.cookies.get("jwt_token")
+    if not token:
+        return pagina_login.index()
+
+    usuario = verificar_token(token)
+    if usuario:
+        return painel.index()
+
+    # Token inválido ou expirado, redirecionar para a página de login
+    return pagina_login.index()
 
 
-@servidor.route("/login/")
+@servidor.route("/")
 def redirecionar_para_login():
     return pagina_login.index()
 
@@ -229,12 +238,21 @@ def salvar_e_redirecionar(n_clicks, nome, nascimento, email, genero, idioma):
 @servidor.route("/editar-perfil/")
 @login_required
 def redirecionar_para_edicao_perfil():
-    return edicao_perfil.index()
+    token = request.cookies.get("jwt_token")
+    if not token:
+        return pagina_login.index()
+
+    usuario = verificar_token(token)
+    if usuario:
+        return edicao_perfil.index()
+
+    # Token inválido ou expirado, redirecionar para a página de login
+    return pagina_login.index()
 
 
 # Inicializando o aplicativo Dash
 pagina_login = dash.Dash(__name__, external_stylesheets=[dbc.themes.VAPOR], server=servidor,
-                         url_base_pathname='/login/')
+                         url_base_pathname='/')
 
 
 # Função para verificar o login
@@ -347,7 +365,7 @@ def perfil():
 
     usuario = verificar_token(token)
     if usuario:
-        return painel.index()
+        return perfil.index()
 
     # Token inválido ou expirado, redirecionar para a página de login
     return pagina_login.index()
