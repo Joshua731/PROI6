@@ -6,7 +6,7 @@
 <p>Análise em tempo real de dados remententes a energia solar</p>
 
 <h2>Problema:</h2>
-<p>è meio dificil ter um bom controle e nalise de como esta o andamento da energia solar gerada.</p>
+<p>um grande problema da energia solar é ter um bom controle e nalise de como esta o andamento da energia solar gerada.</p>
 
 <h2>Solução:</h2>
 <p>Criar um aplicativo que facilita a visualização e analise dos diversos dados que giram em toro da energia solar de um dado domineo.</p>
