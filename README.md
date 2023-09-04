@@ -36,3 +36,9 @@
     </p>
 </ul>
 
+<h2> Diagramas: </h2>
+
+<h3> Casos de Uso:</h3></br>
+<img src="UML/Casos_de_Uso.drawio.png" alt="Diagrama de Casos de Uso">
+<img src="UML/Casos_de_Uso.drawio" alt="Diagrama de Uso">
+
