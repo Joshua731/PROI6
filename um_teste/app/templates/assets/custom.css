@@ -1,0 +1,28 @@
+.prod-u, .leg-irr {
+    color: #cccccc;
+    text-align: center;
+    margin-top: 0.3rem;
+}
+
+.crd{
+    width: 41.88rem;
+}
+
+.crd-g {
+    width: 36.66rem;
+    margin-right: 1rem;
+}
+
+.graph {
+    height: 19.66rem;
+    width: 36rem;
+}
+
+.crd-i, .idgt {
+    height: 22.86rem;
+    width: 5.5555rem;
+}
+
+.map {
+    height:31.11rem;
+}
