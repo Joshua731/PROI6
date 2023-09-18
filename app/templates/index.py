@@ -1,6 +1,7 @@
 from app import app
 from dash import Dash, html
 import dash_bootstrap_components as dbc
+from app.templates.partials.index import sidebar, navbar
 
 posts = [
     {
@@ -32,6 +33,9 @@ index = Dash(__name__, server=app, external_stylesheets=[dbc.themes.CYBORG], url
 index.title = f'{title} - SunDataHub' if title else 'Welcome to SunDataHub'
 user = {'username': 'Joshua'}
 index.layout = dbc.Container([
+
+    navbar,
+
     dbc.Row([
         html.H1(f"Hello, {user['username']}"),
     ]),
@@ -39,3 +43,4 @@ index.layout = dbc.Container([
         dbc.Col(psts, sm=5)
     ])
 ], fluid=True)
+

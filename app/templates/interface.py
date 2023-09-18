@@ -6,6 +6,7 @@ import plotly.graph_objects as go
 import pandas as pd
 import plotly.express as px
 import numpy as np
+from app.templates.partials.index import sidebar, navbar
 
 df = pd.read_csv(r"app\files\saida_atualizado.csv")
 
