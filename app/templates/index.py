@@ -3,6 +3,8 @@ from dash import Dash, html
 import dash_bootstrap_components as dbc
 from app.templates.partials.index import sidebar, navbar
 
+colorscale = ["#A98AA9", "#FFFFCC"]
+
 posts = [
     {
         'author': {'username': 'Joshua da Silva Cavazzani'},
