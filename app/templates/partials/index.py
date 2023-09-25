@@ -14,9 +14,9 @@ navbar = html.Div([
             color="primary",
             dark=True,
             children=[
-                dbc.NavItem(dbc.NavLink("Home", href="/")),
-                dbc.NavItem(dbc.NavLink("Perfil", href="/page-2")),
-                dbc.NavItem(dbc.NavLink("Configurações", href="/page-3")),
+                dbc.NavItem(dbc.NavLink("Home", href="http://127.0.0.1:5000/")),
+                dbc.NavItem(dbc.NavLink("Mapa", href="http://127.0.0.1:5000/interface")),
+                dbc.NavItem(dbc.NavLink("Lista", href="http://127.0.0.1:5000/lista")),
             ],
         ),
     ],
@@ -29,17 +29,7 @@ sidebar = html.Div(
         html.P(
             "A simple sidebar layout with navigation links", className="lead"
         ),
-        dbc.NavbarSimple(
-            brand="Bem-vindo a S.D.H.",
-            brand_href="#",
-            color="primary",
-            dark=True,
-            children=[
-                dbc.NavItem(dbc.NavLink("Home", href="/")),
-                dbc.NavItem(dbc.NavLink("Perfil", href="/page-2")),
-                dbc.NavItem(dbc.NavLink("Configurações", href="/page-3")),
-            ],
-        ),
+        navbar,
     ],
 )
     

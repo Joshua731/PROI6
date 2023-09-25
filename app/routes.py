@@ -2,6 +2,7 @@ from app import app
 
 from app.templates.index import index
 from app.templates.interface import interface
+from app.templates.lista import lista
 
 
 
@@ -15,4 +16,6 @@ def indice():
 def interfaces():
     return interface.index()
 
-
+@app.route('/lista')
+def listas():
+    return lista.index()

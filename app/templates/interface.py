@@ -63,17 +63,7 @@ interface = Dash(__name__, server=app, external_stylesheets=[dbc.themes.LUX], ur
 interface.layout = dbc.Container(
     [
         # Navbar
-        dbc.NavbarSimple(
-            brand="Bem-vindo a S.D.H.",
-            brand_href="#",
-            color="primary",
-            dark=True,
-            children=[
-                dbc.NavItem(dbc.NavLink("Home", href="/")),
-                dbc.NavItem(dbc.NavLink("Perfil", href="/page-2")),
-                dbc.NavItem(dbc.NavLink("Configurações", href="/page-3")),
-            ],
-        ),
+        navbar,
 
         # Conteúdo da página
         dbc.Row([
