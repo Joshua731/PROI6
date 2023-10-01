@@ -6,7 +6,7 @@ import plotly.graph_objects as go
 import pandas as pd
 import plotly.express as px
 import numpy as np
-import app.templates.partials.index as navs
+from app.templates.partials.index import sidebar, navbar
 
 # Remove the code for reading the CSV file and creating the figures
 

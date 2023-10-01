@@ -3,6 +3,7 @@ from app import app
 from app.templates.index import index
 from app.templates.interface import interface
 from app.templates.lista import lista
+from app.templates.login import login_page
 
 
 
@@ -19,3 +20,7 @@ def interfaces():
 @app.route('/lista')
 def listas():
     return lista.index()
+
+@app.route('/login')
+def log():
+    return login_page.index()

@@ -34,15 +34,22 @@ title = None
 index = Dash(__name__, server=app, external_stylesheets=[dbc.themes.LUX], url_base_pathname='/index/')
 index.title = f'{title} - SunDataHub' if title else 'Welcome to SunDataHub'
 user = {'username': 'Joshua'}
-index.layout = dbc.Container([
+index.layout = dbc.Container(
+    [
+        # Navbar
+        navbar,
 
-    navbar,
-
-    dbc.Row([
-        html.H1(f"Hello, {user['username']}"),
-    ]),
-    dbc.Row([
-        dbc.Col(psts, sm=5)
-    ])
-], fluid=True)
-
+        dbc.Row([
+            dbc.Col([], sm=6),
+            dbc.Col([
+                dbc.Card([
+                    dbc.CardBody([
+                        html.H4("Welcome to the Home Page", className="card-title"),
+                        html.P("This is the home page of your application. You can add your content here."),
+                    ])
+                ], color='dark', className='crd'),
+            ], sm=6)
+        ], className="mt-4"),
+    ],
+    fluid=True,
+)
