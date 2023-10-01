@@ -8,7 +8,10 @@ import plotly.express as px
 import numpy as np
 from app.templates.partials.index import sidebar, navbar
 
-# Remove the code for reading the CSV file and creating the figures
+df = pd.read_csv(r"app\files\saida_atualizado.csv")
+
+# Lê os nomes das usinas da coluna "name"
+usina_names = df['name'].tolist()
 
 lista = Dash(__name__, server=app, external_stylesheets=[dbc.themes.LUX], url_base_pathname="/lista/")
 lista.layout = dbc.Container(
@@ -17,56 +20,18 @@ lista.layout = dbc.Container(
         navbar,
         
         dbc.Row([
-            dbc.Col([
-            ], sm=6),
+            dbc.Col([], sm=6),
             dbc.Col([
                 dbc.Row([
                     dbc.Card([
-                        dbc.Row([
-                            html.Fieldset([
-                                dbc.Row([
-
-                                ]),
-                                dbc.Row([
-                                    dbc.CardGroup([
-                                        dbc.Card([
-                                            dbc.CardBody([
-                                            
-                                            ])
-                                        ]),
-                                        dbc.Card([
-                                            dbc.CardBody([
-                                                
-                                            ])
-                                        ]),
-                                        dbc.Card([
-                                            dbc.CardBody([
-                                                
-                                            ])
-                                        ])
-                                    ])
-                                ])
-                            ]),
+                        dbc.CardBody([
+                            html.H1("Lista de Usinas"),
+                            html.Ul([
+                                html.Li(name) for name in usina_names
+                            ])
                         ])
-
                     ], color='dark', className='crd'),
                 ]),
-                dbc.Row([
-                    dbc.Col([
-                        dbc.Card([
-                            dbc.Row([
-
-                            ]),
-                            dbc.Row([
-
-                            ]),
-                        ], color='dark', className='crd-g'),
-                    ], sm=10),
-                    dbc.Col([
-                        dbc.Card([
-                        ], color='dark', class_name='crd-i'),
-                    ], sm=2)
-                ])
             ], sm=6)
         ], className="mt-4"),
     ],
