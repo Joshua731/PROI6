@@ -4,7 +4,7 @@ from dash import Dash, html, dcc, Input, Output
 import dash_bootstrap_components as dbc
 from app.templates.partials.index import navbar
 
-login_page = Dash(__name__, server=app, external_stylesheets=[dbc.themes.LUX], url_base_pathname="/login/")
+login_page = Dash(__name__, server=app, external_stylesheets=[dbc.themes.LUMEN], url_base_pathname="/login/")
 login_page.layout = dbc.Container(
     [
         # Navbar

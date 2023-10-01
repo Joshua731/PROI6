@@ -31,7 +31,7 @@ for post in posts:
     )
 
 title = None
-index = Dash(__name__, server=app, external_stylesheets=[dbc.themes.LUX], url_base_pathname='/index/')
+index = Dash(__name__, server=app, external_stylesheets=[dbc.themes.LUMEN], url_base_pathname='/index/')
 index.title = f'{title} - SunDataHub' if title else 'Welcome to SunDataHub'
 user = {'username': 'Joshua'}
 index.layout = dbc.Container(
@@ -44,8 +44,8 @@ index.layout = dbc.Container(
             dbc.Col([
                 dbc.Card([
                     dbc.CardBody([
-                        html.H4("Welcome to the Home Page", className="card-title"),
-                        html.P("This is the home page of your application. You can add your content here."),
+                        html.H4("SunDataHub", className="card-title"),
+                        html.P("Bem vindo(a) ao Sun Data Hub."),
                     ])
                 ], color='dark', className='crd'),
             ], sm=6)
