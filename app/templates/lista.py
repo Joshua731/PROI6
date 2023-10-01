@@ -10,7 +10,7 @@ from app.templates.partials.index import sidebar, navbar
 
 # Remove the code for reading the CSV file and creating the figures
 
-lista = Dash(__name__, server=app, external_stylesheets=[dbc.themes.LUMEN], url_base_pathname="/lista/")
+lista = Dash(__name__, server=app, external_stylesheets=[dbc.themes.LUX], url_base_pathname="/lista/")
 lista.layout = dbc.Container(
     [
         # Navbar
