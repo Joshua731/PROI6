@@ -41,5 +41,5 @@
 <h3> Casos de Uso:</h3></br>
 <img src="UML/Casos_de_Uso.drawio.png" alt="Diagrama de Casos de Uso">
 
-<h3> Casos de Uso:</h3></br>
-<img src="UML/CLASSES SUNDATAHUB.pdf" alt="Diagrama de Classes">
+<h3> Diagrama de Classes:</h3></br>
+<img src="UML/Diag_Class.jpg" alt="Diagrama de Classes">
