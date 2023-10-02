@@ -4,6 +4,12 @@ from dash import Dash, html, dcc, Input, Output
 import dash_bootstrap_components as dbc
 from app.templates.partials.index import navbar
 
+custom_css = {
+    'text-light': {'color': 'white'},
+    'bg-light': {'background-color': 'white'},
+    '.body': {'background-color': '#A9A9A9'},
+}
+
 login_page = Dash(__name__, server=app, external_stylesheets=[dbc.themes.LUX], url_base_pathname="/login/")
 login_page.layout = dbc.Container(
     [
@@ -17,10 +23,10 @@ login_page.layout = dbc.Container(
                     dbc.Card([
                         dbc.CardBody([
                             html.H4("Login", className="card-title"),
-                            html.Label("Username"),
-                            dcc.Input(type="text", id="username-input", placeholder="Enter your username", className="form-control"),
-                            html.Label("Password"),
-                            dcc.Input(type="password", id="password-input", placeholder="Enter your password", className="form-control"),
+                            html.Label("Usuario"),
+                            dcc.Input(type="text", id="username-input", placeholder="Entre com seu Usuario", className="form-control"),
+                            html.Label("Senha"),
+                            dcc.Input(type="password", id="password-input", placeholder="Entre com a sua Senha", className="form-control"),
                             html.Button("Login", id="login-button", className="btn btn-primary btn-block", n_clicks=0),
                             html.Div(id="login-message", className="mt-3"),
                         ])

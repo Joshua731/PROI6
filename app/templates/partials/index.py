@@ -10,7 +10,7 @@ import numpy as np
 navbar = html.Div([
         dbc.NavbarSimple(
             brand="Bem-vindo a S.D.H.",
-            brand_href="#",
+            brand_href="http://127.0.0.1:5000/",
             color="primary",
             dark=True,
             children=[

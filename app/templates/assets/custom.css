@@ -5,7 +5,7 @@
 }
 
 .body {
-    background-color: #55595c;
+    background-color: #A9A9A9;
     height: 100%;
 }
 
@@ -59,4 +59,7 @@
     padding: 0, 0, 0, 0;
     padding-right: 0;
     padding-left: 0;
+}
+.label{
+    color: white;
 }
