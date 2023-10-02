@@ -1,3 +1,10 @@
+.borda-branca {
+    border: 1.666666px solid white;
+}
+
+.fonte-branca {
+    color: #ffffff !important;
+}
 
 .html {
     background-color:  #55595c;
