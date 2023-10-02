@@ -33,7 +33,7 @@ desempenho_geral.layout = dbc.Container(
     [
         dbc.Row([
             dbc.Col([
-                navbar,
+                navbar
             ], sm=12)
         ]),
         dbc.Row([
@@ -43,91 +43,96 @@ desempenho_geral.layout = dbc.Container(
                         dbc.Card([
                             dbc.CardBody([
                                 dbc.Row([
-                                    html.H2("Visão Geral da Usina Fotovoltaica"),
+                                    html.H2("Visão Geral da Usina Fotovoltaica", className="fonte-branca"),
                                 ]),
                                 dbc.Row([
                                     dbc.CardGroup([
                                         dbc.Card([
                                             dbc.CardBody([
-                                                html.Label("Nome da Usina"),
-                                                html.P("Usina Solar ABC"),
+                                                html.Label("Nome da Usina", className='fonte-branca'),
+                                                html.P("Usina Solar ABC", className='fonte-branca'),
                                             ])
-                                        ]),
+                                        ], color='dark', class_name='borda-branca'),
+                                        # dbc.Card([
+                                        #     dbc.CardBody([
                                         dbc.Card([
                                             dbc.CardBody([
-                                                dbc.Card([
-                                                    dbc.CardBody([
-                                                        html.H4("Localização"),
-                                                        dash_table.DataTable(
-                                                            columns=[
-                                                                {"name": "Latitude", "id": "Latitude"},
-                                                                {"name": "Longitude", "id": "Longitude"},
-                                                            ],
-                                                            data=[
-                                                                {"Latitude": "40.7128", "Longitude": "-74.0060"},
-                                                            ],
-                                                            style_table={"height": "auto", "width": "auto"},
-                                                        ),
-                                                    ]),
-                                                ]),
-                                            ])
-                                        ]),
+                                                html.H4("Localização", className="fonte-branca"),
+                                                dash_table.DataTable(
+                                                    columns=[
+                                                        {"name": "Latitude", "id": "Latitude"},
+                                                        {"name": "Longitude", "id": "Longitude"},
+                                                    ],
+                                                    data=[
+                                                        {"Latitude": "40.7128", "Longitude": "-74.0060"},
+                                                    ],
+                                                    style_table={"height": "auto", "width": "auto"},
+                                                ),
+                                            ]),
+                                        ], color='dark', class_name='borda-branca'),
+                                        # ])
+                                        # ]),
                                     ]),
                                 ]),
                                 dbc.Row([
                                     dbc.CardGroup([
                                         dbc.Card([
                                             dbc.CardBody([
-                                                html.Label("Data da Instalação"),
-                                                html.P("01 de Janeiro de 2023"),
+                                                html.Label("Data da Instalação", className='fonte-branca'),
+                                                html.P("01 de Janeiro de 2023", className='fonte-branca'),
                                             ])
-                                        ]),
+                                        ], color='dark', class_name='borda-branca'),
                                         dbc.Card([
                                             dbc.CardBody([
-                                                html.Label("Capacidade Total"),
-                                                html.P("100 kW"),
+                                                html.Label("Capacidade Total", className='fonte-branca'),
+                                                html.P("100 kW", className='fonte-branca'),
                                             ])
-                                        ])
+                                        ], color='dark', class_name='borda-branca'),
                                     ])
                                 ])
                                 # ])
                             ])
-                        ]),
+                        ], color='dark'),
                     ], sm=12),
                 ]),
                 dbc.Row([
                     dbc.Col([
-                        dbc.Row([
-                            html.H2("Métricas de Desempenho"),
-                        ]),
-                        dbc.Row([
-                            dbc.CardGroup([
-                                dbc.Card([
-                                    dbc.CardBody([
-                                        html.Label("Prod. Atual"),
-                                        html.P("50 kW"),
-                                    ])
+                        dbc.Card([
+                            dbc.CardBody([
+                                dbc.Row([
+                                    html.H2("Métricas de Desempenho", className="fonte-branca"),
                                 ]),
-                                dbc.Card([
-                                    dbc.CardBody([
-                                        html.Label("Prod. Diária"),
-                                        html.P("1200 kWh"),
+                                dbc.Row([
+                                    dbc.CardGroup([
+                                        dbc.Card([
+                                            dbc.CardBody([
+                                                html.Label("Prod. Atual", className='fonte-branca'),
+                                                html.P("50 kW", className='fonte-branca'),
+                                            ])
+                                        ], color='dark', class_name='borda-branca'),
+                                        dbc.Card([
+                                            dbc.CardBody([
+                                                html.Label("Prod. Diária", className='fonte-branca'),
+                                                html.P("1200 kWh", className='fonte-branca'),
+                                            ])
+                                        ], color='dark', class_name='borda-branca'),
+                                        dbc.Card([
+                                            dbc.CardBody([
+                                                html.Label("Prod. Mensal", className='fonte-branca'),
+                                                html.P("35000 kWh", className='fonte-branca'),
+                                            ])
+                                        ], color='dark', class_name='borda-branca'),
+                                        dbc.Card([
+                                            dbc.CardBody([
+                                                html.Label("Prod. Anual", className='fonte-branca'),
+                                                html.P("420000 kWh", className='fonte-branca'),
+                                            ])
+                                        ], color='dark', class_name='borda-branca'),
                                     ])
-                                ]),
-                                dbc.Card([
-                                    dbc.CardBody([
-                                        html.Label("Prod. Mensal"),
-                                        html.P("35000 kWh"),
-                                    ])
-                                ]),
-                                dbc.Card([
-                                    dbc.CardBody([
-                                        html.Label("Prod. Anual"),
-                                        html.P("420000 kWh"),
-                                    ])
-                                ]),
+                                ])
                             ])
-                        ])
+                        ], color='dark')
+
 
                     ], sm=12)
 
