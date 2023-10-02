@@ -8,6 +8,7 @@ custom_css = {
     'text-light': {'color': 'white'},
     'bg-light': {'background-color': 'white'},
     '.body': {'background-color': '#A9A9A9'},
+    'font':'dict(color='#cccccc)',
 }
 
 login_page = Dash(__name__, server=app, external_stylesheets=[dbc.themes.LUX], url_base_pathname="/login/")

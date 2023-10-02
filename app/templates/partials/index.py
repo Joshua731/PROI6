@@ -17,6 +17,7 @@ navbar = html.Div([
                 dbc.NavItem(dbc.NavLink("Home", href="http://127.0.0.1:5000/")),
                 dbc.NavItem(dbc.NavLink("Mapa", href="http://127.0.0.1:5000/interface")),
                 dbc.NavItem(dbc.NavLink("Lista", href="http://127.0.0.1:5000/lista")),
+                dbc.NavItem(dbc.NavLink("Desempenho Geral", href="http://127.0.0.1:5000/desempenho_geral")),
                 dbc.NavItem(dbc.NavLink("Login", href="http://127.0.0.1:5000/login")),
             ],
         ),

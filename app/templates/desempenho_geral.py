@@ -7,12 +7,12 @@ from datetime import datetime, timedelta
 from dateutil.relativedelta import relativedelta
 
 from app import app
-from app.templates.partials.partials import navbar
+from app.templates.partials.index import navbar
 
 # Crie uma instância do aplicativo Dash
 desempenho_geral = Dash(__name__, external_stylesheets=[dbc.themes.LUX],
                         server=app,
-                        url_base_pathname="/desempenho-geral/")
+                        url_base_pathname="/desempenho_geral/")
 
 
 # Gere dados de exemplo para os gráficos
@@ -33,7 +33,7 @@ desempenho_geral.layout = dbc.Container(
     [
         dbc.Row([
             dbc.Col([
-                # navbar
+                navbar,
             ], sm=12)
         ]),
         dbc.Row([

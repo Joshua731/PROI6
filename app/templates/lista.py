@@ -25,12 +25,12 @@ lista.layout = dbc.Container(
                 dbc.Row([
                     dbc.Card([
                         dbc.CardBody([
-                            html.H1("Lista de Usinas"),
+                            html.H1("Lista de Usinas", className='prod-u'),
                             html.Ul([
-                                html.Li(name) for name in usina_names
+                                html.Li(name, className='prod-u') for name in usina_names
                             ])
                         ])
-                    ], color='dark', className='crd'),
+                    ], color='dark', className='crd bg-grey'),
                 ]),
             ], sm=6),
             dbc.Col([], sm=3),

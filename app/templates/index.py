@@ -45,9 +45,10 @@ index.layout = dbc.Container(
                 dbc.Card([
                     dbc.CardBody([
                         html.H4("SunDataHub", className="card-title"),
-                        html.P("Bem vindo(a) ao Sun Data Hub."),
+                        html.H5("Bem vindo(a) ao Sun Data Hub."),
+                        html.P("Análise em tempo real de dados remententes a energia solar."),
                     ])
-                ], color='dark', className='crd mx-auto'),
+                ], color='dark', className='crd mx-auto bg-grey'),
             ], sm=6),
             dbc.Col([], sm=3)
         ], className="mt-4"),
