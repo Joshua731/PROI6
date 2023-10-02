@@ -40,15 +40,16 @@ index.layout = dbc.Container(
         navbar,
 
         dbc.Row([
-            dbc.Col([], sm=6),
+            dbc.Col([], sm=3),
             dbc.Col([
                 dbc.Card([
                     dbc.CardBody([
                         html.H4("SunDataHub", className="card-title"),
                         html.P("Bem vindo(a) ao Sun Data Hub."),
                     ])
-                ], color='dark', className='crd'),
-            ], sm=6)
+                ], color='dark', className='crd mx-auto'),
+            ], sm=6),
+            dbc.Col([], sm=3)
         ], className="mt-4"),
     ],
     fluid=True,

@@ -20,7 +20,7 @@ lista.layout = dbc.Container(
         navbar,
         
         dbc.Row([
-            dbc.Col([], sm=6),
+            dbc.Col([], sm=3),
             dbc.Col([
                 dbc.Row([
                     dbc.Card([
@@ -32,7 +32,8 @@ lista.layout = dbc.Container(
                         ])
                     ], color='dark', className='crd'),
                 ]),
-            ], sm=6)
+            ], sm=6),
+            dbc.Col([], sm=3),
         ], className="mt-4"),
     ],
     fluid=True,
