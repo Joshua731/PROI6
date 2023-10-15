@@ -13,7 +13,7 @@ df = pd.read_csv(r"app\files\saida_atualizado.csv")
 # Lê os nomes das usinas da coluna "name"
 usina_names = df['name'].tolist()
 
-lista = Dash(__name__, server=app, external_stylesheets=[dbc.themes.LUX], url_base_pathname="/lista/")
+lista = Dash(__name__, server=app, external_stylesheets=[dbc.themes.SOLAR], url_base_pathname="/lista/")
 lista.layout = dbc.Container(
     [
         # Navbar

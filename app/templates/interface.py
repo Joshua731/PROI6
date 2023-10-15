@@ -59,7 +59,7 @@ fig2.update_layout(title=None, xaxis_title='Intervalo de Tempo (Horas)',
                    font=dict(color='#cccccc')
                    )
 
-interface = Dash(__name__, server=app, external_stylesheets=[dbc.themes.LUX], url_base_pathname="/interface/")
+interface = Dash(__name__, server=app, external_stylesheets=[dbc.themes.SOLAR], url_base_pathname="/interface/")
 interface.layout = dbc.Container(
     [
         # Navbar
