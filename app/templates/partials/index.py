@@ -10,15 +10,15 @@ import numpy as np
 navbar = html.Div([
         dbc.NavbarSimple(
             brand="Bem-vindo a S.D.H.",
-            brand_href="http://127.0.0.1:5000/",
-            color="primary",
+            brand_href="http://127.0.0.1:9999/",
+            color="dark",
             dark=True,
             children=[
-                dbc.NavItem(dbc.NavLink("Home", href="http://127.0.0.1:5000/")),
-                dbc.NavItem(dbc.NavLink("Mapa", href="http://127.0.0.1:5000/interface")),
-                dbc.NavItem(dbc.NavLink("Lista", href="http://127.0.0.1:5000/lista")),
-                dbc.NavItem(dbc.NavLink("Desempenho Geral", href="http://127.0.0.1:5000/desempenho_geral")),
-                dbc.NavItem(dbc.NavLink("Login", href="http://127.0.0.1:5000/login")),
+                dbc.NavItem(dbc.NavLink("Home", href="http://127.0.0.1:9999/")),
+                dbc.NavItem(dbc.NavLink("Mapa", href="http://127.0.0.1:9999/interface")),
+                dbc.NavItem(dbc.NavLink("Lista", href="http://127.0.0.1:9999/lista")),
+                dbc.NavItem(dbc.NavLink("Desempenho Geral", href="http://127.0.0.1:9999/desempenho_geral")),
+                dbc.NavItem(dbc.NavLink("Login", href="http://127.0.0.1:9999/login")),
             ],
         ),
     ],

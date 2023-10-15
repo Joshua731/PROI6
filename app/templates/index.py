@@ -31,7 +31,7 @@ for post in posts:
     )
 
 title = None
-index = Dash(__name__, server=app, external_stylesheets=[dbc.themes.LUX], url_base_pathname='/index/')
+index = Dash(__name__, server=app, external_stylesheets=[dbc.themes.SOLAR], url_base_pathname='/index/')
 index.title = f'{title} - SunDataHub' if title else 'Welcome to SunDataHub'
 user = {'username': 'Joshua'}
 index.layout = dbc.Container(

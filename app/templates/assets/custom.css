@@ -70,3 +70,21 @@
 .label{
     color: white;
 }
+
+.card, .opcoes-drop {
+    color: white;
+}
+
+#tabela {
+    background-color: #597793;
+}
+
+.tab-desempenho {
+    width: 100%;
+}
+
+.nome-usina {
+    margin-top: 9%;
+    line-height: 0.01;
+    text-align: center;
+}
