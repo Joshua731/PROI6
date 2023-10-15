@@ -5,6 +5,7 @@ from app.templates.interface import interface
 from app.templates.lista import lista
 from app.templates.login import login_page
 from app.templates.producao_energia import producao_energia
+from app.templates.status_tempo_real import status_tempo_real
 
 
 @app.route('/')
@@ -36,3 +37,8 @@ def desG():
 @app.route('/producao_energia')
 def prod_energia():
     return producao_energia.index()
+
+
+@app.route("/status_tempo_real")
+def stts_tmp_rl():
+    return status_tempo_real.index()
