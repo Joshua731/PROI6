@@ -1,5 +1,4 @@
-import dash_table
-from dash import html, dcc, Dash, Input, Output
+from dash import html, dcc, Dash, Input, Output, dash_table
 import dash_bootstrap_components as dbc
 import plotly.express as px
 import random
@@ -10,9 +9,8 @@ from app import app
 from app.templates.partials.index import navbar
 
 # Crie uma instância do aplicativo Dash
-desempenho_geral = Dash(__name__, external_stylesheets=[dbc.themes.LUX],
-                        server=app,
-                        url_base_pathname="/desempenho_geral/")
+desempenho_geral = Dash(__name__, external_stylesheets=[dbc.themes.SOLAR], server=app,
+                        url_base_pathname="/desempenho-geral/")
 
 
 # Gere dados de exemplo para os gráficos
@@ -34,7 +32,10 @@ desempenho_geral.layout = dbc.Container(
         dbc.Row([
             dbc.Col([
                 navbar
-            ], sm=12)
+            ],
+                sm=12,
+                class_name='remover-padding'
+            )
         ]),
         dbc.Row([
             dbc.Col([
@@ -43,21 +44,21 @@ desempenho_geral.layout = dbc.Container(
                         dbc.Card([
                             dbc.CardBody([
                                 dbc.Row([
-                                    html.H2("Visão Geral da Usina Fotovoltaica", className="fonte-branca"),
+                                    html.H2("Visão Geral da UFV"),
                                 ]),
                                 dbc.Row([
                                     dbc.CardGroup([
                                         dbc.Card([
                                             dbc.CardBody([
-                                                html.Label("Nome da Usina", className='fonte-branca'),
-                                                html.P("Usina Solar ABC", className='fonte-branca'),
-                                            ])
-                                        ], color='dark', class_name='borda-branca'),
-                                        # dbc.Card([
-                                        #     dbc.CardBody([
+                                                dbc.Row([
+                                                    html.P("Nome da Usina"),
+                                                    html.H3("Usina Solar ABC"),
+                                                ]),
+                                            ],class_name='nome-usina'),
+                                        ]),
                                         dbc.Card([
                                             dbc.CardBody([
-                                                html.H4("Localização", className="fonte-branca"),
+                                                html.H4("Localização"),
                                                 dash_table.DataTable(
                                                     columns=[
                                                         {"name": "Latitude", "id": "Latitude"},
@@ -67,32 +68,50 @@ desempenho_geral.layout = dbc.Container(
                                                         {"Latitude": "40.7128", "Longitude": "-74.0060"},
                                                     ],
                                                     style_table={"height": "auto", "width": "auto"},
-                                                ),
+                                                    style_data_conditional=[
+                                                        {
+                                                            'if': {'row_index': 'odd'},
+                                                            # Você pode ajustar esta condição conforme necessário
+                                                            'backgroundColor': '#073038',
+                                                            # Define a cor de fundo para linhas ímpares
+                                                        },
+                                                        {
+                                                            'if': {'row_index': 'even'},
+                                                            # Você pode ajustar esta condição conforme necessário
+                                                            'backgroundColor': '#073038',
+                                                            # Define a cor de fundo para linhas pares
+                                                        },
+                                                    ],
+                                                    style_header={
+                                                        'backgroundColor': '#073038',
+                                                        # Define a cor de fundo para o cabeçalho
+                                                        'color': 'white',  # Define a cor do texto no cabeçalho
+                                                    },
+                                                    style_cell={'textAlign': 'center'},
+                                                    id='tabela'),
                                             ]),
-                                        ], color='dark', class_name='borda-branca'),
-                                        # ])
-                                        # ]),
-                                    ]),
+                                        ]),
+                                    ])
+
                                 ]),
                                 dbc.Row([
                                     dbc.CardGroup([
                                         dbc.Card([
                                             dbc.CardBody([
-                                                html.Label("Data da Instalação", className='fonte-branca'),
-                                                html.P("01 de Janeiro de 2023", className='fonte-branca'),
-                                            ])
-                                        ], color='dark', class_name='borda-branca'),
+                                                html.H4("Capacidade Total"),
+                                                html.P("100 kW"),
+                                            ]),
+                                        ]),
                                         dbc.Card([
                                             dbc.CardBody([
-                                                html.Label("Capacidade Total", className='fonte-branca'),
-                                                html.P("100 kW", className='fonte-branca'),
+                                                html.H4("Data da Instalação"),
+                                                html.P("01 de Janeiro de 2023"),
                                             ])
-                                        ], color='dark', class_name='borda-branca'),
+                                        ])
                                     ])
-                                ])
-                                # ])
+                                ]),
                             ])
-                        ], color='dark'),
+                        ]),
                     ], sm=12),
                 ]),
                 dbc.Row([
@@ -100,55 +119,151 @@ desempenho_geral.layout = dbc.Container(
                         dbc.Card([
                             dbc.CardBody([
                                 dbc.Row([
-                                    html.H2("Métricas de Desempenho", className="fonte-branca"),
+                                    html.H2("Métricas de Desempenho"),
                                 ]),
                                 dbc.Row([
                                     dbc.CardGroup([
                                         dbc.Card([
                                             dbc.CardBody([
-                                                html.Label("Prod. Atual", className='fonte-branca'),
-                                                html.P("50 kW", className='fonte-branca'),
+                                                html.Label("Prod. Atual"),
+                                                html.P("50 kW"),
                                             ])
-                                        ], color='dark', class_name='borda-branca'),
+                                        ]),
                                         dbc.Card([
                                             dbc.CardBody([
-                                                html.Label("Prod. Diária", className='fonte-branca'),
-                                                html.P("1200 kWh", className='fonte-branca'),
+                                                html.Label("Prod. Diária"),
+                                                html.P("1200 kWh"),
                                             ])
-                                        ], color='dark', class_name='borda-branca'),
+                                        ]),
                                         dbc.Card([
                                             dbc.CardBody([
-                                                html.Label("Prod. Mensal", className='fonte-branca'),
-                                                html.P("35000 kWh", className='fonte-branca'),
+                                                html.Label("Prod. Mensal"),
+                                                html.P("35000 kWh"),
                                             ])
-                                        ], color='dark', class_name='borda-branca'),
+                                        ]),
                                         dbc.Card([
                                             dbc.CardBody([
-                                                html.Label("Prod. Anual", className='fonte-branca'),
-                                                html.P("420000 kWh", className='fonte-branca'),
+                                                html.Label("Prod. Anual"),
+                                                html.P("420000 kWh"),
                                             ])
-                                        ], color='dark', class_name='borda-branca'),
+                                        ])
+                                    ])
+                                ]),
+                            ])
+                        ]),
+                    ], sm=12)
+                ]),
+                dbc.Row([
+                    dbc.Col([
+                        dbc.Card([
+                            dbc.CardBody([
+                                dbc.Row([
+                                    html.H2("Estado dos Painéis"),
+                                ]),
+                                dbc.Row([
+                                    dbc.CardGroup([
+                                        dbc.Card([
+                                            dbc.CardBody([
+                                                html.P("Funcionando"),
+                                                html.Span('80%'),
+                                            ])
+                                        ]),
+                                        dbc.Card([
+                                            dbc.CardBody([
+                                                html.P("Em manutenção"),
+                                                html.Span('5%'),
+                                            ])
+                                        ]),
+                                        dbc.Card([
+                                            dbc.CardBody([
+                                                html.P("Offline"),
+                                                html.Span('15%'),
+                                            ])
+                                        ]),
+                                        dbc.Card([
+                                            dbc.CardBody([
+                                                html.P("Eficiência Atual"),
+                                                html.Span('90%'),
+                                            ])
+                                        ]),
                                     ])
                                 ])
                             ])
-                        ], color='dark')
-
-
-                    ], sm=12)
-
+                        ])
+                    ], sm=12),
                 ])
             ], sm=6),
             dbc.Col([
-                dcc.Tabs(id="tabs", value="tempo-real", children=[
-                    dcc.Tab(label="Tempo Real", value="tempo-real"),
-                    dcc.Tab(label="Diário", value="diario"),
-                    dcc.Tab(label="Mensal", value="mensal"),
-                    dcc.Tab(label="Anual", value="anual"),
+                dbc.Card([
+                    dbc.CardBody([
+                        dbc.Row([
+                            html.H2('Gráficos de Desempenho', className="titulo-desempenho")
+                        ]),
+                        dbc.Row([
+                            dbc.Tabs(id="tabs", active_tab="tempo-real", children=[
+                                dbc.Tab(label="Tempo Real", tab_id="tempo-real"),
+                                dbc.Tab(label="Diário", tab_id="diario"),
+                                dbc.Tab(label="Mensal", tab_id="mensal"),
+                                dbc.Tab(label="Anual", tab_id="anual"),
+                            ], className='tab-desempenho'),
+                        ]),
+                        dbc.Row([
+                            html.Div(id="tab-content")
+                        ]),
+                    ])
                 ]),
-                html.Div(id="tab-content")
+                dbc.Row([
+                    dbc.Col([
+                        dbc.Card([
+                            dbc.CardBody([
+                                dbc.Row([
+                                    html.H2("Condições Ambientais")
+                                ]),
+                                dbc.Row([
+                                    dbc.CardGroup([
+                                        dbc.Card([
+                                            dbc.CardBody([
+                                                html.P("Radiação Solar"),
+                                                html.Span('800 W/m²'),  # Valor de exemplo, substitua pelo valor real
+                                            ])
+                                        ]),
+                                        dbc.Card([
+                                            dbc.CardBody([
+                                                html.P("Temperatura"),
+                                                html.Span('30°C'),  # Valor de exemplo, substitua pelo valor real
+                                            ])
+                                        ]),
+                                        dbc.Card([
+                                            dbc.CardBody([
+                                                html.P("Velocidade do Vento"),
+                                                html.Span('10 m/s'),  # Valor de exemplo, substitua pelo valor real
+                                            ])
+                                        ]),
+                                    ])
+                                ])
+                            ])
+                        ])
+                    ], sm=12),
+                ]),
+                dbc.Row([
+                    dbc.CardGroup([
+                        dbc.Card([
+                            dbc.CardBody([
+                                dbc.Row([
+                                    dbc.Col([
+                                        html.H5("Alertas:")
+                                    ], sm=2),
+                                    dbc.Col([
+                                        html.H6("Nenhum")
+                                    ], sm=10, class_name='mt-1')
+                                ])
+
+                            ])
+                        ])
+                    ])
+                ])
             ], sm=6),
         ]),
-
         dcc.Interval(id='intervalo-atualizacao', interval=10000, n_intervals=0)
     ],
     fluid=True,
@@ -158,7 +273,7 @@ desempenho_geral.layout = dbc.Container(
 # Callback para atualizar o conteúdo da aba
 @desempenho_geral.callback(
     Output('tab-content', 'children'),
-    Input('tabs', 'value')
+    Input('tabs', 'active_tab')
 )
 def render_tab_content(value):
     tempo_real, tempo_diario, tempo_mensal, tempo_anual, producao_tempo_real, producao_diaria, producao_mensal, producao_anual = gerar_dados_graficos()
@@ -171,5 +286,10 @@ def render_tab_content(value):
         figura = px.bar(x=tempo_mensal, y=producao_mensal, labels={"x": "Mês", "y": "Produção Mensal (kWh)"})
     elif value == "anual":
         figura = px.bar(x=tempo_anual, y=producao_anual, labels={"x": "Ano", "y": "Produção Anual (kWh)"})
-
+    figura.update_layout(
+        plot_bgcolor='rgba(0, 0, 0, 0)',
+        paper_bgcolor='rgba(0, 0, 0, 0)',
+        font_color="white",
+        height=313
+    )
     return dcc.Graph(figure=figura, config={'displayModeBar': False})
