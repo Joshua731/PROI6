@@ -1,44 +1,44 @@
 from app import app
-from app.templates.desempenho_geral import desempenho_geral
-from app.templates.index import index
-from app.templates.interface import interface
-from app.templates.lista import lista
-from app.templates.login import login_page
-from app.templates.producao_energia import producao_energia
-from app.templates.status_tempo_real import status_tempo_real
+from app.templates import desempenho_geral, historico_producao, index, interface, lista, login, producao_energia, \
+    status_tempo_real
 
 
 @app.route('/')
 @app.route('/index')
 def indice():
-    return index.index()
+    return index.index.index()
 
 
 @app.route('/interface')
 def interfaces():
-    return interface.index()
+    return interface.interface.index()
 
 
 @app.route('/lista')
 def listas():
-    return lista.index()
+    return lista.lista.index()
 
 
 @app.route('/login')
 def log():
-    return login_page.index()
+    return login.login_page.index()
 
 
 @app.route('/desempenho_geral')
 def desG():
-    return desempenho_geral.index()
+    return desempenho_geral.desempenho_geral.index()
 
 
 @app.route('/producao_energia')
 def prod_energia():
-    return producao_energia.index()
+    return producao_energia.producao_energia.index()
 
 
 @app.route("/status_tempo_real")
 def stts_tmp_rl():
-    return status_tempo_real.index()
+    return status_tempo_real.status_tempo_real.index()
+
+
+@app.route("/historico_producao/")
+def hist_prod():
+    return historico_producao.historico_producao.index()
