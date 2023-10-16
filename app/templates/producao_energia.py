@@ -23,6 +23,7 @@ dados_usina_b = {
 # Layout do aplicativo Dash
 producao_energia.layout = dbc.Container([
     navbar,
+    dcc.Location(id='url', refresh=False),
     html.H1('Gráficos de Produção de Energia', className='mt-4 mb-4 text-center'),
     dbc.Row([
         dbc.Col([
@@ -121,3 +122,12 @@ def atualizar_grafico(tipo_grafico, usina_selecionada):
     )
 
     return figura
+
+
+@producao_energia.callback(
+    Output('drop-nav', 'label'),
+    Input('url', 'pathname')
+)
+def mostra_pagina(path):
+    print(path)
+    return path

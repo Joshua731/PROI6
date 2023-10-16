@@ -18,7 +18,7 @@ lista.layout = dbc.Container(
     [
         # Navbar
         navbar,
-        
+        dcc.Location(id='url', refresh=False),
         dbc.Row([
             dbc.Col([], sm=3),
             dbc.Col([
@@ -38,3 +38,12 @@ lista.layout = dbc.Container(
     ],
     fluid=True,
 )
+
+
+@lista.callback(
+    Output('drop-nav', 'label'),
+    Input('url', 'pathname')
+)
+def mostra_pagina(path):
+    print(path)
+    return path

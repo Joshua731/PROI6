@@ -16,7 +16,7 @@ login_page.layout = dbc.Container(
     [
         # Navbar
         navbar,
-        
+        dcc.Location(id='url', refresh=False),
         dbc.Row([
             dbc.Col([], sm=3),
             dbc.Col([
@@ -53,3 +53,12 @@ def handle_login(n_clicks, username, password):
             return "Login successful. Redirecting..."
         else:
             return "Login failed. Please check your credentials."
+
+
+@login_page.callback(
+    Output('drop-nav', 'label'),
+    Input('url', 'pathname')
+)
+def mostra_pagina(path):
+    print(path)
+    return path

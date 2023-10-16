@@ -37,6 +37,7 @@ desempenho_geral.layout = dbc.Container(
                 class_name='remover-padding'
             )
         ]),
+        dcc.Location(id='url', refresh=False),
         dbc.Row([
             dbc.Col([
                 dbc.Row([
@@ -54,7 +55,7 @@ desempenho_geral.layout = dbc.Container(
                                                     html.P("Nome da Usina"),
                                                     html.H3("Usina Solar ABC"),
                                                 ]),
-                                            ],class_name='nome-usina'),
+                                            ], class_name='nome-usina'),
                                         ]),
                                         dbc.Card([
                                             dbc.CardBody([
@@ -293,3 +294,12 @@ def render_tab_content(value):
         height=313
     )
     return dcc.Graph(figure=figura, config={'displayModeBar': False})
+
+
+@desempenho_geral.callback(
+    Output('drop-nav', 'label'),
+    Input('url', 'pathname')
+)
+def mostra_pagina(path):
+    print(path)
+    return path

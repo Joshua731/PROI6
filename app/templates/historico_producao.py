@@ -12,6 +12,7 @@ historico_producao = Dash(__name__, server=app, external_stylesheets=[dbc.themes
 historico_producao.layout = dbc.Container(
     [
         navbar,
+        dcc.Location(id='url', refresh=False),
         html.H1('Histórico de Produção de Energia', className="text-center my-4"),
         dbc.Row(
             [
@@ -80,3 +81,11 @@ def update_chart(n_clicks):
                       paper_bgcolor='rgba(0, 0, 0, 0)',
                       font_color='white')
     return dcc.Graph(figure=fig, config={'displayModeBar': False})
+
+@historico_producao.callback(
+    Output('drop-nav', 'label'),
+    Input('url', 'pathname')
+)
+def mostra_pagina(path):
+    print(path)
+    return path

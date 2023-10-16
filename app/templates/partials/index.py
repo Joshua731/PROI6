@@ -8,20 +8,33 @@ import plotly.express as px
 import numpy as np
 
 navbar = html.Div([
-        dbc.NavbarSimple(
-            brand="Bem-vindo a S.D.H.",
-            brand_href="http://127.0.0.1:9999/",
-            color="dark",
-            dark=True,
-            children=[
-                dbc.NavItem(dbc.NavLink("Home", href="http://127.0.0.1:9999/")),
-                dbc.NavItem(dbc.NavLink("Mapa", href="http://127.0.0.1:9999/interface")),
-                dbc.NavItem(dbc.NavLink("Lista", href="http://127.0.0.1:9999/lista")),
-                dbc.NavItem(dbc.NavLink("Desempenho Geral", href="http://127.0.0.1:9999/desempenho_geral")),
-                dbc.NavItem(dbc.NavLink("Login", href="http://127.0.0.1:9999/login")),
-            ],
-        ),
-    ],
+    dbc.NavbarSimple(
+        brand="Bem-vindo a S.D.H.",
+        brand_href="http://127.0.0.1:9999/",
+        color="dark",
+        dark=True,
+        children=[
+            dbc.DropdownMenu(
+                label="Mais",
+                children=[
+                    dbc.DropdownMenuItem("Home", href="http://127.0.0.1:9999/"),
+                    dbc.DropdownMenuItem("Mapa", href="http://127.0.0.1:9999/interface"),
+                    dbc.DropdownMenuItem("Lista", href="http://127.0.0.1:9999/lista"),
+                    dbc.DropdownMenuItem("Desempenho Geral", href="http://127.0.0.1:9999/desempenho_geral"),
+                    dbc.DropdownMenuItem("Histórico de Produção", href="http://127.0.0.1:9999/historico_producao"),
+                    dbc.DropdownMenuItem("Produção de Energia", href="http://127.0.0.1:9999/producao_energia"),
+                    dbc.DropdownMenuItem("Status em Tempo Real", href="http://127.0.0.1:9999/status_tempo_real"),
+                    dbc.DropdownMenuItem("Alarmes e Notificações", href="http://127.0.0.1:9999/alertas_notificacoes"),
+                    dbc.DropdownMenuItem("Login", href="http://127.0.0.1:9999/login"),
+                ],
+                direction='start',
+                color='dark',
+                id='drop-nav'
+            ),
+
+        ],
+    ),
+],
 )
 
 sidebar = html.Div(
@@ -34,7 +47,7 @@ sidebar = html.Div(
         navbar,
     ],
 )
-    
+
 content = html.Div(id="page-content")
 header = html.H4(
     "Side Example.py", className="bg-primary text-white p-2 mb-2 text-center"

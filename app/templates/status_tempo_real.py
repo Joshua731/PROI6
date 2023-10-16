@@ -20,6 +20,7 @@ dados_status = {
 status_tempo_real.layout = dbc.Container(
     [
         navbar,
+        dcc.Location(id='url', refresh=False),
         dbc.Row(
             dbc.Col(html.H2("Status em Tempo Real", className="status-title text-center"), sm=12),
         ),
@@ -91,3 +92,11 @@ status_tempo_real.layout = dbc.Container(
     fluid=True,
 )
 
+
+@status_tempo_real.callback(
+    Output('drop-nav', 'label'),
+    Input('url', 'pathname')
+)
+def mostra_pagina(path):
+    print(path)
+    return path

@@ -1,6 +1,6 @@
 from app import app
 from app.templates import desempenho_geral, historico_producao, index, interface, lista, login, producao_energia, \
-    status_tempo_real
+    status_tempo_real, alertas_notificacoes
 
 
 @app.route('/')
@@ -39,6 +39,11 @@ def stts_tmp_rl():
     return status_tempo_real.status_tempo_real.index()
 
 
-@app.route("/historico_producao/")
+@app.route("/historico_producao")
 def hist_prod():
     return historico_producao.historico_producao.index()
+
+
+@app.route("/alertas_notificacoes")
+def alts_ntf():
+    return alertas_notificacoes.alertas_notificacoes.index()

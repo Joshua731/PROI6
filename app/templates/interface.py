@@ -64,7 +64,7 @@ interface.layout = dbc.Container(
     [
         # Navbar
         navbar,
-
+        dcc.Location(id='url', refresh=False),
         # Conteúdo da página
         dbc.Row([
             dbc.Col([
@@ -139,3 +139,11 @@ interface.layout = dbc.Container(
     ],
     fluid=True,
 )
+
+@interface.callback(
+    Output('drop-nav', 'label'),
+    Input('url', 'pathname')
+)
+def mostra_pagina(path):
+    print(path)
+    return path
