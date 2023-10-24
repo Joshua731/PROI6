@@ -7,6 +7,14 @@ import pandas as pd
 import plotly.express as px
 import numpy as np
 from app.templates.partials.index import sidebar, navbar
+from screeninfo import get_monitors
+
+# Obtém a informação do monitor
+monitors = get_monitors()
+
+# Itera sobre os monitores (em caso de vários monitores)
+for m in monitors:
+    print("Largura:", m.width, "Altura:", m.height)
 
 df = pd.read_csv(r"app\files\saida_atualizado.csv")
 
@@ -68,7 +76,8 @@ interface.layout = dbc.Container(
         # Conteúdo da página
         dbc.Row([
             dbc.Col([
-                dcc.Graph(figure=fig, className='map')
+                dcc.Graph(figure=fig, className='map',
+                          style={"height": f"{([m.width for m in get_monitors()][0] * 0.49)}px"})
             ], sm=6),
             dbc.Col([
                 dbc.Row([
@@ -124,13 +133,16 @@ interface.layout = dbc.Container(
                                 html.Legend("Irradiação Diária", className='leg-irr')
                             ]),
                             dbc.Row([
-                                dcc.Graph(figure=fig2, className='graph')
+                                dcc.Graph(figure=fig2, className='graph',
+                                          style={"height": f"{([m.width for m in get_monitors()][0] * 0.2)}px"}
+                                          )
                             ]),
                         ], color='dark', className='crd-g'),
                     ], sm=10),
                     dbc.Col([
                         dbc.Card([
-                            dcc.Graph(figure=fig3, className='idgt')
+                            dcc.Graph(figure=fig3, className='idgt',
+                                      style={"height": f"{([m.width for m in get_monitors()][0] * 0.25)}px"})
                         ], color='dark', class_name='crd-i'),
                     ], sm=2)
                 ])
