@@ -10,22 +10,22 @@ import numpy as np
 navbar = html.Div([
     dbc.NavbarSimple(
         brand="Bem-vindo a S.D.H.",
-        brand_href="http://127.0.0.1:9999/",
+        brand_href="http://127.0.0.1:5000/",
         color="dark",
         dark=True,
         children=[
             dbc.DropdownMenu(
                 label="Mais",
                 children=[
-                    dbc.DropdownMenuItem("Home", href="http://127.0.0.1:9999/"),
-                    dbc.DropdownMenuItem("Mapa", href="http://127.0.0.1:9999/interface"),
-                    dbc.DropdownMenuItem("Lista", href="http://127.0.0.1:9999/lista"),
-                    dbc.DropdownMenuItem("Desempenho Geral", href="http://127.0.0.1:9999/desempenho_geral"),
-                    dbc.DropdownMenuItem("Histórico de Produção", href="http://127.0.0.1:9999/historico_producao"),
-                    dbc.DropdownMenuItem("Produção de Energia", href="http://127.0.0.1:9999/producao_energia"),
-                    dbc.DropdownMenuItem("Status em Tempo Real", href="http://127.0.0.1:9999/status_tempo_real"),
-                    dbc.DropdownMenuItem("Alarmes e Notificações", href="http://127.0.0.1:9999/alertas_notificacoes"),
-                    dbc.DropdownMenuItem("Login", href="http://127.0.0.1:9999/login"),
+                    dbc.DropdownMenuItem("Home", href="http://127.0.0.1:5000/"),
+                    dbc.DropdownMenuItem("Mapa", href="http://127.0.0.1:5000/interface"),
+                    dbc.DropdownMenuItem("Lista", href="http://127.0.0.1:5000/lista"),
+                    dbc.DropdownMenuItem("Desempenho Geral", href="http://127.0.0.1:5000/desempenho_geral"),
+                    dbc.DropdownMenuItem("Histórico de Produção", href="http://127.0.0.1:5000/historico_producao"),
+                    dbc.DropdownMenuItem("Produção de Energia", href="http://127.0.0.1:5000/producao_energia"),
+                    dbc.DropdownMenuItem("Status em Tempo Real", href="http://127.0.0.1:5000/status_tempo_real"),
+                    dbc.DropdownMenuItem("Alarmes e Notificações", href="http://127.0.0.1:5000/alertas_notificacoes"),
+                    dbc.DropdownMenuItem("Login", href="http://127.0.0.1:5000/login"),
                 ],
                 direction='start',
                 color='dark',

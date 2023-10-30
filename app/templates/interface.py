@@ -18,7 +18,7 @@ for m in monitors:
 
 df = pd.read_csv(r"app\files\saida_atualizado.csv")
 
-colorscale = ["#A98AA9", "#FFFFCC"]
+colorscale = ["#A98AA9", "#FFFFCC", "#808080"]
 with open(r"app\files\geojs-35-mun.json", "r", encoding='utf-8') as e:
     geojson_file = json.load(e)
 
@@ -55,8 +55,8 @@ y2 = np.random.normal(25, 5, 24) + np.linspace(0, 50, 24)
 
 # Crie os gráficos Scatter
 fig2 = go.Figure()
-fig2.add_trace(go.Scatter(x=x, y=y1, mode='lines+markers', name='Irradiação Solar (Local 1)'))
-fig2.add_trace(go.Scatter(x=x, y=y2, mode='lines+markers', name='Irradiação Solar (Local 2)'))
+fig2.add_trace(go.Scatter(x=x, y=y1, mode='lines+markers', name='Irradiação Solar (Local 1)', uid = 1))
+fig2.add_trace(go.Scatter(x=x, y=y2, mode='lines+markers', name='Irradiação Solar (Local 2)', uid = 2))
 
 fig2.update_layout(title=None, xaxis_title='Intervalo de Tempo (Horas)',
                    yaxis_title='Irradiâncias',
@@ -76,7 +76,7 @@ interface.layout = dbc.Container(
         # Conteúdo da página
         dbc.Row([
             dbc.Col([
-                dcc.Graph(figure=fig, className='map',
+                dcc.Graph(figure=fig, className='map', id='mapa',
                           style={"height": f"{([m.width for m in get_monitors()][0] * 0.49)}px"})
             ], sm=6),
             dbc.Col([
@@ -133,7 +133,7 @@ interface.layout = dbc.Container(
                                 html.Legend("Irradiação Diária", className='leg-irr')
                             ]),
                             dbc.Row([
-                                dcc.Graph(figure=fig2, className='graph',
+                                dcc.Graph(figure=fig2, className='graph', id='graphic',
                                           style={"height": f"{([m.width for m in get_monitors()][0] * 0.2)}px"}
                                           )
                             ]),
@@ -159,3 +159,32 @@ interface.layout = dbc.Container(
 def mostra_pagina(path):
     print(path)
     return path
+
+@interface.callback(
+    Output('graphic', 'figure'),
+    Input('mapa', 'clickData')
+)
+def mostra_linha(click):
+    print(click['points'][0]['location'])
+    
+    id = click['points'][0]['location']
+    
+    if id in df['id'].values:
+
+        print(df.loc[df['id'] == id])
+        print(df.loc[df['id'] == id].values)
+        print(df.loc[df['id'] == id].index.values[0])
+        print(df.iloc[df[id]])
+
+
+        #fig.data[df.iloc[df['id'] == id].index.values[0] + 2]['z'] = 1
+
+        y1 = np.random.normal(50, 10, 24) + np.linspace(0, 100, 24)
+        y2 = np.random.normal(25, 5, 24) + np.linspace(0, 50, 24)
+  
+        fig2.data[0]['y'] = y1
+        
+        fig2.data[1]['y'] = y2
+
+        return fig2
+
