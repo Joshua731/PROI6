@@ -115,8 +115,10 @@ interface = Dash(__name__, server=app, external_stylesheets=[dbc.themes.SOLAR], 
 interface.layout = dbc.Container(
     [
         # Navbar
-        navbar,
-        dcc.Location(id='url', refresh=False),
+        dbc.Row([
+            navbar,
+            dcc.Location(id='url', refresh=False),
+        ]),
         # Conteúdo da página
         dbc.Row([
             dbc.Col([
