@@ -33,6 +33,7 @@ navbar = html.Div([
             ),
 
         ],
+        id='logo-usina'
     ),
 ],
 )
