@@ -1,6 +1,6 @@
 from app import app
 from app.templates import desempenho_geral, historico_producao, index, interface, lista, login, producao_energia, \
-    status_tempo_real, alertas_notificacoes
+    status_tempo_real, alertas_notificacoes, db_form
 
 
 @app.route('/')
@@ -47,3 +47,8 @@ def hist_prod():
 @app.route("/alertas_notificacoes")
 def alts_ntf():
     return alertas_notificacoes.alertas_notificacoes.index()
+
+
+@app.route("/db_form")
+def formulario_db():
+    return db_form.db_form.index()
