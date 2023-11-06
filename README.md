@@ -39,7 +39,7 @@
 <h2> Diagramas: </h2>
 
 <h3> Casos de Uso:</h3></br>
-<img src="UML/Casos_de_Uso.drawio.png" alt="Diagrama de Casos de Uso">
+<img src="app/documents/UML/Casos_de_Uso.drawio" alt="Diagrama de Casos de Uso">
 
 <h3> Diagrama de Classes:</h3></br>
-<img src="UML/Diag_Class.jpg" alt="Diagrama de Classes">
+<img src="app/documents/UML/Diag_Class.jpg" alt="Diagrama de Classes">
