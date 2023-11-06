@@ -19,6 +19,7 @@ navbar = html.Div([
                 children=[
                     dbc.DropdownMenuItem("Home", href="http://127.0.0.1:5000/"),
                     dbc.DropdownMenuItem("Mapa", href="http://127.0.0.1:5000/interface"),
+                    dbc.DropdownMenuItem("Formulario", href="http://127.0.0.1:5000/db_form"),
                     dbc.DropdownMenuItem("Lista", href="http://127.0.0.1:5000/lista"),
                     dbc.DropdownMenuItem("Desempenho Geral", href="http://127.0.0.1:5000/desempenho_geral"),
                     dbc.DropdownMenuItem("Histórico de Produção", href="http://127.0.0.1:5000/historico_producao"),
