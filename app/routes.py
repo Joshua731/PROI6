@@ -49,6 +49,6 @@ def alts_ntf():
     return alertas_notificacoes.alertas_notificacoes.index()
 
 
-@app.route("/db_form")
+@app.route("/formulario_db")
 def formulario_db():
     return db_form.db_form.index()

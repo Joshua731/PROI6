@@ -1,9 +1,11 @@
+import dash
+
 from app import app
 from dash import Dash, dcc, html, Input, Output
 from app.templates.partials.index import sidebar, navbar
 import dash_bootstrap_components as dbc
 
-db_form = Dash(__name__, external_stylesheets=[dbc.themes.SOLAR], server=app, url_base_pathname='/db_form/')
+db_form = Dash(__name__, external_stylesheets=[dbc.themes.SOLAR], server=app, url_base_pathname='/formulario_db/')
 db_form.layout = dbc.Container([
     # Navbar
     dbc.Row([
@@ -53,3 +55,12 @@ db_form.layout = dbc.Container([
         ], sm=12),
     ])
 ], fluid=True)
+
+
+@db_form.callback(
+    Output('drop-nav', 'label'),
+    Input('url', 'pathname'),
+)
+def mostra_pagina(path):
+    print(path)
+    return path

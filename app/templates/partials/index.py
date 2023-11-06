@@ -1,4 +1,6 @@
 import json
+import socket
+
 from app import app
 from dash import Dash, html, dcc, Input, Output
 import dash_bootstrap_components as dbc
@@ -7,26 +9,37 @@ import pandas as pd
 import plotly.express as px
 import numpy as np
 
+def get_local_ip():
+    try:
+        host_name = socket.gethostname()
+        local_ip = socket.gethostbyname(host_name)
+        return local_ip
+    except socket.error as e:
+        return f"Ocorreu um erro ao tentar obter o IP interno: {e}"
+
+
+caminho_http = f'http://{get_local_ip()}:5000'
+
 navbar = html.Div([
     dbc.NavbarSimple(
         brand="Bem-vindo a S.D.H.",
-        brand_href="http://127.0.0.1:5000/",
+        brand_href=f"{caminho_http}:5000/",
         color="dark",
         dark=True,
         children=[
             dbc.DropdownMenu(
                 label="Mais",
                 children=[
-                    dbc.DropdownMenuItem("Home", href="http://127.0.0.1:5000/"),
-                    dbc.DropdownMenuItem("Login", href="http://127.0.0.1:5000/login"),
-                    dbc.DropdownMenuItem("Formulario", href="http://127.0.0.1:5000/db_form"),
-                    dbc.DropdownMenuItem("Mapa", href="http://127.0.0.1:5000/interface"),
-                    dbc.DropdownMenuItem("Lista", href="http://127.0.0.1:5000/lista"),
-                    dbc.DropdownMenuItem("Desempenho Geral", href="http://127.0.0.1:5000/desempenho_geral"),
-                    dbc.DropdownMenuItem("Histórico de Produção", href="http://127.0.0.1:5000/historico_producao"),
-                    dbc.DropdownMenuItem("Produção de Energia", href="http://127.0.0.1:5000/producao_energia"),
-                    dbc.DropdownMenuItem("Status em Tempo Real", href="http://127.0.0.1:5000/status_tempo_real"),
-                    dbc.DropdownMenuItem("Alarmes e Notificações", href="http://127.0.0.1:5000/alertas_notificacoes"),
+                    dbc.DropdownMenuItem("Home", href=f"{caminho_http}/"),
+                    dbc.DropdownMenuItem("Login", href=f"{caminho_http}/login"),
+                    dbc.DropdownMenuItem("Formulario", href=f"{caminho_http}/formulario_db"),
+                    dbc.DropdownMenuItem("Mapa", href=f"{caminho_http}/interface"),
+                    dbc.DropdownMenuItem("Lista", href=f"{caminho_http}/lista"),
+                    dbc.DropdownMenuItem("Desempenho Geral", href=f"{caminho_http}/desempenho_geral"),
+                    dbc.DropdownMenuItem("Histórico de Produção", href=f"{caminho_http}/historico_producao"),
+                    dbc.DropdownMenuItem("Produção de Energia", href=f"{caminho_http}/producao_energia"),
+                    dbc.DropdownMenuItem("Status em Tempo Real", href=f"{caminho_http}/status_tempo_real"),
+                    dbc.DropdownMenuItem("Alarmes e Notificações", href=f"{caminho_http}/alertas_notificacoes"),
                 ],
                 direction='start',
                 color='dark',
