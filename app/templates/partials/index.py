@@ -9,6 +9,7 @@ import pandas as pd
 import plotly.express as px
 import numpy as np
 
+
 def get_local_ip():
     try:
         host_name = socket.gethostname()

@@ -2,7 +2,7 @@ import dash
 
 from app import app
 from dash import Dash, dcc, html, Input, Output
-from app.templates.partials.index import sidebar, navbar
+from app.templates.partials.index import sidebar, navbar, caminho_http
 import dash_bootstrap_components as dbc
 
 db_form = Dash(__name__, external_stylesheets=[dbc.themes.SOLAR], server=app, url_base_pathname='/formulario_db/')
@@ -49,8 +49,8 @@ db_form.layout = dbc.Container([
                             ])
                         ], sm=3)
                     ]),
-                    dbc.Button('Registrar')
-                ])
+                ]),
+                dbc.CardFooter(html.A('Registrar', href=f'{caminho_http}/'))
             ], class_name='card-db-form')
         ], sm=12),
     ])
