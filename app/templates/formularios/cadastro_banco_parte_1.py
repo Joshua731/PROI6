@@ -5,8 +5,8 @@ from dash import Dash, dcc, html, Input, Output
 from app.templates.partials.index import sidebar, navbar, caminho_http
 import dash_bootstrap_components as dbc
 
-db_form = Dash(__name__, external_stylesheets=[dbc.themes.SOLAR], server=app, url_base_pathname='/formulario_db/')
-db_form.layout = dbc.Container([
+cad_banco_1 = Dash(__name__, external_stylesheets=[dbc.themes.SOLAR], server=app, url_base_pathname='/formulario_db/')
+cad_banco_1.layout = dbc.Container([
     # Navbar
     dbc.Row([
         navbar,
@@ -50,17 +50,33 @@ db_form.layout = dbc.Container([
                         ], sm=3)
                     ]),
                 ]),
-                dbc.CardFooter(html.A('Registrar', href=f'{caminho_http}/'))
+                dbc.CardFooter(html.A('Registrar', id='red-pt-2'))
             ], class_name='card-db-form')
         ], sm=12),
     ])
 ], fluid=True)
 
 
-@db_form.callback(
+@cad_banco_1.callback(
     Output('drop-nav', 'label'),
     Input('url', 'pathname'),
 )
 def mostra_pagina(path):
     print(path)
     return path
+
+
+@cad_banco_1.callback(
+    Output('url', 'pathname'),
+    Input('input-db', 'value'),
+    Input('input-usuario', 'value'),
+    Input('input-senha', 'value'),
+    Input('input-IP', 'value'),
+    Input('input-porta', 'value'),
+    Input('red-pt-2', 'n_clicks'),
+)
+def redireciona(db, usuario, senha, IP, porta, n_cliques):
+    if db and usuario and senha and IP and porta and dash.ctx.triggered_id == 'red-pt-2':
+        return f'/formulario_db/2'
+    else:
+        return '/'
