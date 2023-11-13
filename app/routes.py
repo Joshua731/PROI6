@@ -2,7 +2,7 @@ from app import app
 from app.templates import desempenho_geral, historico_producao, index, interface, lista, producao_energia, \
     status_tempo_real, alertas_notificacoes
 from app.templates.usuario import login
-
+from app.templates.formularios import cadastro_banco_parte_1, cadastro_banco_parte_2
 
 @app.route('/')
 @app.route('/index')
@@ -52,4 +52,4 @@ def alts_ntf():
 
 @app.route("/formulario_db")
 def formulario_db():
-    return db_form.cad_banco_1.index()
+    return cadastro_banco_parte_1.cad_banco_1.index()

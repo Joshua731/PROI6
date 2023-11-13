@@ -14,7 +14,7 @@ custom_css = {
 login_page = Dash(__name__, server=app, external_stylesheets=[dbc.themes.SOLAR], url_base_pathname="/login/")
 login_page.layout = dbc.Container(
     [
-        # Navbar
+        # Navbar 
         navbar,
         dcc.Location(id='url', refresh=False),
         dbc.Row([
