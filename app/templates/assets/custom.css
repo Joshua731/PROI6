@@ -9,11 +9,13 @@
 .html {
     background-color:  #55595c;
     height: 100%;
+    width: 100%;
 }
 
 .body {
     background-color: #A9A9A9;
     height: 100%;
+    width: 100%;
 }
 
 .prod-u, .leg-irr {
@@ -34,11 +36,12 @@
 }
 
 .graph {
-    width: 95%;
+    width: 100%;
 }
 
 .crd-i, .idgt {
-    width: 95%;
+    width: 100%;
+    height: 100%;
     margin: 0;
     margin-left: 0 rem;
 }

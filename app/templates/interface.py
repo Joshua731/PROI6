@@ -13,14 +13,6 @@ from sqlalchemy import create_engine
 import numpy as np
 import datetime
 
-db_connection = mysql.connector.connect(
-    host="192.168.56.1",
-    user="aluno",
-    password="aluno123",
-    database="database_development"
-)
-db_cursor = db_connection.cursor()
-
 
 # Simulação de dados diários de produção de energia
 def daily_energy_simulation(day_hour):
@@ -132,7 +124,7 @@ interface.layout = dbc.Container(
         dbc.Row([
             dbc.Col([
                 dcc.Graph(figure=fig, className='map', id='mapa',
-                          style={"height": f"{([m.width for m in get_monitors()][0] * 0.49)}px"})
+                          style={"height": f"{([m.height for m in get_monitors()][0] * 0.50)}px"})
             ], sm=6),
             dbc.Col([
                 dbc.Row([
@@ -189,7 +181,7 @@ interface.layout = dbc.Container(
                             ]),
                             dbc.Row([
                                 dcc.Graph(figure=fig2, className='graph', id='graphic',
-                                          style={"height": f"{([m.width for m in get_monitors()][0] * 0.2)}px"}
+                                          style={"height": f"{([m.height for m in get_monitors()][0] * 0.50)}px"}
                                           )
                             ]),
                         ], color='dark', className='crd-g'),
@@ -197,7 +189,7 @@ interface.layout = dbc.Container(
                     dbc.Col([
                         dbc.Card([
                             dcc.Graph(figure=fig3, className='idgt',
-                                      style={"height": f"{([m.width for m in get_monitors()][0] * 0.25)}px"})
+                                      style={"height": "100%"})
                         ], color='dark', class_name='crd-i'),
                     ], sm=2)
                 ])
@@ -258,14 +250,6 @@ def gera_novos_graficos_de_linha(click):
         return grafico_irradiancia_potencia_atualizado
 
 # Função para salvar os dados no MySQL
-def save_to_mysql(selected_city, x_novo, y1_novo, y2_novo):
-    query = "INSERT INTO nome_da_tabela (cidade, hora, irradiancia, potencia) VALUES (%s, %s, %s, %s)"
-        
-    for hora, irradiancia, potencia in zip(x_novo, y1_novo, y2_novo):
-        values = (selected_city, hora, irradiancia, potencia)
-        db_cursor.execute(query, values)
-    
-    db_connection.commit()
 
 @interface.callback(
     Output('logo-usina', 'brand'),
