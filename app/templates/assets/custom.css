@@ -88,3 +88,19 @@
 .card-db-form {
     margin: 5% 5% 5% 5%;
 }
+
+.cm-img{
+    height: 100%;
+    width: 50%;
+    margin: 0 25% 0 25%;
+}
+
+.cm-val{
+    text-align: center;
+}
+
+.qg-img{
+    height: 100%;
+    width: 33.333%;
+    margin: 0 33.333% 0 33.333%;
+}

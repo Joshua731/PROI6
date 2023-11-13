@@ -111,7 +111,33 @@ fig2.update_layout(title=None, xaxis_title='Intervalo de Tempo (Horas)',
                    margin=dict(l=0, r=0, t=0, b=0),
                    font=dict(color='#cccccc')
                    )
+inversores = [
+    {"id": 1, "status": "Funcionando"},
+    {"id": 2, "status": "Falha"},
+    {"id": 3, "status": "Desclassificação"}
+]
 
+table_rows = [
+    html.Tr([
+        html.Td(f"Inversor {inversor['id']}"),
+        html.Td(inversor['status']),
+        # Adicione mais colunas conforme necessário
+    ])
+    for inversor in inversores
+]
+
+table = dbc.Table(
+    # Cabecalho da tabela
+    children=[
+        html.Thead(html.Tr([html.Th("Inversor"), html.Th("Status")])),
+        # Corpo da tabela
+        html.Tbody(table_rows),
+    ],
+    bordered=True,
+    hover=True,
+    responsive=True,
+    striped=True,
+)
 interface = Dash(__name__, server=app, external_stylesheets=[dbc.themes.SOLAR], url_base_pathname="/interface/")
 interface.layout = dbc.Container(
     [
@@ -192,6 +218,58 @@ interface.layout = dbc.Container(
                                       style={"height": "100%"})
                         ], color='dark', class_name='crd-i'),
                     ], sm=2)
+                ]),
+                dbc.Row([
+                    dbc.Tabs(active_tab='cm', children=[
+                        dbc.Tab(tab_id='cm', label='Central Meteorológica', children=[
+                            dbc.CardGroup([
+                                dbc.Card([
+                                    dbc.CardImg(src=interface.get_asset_url('ISH.png'), top=True, className='cm-img'),
+                                    dbc.CardFooter('1000.100 W/m²', class_name='cm-val')
+                                ]),
+                                dbc.Card([
+                                    dbc.CardImg(src=interface.get_asset_url('ISI.png'), top=True, className='cm-img'),
+                                    dbc.CardFooter('1000.100 W/m²', class_name='cm-val')
+                                ]),
+                                dbc.Card([
+                                    dbc.CardImg(src=interface.get_asset_url('TA.png'), top=True, className='cm-img'),
+                                    dbc.CardFooter('99.99 ºC', class_name='cm-val')
+                                ]),
+                                dbc.Card([
+                                    dbc.CardImg(src=interface.get_asset_url('TP.png'), top=True, className='cm-img'),
+                                    dbc.CardFooter('99.99 ºC', class_name='cm-val')
+                                ]),
+                                dbc.Card([
+                                    dbc.CardImg(src=interface.get_asset_url('FREQ.png'), top=True, className='cm-img'),
+                                    dbc.CardFooter('60 Hz', class_name='cm-val')
+                                ]),
+                                dbc.Card([
+                                    dbc.CardImg(src=interface.get_asset_url('URA.png'), top=True, className='cm-img'),
+                                    dbc.CardFooter('100.99 %', class_name='cm-val')
+                                ]),
+                            ])
+                        ]),
+                        dbc.Tab(tab_id='qgbt',label='QGBT', children=[
+                            dbc.CardGroup([
+                                dbc.Card([
+                                    dbc.CardImg(src=interface.get_asset_url('A-B.png'), top=True, className='qg-img'),
+                                    dbc.CardFooter('1000.100 W/m²', class_name='cm-val')
+                                ]),
+                                dbc.Card([
+                                    dbc.CardImg(src=interface.get_asset_url('B-C.png'), top=True, className='qg-img'),
+                                    dbc.CardFooter('1000.100 kV', class_name='cm-val')
+                                ]),
+                                dbc.Card([
+                                    dbc.CardImg(src=interface.get_asset_url('C-A.png'), top=True, className='qg-img'),
+                                    dbc.CardFooter('1000.100 kV', class_name='cm-val')
+                                ]),
+                            ])
+                        ])
+                    ]
+                             ),
+                ]),
+                dbc.Row([
+                    table
                 ])
             ], sm=6)
         ], className="mt-4"),
@@ -279,5 +357,5 @@ def mostra_producoes_de_energia(cidade_selecionada):
         ano_atual = data_atual.year
 
         return retorna_unidade(daily_energy_simulation(hora_atual)), \
-            retorna_unidade(monthly_energy_simulation(None)),\
+            retorna_unidade(monthly_energy_simulation(None)), \
             retorna_unidade(yearly_energy_simulation(None))
