@@ -8,9 +8,18 @@ import plotly.express as px
 import numpy as np
 from app.templates.partials.index import sidebar, navbar
 from screeninfo import get_monitors
+from sqlalchemy import create_engine
 
 import numpy as np
 import datetime
+
+db_connection = mysql.connector.connect(
+    host="192.168.56.1",
+    user="aluno",
+    password="aluno123",
+    database="database_development"
+)
+db_cursor = db_connection.cursor()
 
 
 # Simulação de dados diários de produção de energia
@@ -326,6 +335,15 @@ def gera_novos_graficos_de_linha(click):
                                                               )
         return grafico_irradiancia_potencia_atualizado
 
+# Função para salvar os dados no MySQL
+def save_to_mysql(selected_city, x_novo, y1_novo, y2_novo):
+    query = "INSERT INTO nome_da_tabela (cidade, hora, irradiancia, potencia) VALUES (%s, %s, %s, %s)"
+        
+    for hora, irradiancia, potencia in zip(x_novo, y1_novo, y2_novo):
+        values = (selected_city, hora, irradiancia, potencia)
+        db_cursor.execute(query, values)
+    
+    db_connection.commit()
 
 @interface.callback(
     Output('logo-usina', 'brand'),
