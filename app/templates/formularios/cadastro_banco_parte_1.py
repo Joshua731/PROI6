@@ -21,31 +21,31 @@ cad_banco_1.layout = dbc.Container([
                     dbc.Row([
                         dbc.Col([
                             dbc.Row([
-                                dbc.Input(id='input-db', placeholder='Nome da base de dados')
+                                dbc.Input(id='input-db', placeholder='Nome da base de dados', type='text')
                             ])
                         ], sm=12)
                     ]),
                     dbc.Row([
                         dbc.Col([
                             dbc.Row([
-                                dbc.Input(id='input-usuario', placeholder='Usuário')
+                                dbc.Input(id='input-usuario', placeholder='Usuário', type='text')
                             ])
                         ], sm=6),
                         dbc.Col([
                             dbc.Row([
-                                dbc.Input(id='input-senha', placeholder='Senha')
+                                dbc.Input(id='input-senha', placeholder='Senha', type='password')
                             ])
                         ], sm=6)
                     ]),
                     dbc.Row([
                         dbc.Col([
                             dbc.Row([
-                                dbc.Input(id='input-IP', placeholder='Endereço IP')
+                                dbc.Input(id='input-IP', placeholder='Endereço IP', type='text')
                             ])
                         ], sm=9),
                         dbc.Col([
                             dbc.Row([
-                                dbc.Input(id='input-porta', placeholder='Porta')
+                                dbc.Input(id='input-porta', placeholder='Porta', type='number')
                             ])
                         ], sm=3)
                     ]),

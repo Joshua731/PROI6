@@ -149,8 +149,13 @@ interface.layout = dbc.Container(
         # Conteúdo da página
         dbc.Row([
             dbc.Col([
-                dcc.Graph(figure=fig, className='map', id='mapa',
-                          style={"height": f"{([m.height for m in get_monitors()][0] * 0.50)}px"})
+                dbc.Row([
+                    dcc.Graph(figure=fig, className='map', id='mapa',
+                              style={"height": f"{([m.height for m in get_monitors()][0] * 0.50)}px"})
+                ]),
+                dbc.Row([
+                    table
+                ])
             ], sm=6),
             dbc.Col([
                 dbc.Row([
@@ -268,9 +273,6 @@ interface.layout = dbc.Container(
                     ]
                              ),
                 ]),
-                dbc.Row([
-                    table
-                ])
             ], sm=6)
         ], className="mt-4"),
     ],
