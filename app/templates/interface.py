@@ -229,43 +229,43 @@ interface.layout = dbc.Container(
                         dbc.Tab(tab_id='cm', label='Central Meteorológica', children=[
                             dbc.CardGroup([
                                 dbc.Card([
-                                    dbc.CardImg(src=interface.get_asset_url('ISH.png'), top=True, className='cm-img'),
-                                    dbc.CardFooter('1000.100 W/m²', class_name='cm-val')
+                                    dbc.CardImg(src=interface.get_asset_url('irradiação solar horizontal.png'), top=True, className='cm-img'),
+                                    dbc.CardFooter('1000.1', class_name='cm-val')
                                 ]),
                                 dbc.Card([
-                                    dbc.CardImg(src=interface.get_asset_url('ISI.png'), top=True, className='cm-img'),
-                                    dbc.CardFooter('1000.100 W/m²', class_name='cm-val')
+                                    dbc.CardImg(src=interface.get_asset_url('irradiação solar inclinada.png'), top=True, className='cm-img'),
+                                    dbc.CardFooter('1000.1', class_name='cm-val')
                                 ]),
                                 dbc.Card([
-                                    dbc.CardImg(src=interface.get_asset_url('TA.png'), top=True, className='cm-img'),
-                                    dbc.CardFooter('99.99 ºC', class_name='cm-val')
+                                    dbc.CardImg(src=interface.get_asset_url('temperatura ambiente.png'), top=True, className='cm-img'),
+                                    dbc.CardFooter('99.99', class_name='cm-val')
                                 ]),
                                 dbc.Card([
-                                    dbc.CardImg(src=interface.get_asset_url('TP.png'), top=True, className='cm-img'),
-                                    dbc.CardFooter('99.99 ºC', class_name='cm-val')
+                                    dbc.CardImg(src=interface.get_asset_url('temperatura das placas.png'), top=True, className='cm-img'),
+                                    dbc.CardFooter('99.99', class_name='cm-val')
                                 ]),
                                 dbc.Card([
-                                    dbc.CardImg(src=interface.get_asset_url('FREQ.png'), top=True, className='cm-img'),
-                                    dbc.CardFooter('60 Hz', class_name='cm-val')
+                                    dbc.CardImg(src=interface.get_asset_url('frequência.png'), top=True, className='cm-img'),
+                                    dbc.CardFooter('60', class_name='cm-val')
                                 ]),
                                 dbc.Card([
-                                    dbc.CardImg(src=interface.get_asset_url('URA.png'), top=True, className='cm-img'),
-                                    dbc.CardFooter('100.99 %', class_name='cm-val')
+                                    dbc.CardImg(src=interface.get_asset_url('umidade relativa do ar.png'), top=True, className='cm-img'),
+                                    dbc.CardFooter('100.99', class_name='cm-val')
                                 ]),
                             ])
                         ]),
                         dbc.Tab(tab_id='qgbt',label='QGBT', children=[
                             dbc.CardGroup([
                                 dbc.Card([
-                                    dbc.CardImg(src=interface.get_asset_url('A-B.png'), top=True, className='qg-img'),
+                                    dbc.CardImg(src=interface.get_asset_url('tensão fase a-b.png'), top=True, className='qg-img'),
                                     dbc.CardFooter('1000.100 W/m²', class_name='cm-val')
                                 ]),
                                 dbc.Card([
-                                    dbc.CardImg(src=interface.get_asset_url('B-C.png'), top=True, className='qg-img'),
+                                    dbc.CardImg(src=interface.get_asset_url('tensão fase b-c.png'), top=True, className='qg-img'),
                                     dbc.CardFooter('1000.100 kV', class_name='cm-val')
                                 ]),
                                 dbc.Card([
-                                    dbc.CardImg(src=interface.get_asset_url('C-A.png'), top=True, className='qg-img'),
+                                    dbc.CardImg(src=interface.get_asset_url('tensão fase c-a.png'), top=True, className='qg-img'),
                                     dbc.CardFooter('1000.100 kV', class_name='cm-val')
                                 ]),
                             ])
