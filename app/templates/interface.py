@@ -86,7 +86,7 @@ y = [100]
 fig3 = go.Figure(data=[go.Bar(x=x, y=y, text=y, textposition='inside', marker_color='#cccccc')])
 fig3.update_layout(plot_bgcolor='rgba(0, 0, 0, 0)',  # Fundo transparente
                    paper_bgcolor='rgba(0, 0, 0, 0)',
-                   margin=dict(l=0, r=0, t=0, b=0),
+                   margin=dict(l=25, r=0, t=0, b=0),
                    font=dict(color='#cccccc'),
                    yaxis_showgrid=False,
                    yaxis_showticklabels=False)
@@ -114,30 +114,42 @@ fig2.update_layout(title=None, xaxis_title='Intervalo de Tempo (Horas)',
 inversores = [
     {"id": 1, "status": "Funcionando"},
     {"id": 2, "status": "Falha"},
-    {"id": 3, "status": "Desclassificação"}
+    {"id": 3, "status": "Desclassificação"},
+    {"id": 4, "status": "Em espera"},
+    # Adicione mais inversores conforme necessário
 ]
 
-table_rows = [
-    html.Tr([
-        html.Td(f"Inversor {inversor['id']}"),
-        html.Td(inversor['status']),
-        # Adicione mais colunas conforme necessário
-    ])
-    for inversor in inversores
-]
+num_inversores_por_aba = 2  # Número de inversores por aba
+num_abas = -(-len(inversores) // num_inversores_por_aba)  # Calcula o número de abas necessárias
 
-table = dbc.Table(
-    # Cabecalho da tabela
-    children=[
-        html.Thead(html.Tr([html.Th("Inversor"), html.Th("Status")])),
-        # Corpo da tabela
-        html.Tbody(table_rows),
-    ],
-    bordered=True,
-    hover=True,
-    responsive=True,
-    striped=True,
-)
+abas_tabela = dbc.Tabs(id='inversores', active_tab='grupo-1', children=[])
+
+for i in range(num_abas):
+    start_index = i * num_inversores_por_aba
+    end_index = min((i + 1) * num_inversores_por_aba, len(inversores))
+    inversores_grupo = inversores[start_index:end_index]
+
+    table_rows = [
+        html.Tr([
+            html.Td(f"Inversor {inversor['id']}"),
+            html.Td(inversor['status'])
+        ]) for inversor in inversores_grupo
+    ]
+
+    table = dbc.Table(
+        children=[
+            html.Thead(html.Tr([html.Th("Inversor"), html.Th("Status")])),
+            html.Tbody(table_rows),
+        ],
+        bordered=True,
+        hover=True,
+        responsive=True,
+        striped=True,
+    )
+
+    aba = dbc.Tab(label=f'Grupo {i + 1}', tab_id=f'grupo-{i + 1}', children=[table])
+    abas_tabela.children.append(aba)
+
 interface = Dash(__name__, server=app, external_stylesheets=[dbc.themes.SOLAR], url_base_pathname="/interface/")
 interface.layout = dbc.Container(
     [
@@ -150,11 +162,17 @@ interface.layout = dbc.Container(
         dbc.Row([
             dbc.Col([
                 dbc.Row([
-                    dcc.Graph(figure=fig, className='map', id='mapa',
-                              style={"height": f"{([m.height for m in get_monitors()][0] * 0.50)}px"})
+                    dbc.Card([
+                        dbc.CardHeader('Usinas existentes'),
+                        dcc.Graph(figure=fig, className='map', id='mapa',
+                                  style={"height": f"{([m.height for m in get_monitors()][0] * 0.50)}px"})
+                    ], color='dark')
                 ]),
                 dbc.Row([
-                    table
+                    dbc.Card([
+                        dbc.CardHeader('Estado dos Inversores'),
+                        abas_tabela
+                    ], color='dark')
                 ])
             ], sm=6),
             dbc.Col([
@@ -162,9 +180,7 @@ interface.layout = dbc.Container(
                     dbc.Card([
                         dbc.Row([
                             html.Fieldset([
-                                dbc.Row([
-                                    html.Legend("PRODUÇÃO USINA", className='prod-u'),
-                                ]),
+                                dbc.CardHeader('PRODUÇÃO DA USINA'),
                                 dbc.Row([
                                     dbc.CardGroup([
                                         dbc.Card([
@@ -176,7 +192,7 @@ interface.layout = dbc.Container(
                                                     html.Span(id='producao-diaria')
                                                 ])
                                             ])
-                                        ]),
+                                        ], color='dark'),
                                         dbc.Card([
                                             dbc.CardBody([
                                                 dbc.Row([
@@ -186,7 +202,7 @@ interface.layout = dbc.Container(
                                                     html.Span(id='producao-mensal')
                                                 ])
                                             ])
-                                        ]),
+                                        ], color='dark'),
                                         dbc.Card([
                                             dbc.CardBody([
                                                 dbc.Row([
@@ -196,7 +212,7 @@ interface.layout = dbc.Container(
                                                     html.Span(id='producao-anual')
                                                 ])
                                             ])
-                                        ])
+                                        ], color='dark')
                                     ])
                                 ])
                             ]),
@@ -207,71 +223,81 @@ interface.layout = dbc.Container(
                 dbc.Row([
                     dbc.Col([
                         dbc.Card([
-                            dbc.Row([
-                                html.Legend("Irradiação Diária", className='leg-irr')
-                            ]),
+                            dbc.CardHeader('Irradiação Diária'),
                             dbc.Row([
                                 dcc.Graph(figure=fig2, className='graph', id='graphic',
-                                          style={"height": f"{([m.height for m in get_monitors()][0] * 0.50)}px"}
+                                          style={"height": f"{([m.height for m in get_monitors()][0] * 0.43)}px"}
                                           )
                             ]),
                         ], color='dark', className='crd-g'),
                     ], sm=10),
                     dbc.Col([
                         dbc.Card([
+                            dbc.CardHeader('I.D.G.T.'),
                             dcc.Graph(figure=fig3, className='idgt',
-                                      style={"height": "100%"})
+                                      # style={"height": "100%"}
+                                      )
                         ], color='dark', class_name='crd-i'),
                     ], sm=2)
                 ]),
                 dbc.Row([
-                    dbc.Tabs(active_tab='cm', children=[
-                        dbc.Tab(tab_id='cm', label='Central Meteorológica', children=[
-                            dbc.CardGroup([
-                                dbc.Card([
-                                    dbc.CardImg(src=interface.get_asset_url('irradiação solar horizontal.png'), top=True, className='cm-img'),
-                                    dbc.CardFooter('1000.1', class_name='cm-val')
-                                ]),
-                                dbc.Card([
-                                    dbc.CardImg(src=interface.get_asset_url('irradiação solar inclinada.png'), top=True, className='cm-img'),
-                                    dbc.CardFooter('1000.1', class_name='cm-val')
-                                ]),
-                                dbc.Card([
-                                    dbc.CardImg(src=interface.get_asset_url('temperatura ambiente.png'), top=True, className='cm-img'),
-                                    dbc.CardFooter('99.99', class_name='cm-val')
-                                ]),
-                                dbc.Card([
-                                    dbc.CardImg(src=interface.get_asset_url('temperatura das placas.png'), top=True, className='cm-img'),
-                                    dbc.CardFooter('99.99', class_name='cm-val')
-                                ]),
-                                dbc.Card([
-                                    dbc.CardImg(src=interface.get_asset_url('frequência.png'), top=True, className='cm-img'),
-                                    dbc.CardFooter('60', class_name='cm-val')
-                                ]),
-                                dbc.Card([
-                                    dbc.CardImg(src=interface.get_asset_url('umidade relativa do ar.png'), top=True, className='cm-img'),
-                                    dbc.CardFooter('100.99', class_name='cm-val')
-                                ]),
+                    dbc.Card([
+                        dbc.Tabs(active_tab='cm', children=[
+                            dbc.Tab(tab_id='cm', label='Central Meteorológica', children=[
+                                dbc.CardGroup([
+                                    dbc.Card([
+                                        dbc.CardImg(src=interface.get_asset_url('irradiação solar horizontal.png'),
+                                                    top=True, className='cm-img'),
+                                        dbc.CardFooter('1000.100', class_name='cm-val')
+                                    ], color='dark'),
+                                    dbc.Card([
+                                        dbc.CardImg(src=interface.get_asset_url('irradiação solar inclinada.png'),
+                                                    top=True, className='cm-img'),
+                                        dbc.CardFooter('1000.100', class_name='cm-val')
+                                    ], color='dark'),
+                                    dbc.Card([
+                                        dbc.CardImg(src=interface.get_asset_url('temperatura ambiente.png'), top=True,
+                                                    className='cm-img'),
+                                        dbc.CardFooter('99.99', class_name='cm-val')
+                                    ], color='dark'),
+                                    dbc.Card([
+                                        dbc.CardImg(src=interface.get_asset_url('temperatura das placas.png'), top=True,
+                                                    className='cm-img'),
+                                        dbc.CardFooter('99.99', class_name='cm-val')
+                                    ], color='dark'),
+                                    dbc.Card([
+                                        dbc.CardImg(src=interface.get_asset_url('frequência.png'), top=True,
+                                                    className='cm-img'),
+                                        dbc.CardFooter('60', class_name='cm-val')
+                                    ], color='dark'),
+                                    dbc.Card([
+                                        dbc.CardImg(src=interface.get_asset_url('umidade relativa do ar.png'), top=True,
+                                                    className='cm-img'),
+                                        dbc.CardFooter('100.99', class_name='cm-val')
+                                    ], color='dark'),
+                                ])
+                            ]),
+                            dbc.Tab(tab_id='qgbt', label='QGBT', children=[
+                                dbc.CardGroup([
+                                    dbc.Card([
+                                        dbc.CardImg(src=interface.get_asset_url('tensão fase a-b.png'), top=True,
+                                                    className='qg-img'),
+                                        dbc.CardFooter('1000.100 kV', class_name='cm-val')
+                                    ], color='dark'),
+                                    dbc.Card([
+                                        dbc.CardImg(src=interface.get_asset_url('tensão fase b-c.png'), top=True,
+                                                    className='qg-img'),
+                                        dbc.CardFooter('1000.100 kV', class_name='cm-val')
+                                    ], color='dark'),
+                                    dbc.Card([
+                                        dbc.CardImg(src=interface.get_asset_url('tensão fase c-a.png'), top=True,
+                                                    className='qg-img'),
+                                        dbc.CardFooter('1000.100 kV', class_name='cm-val')
+                                    ], color='dark'),
+                                ])
                             ])
                         ]),
-                        dbc.Tab(tab_id='qgbt',label='QGBT', children=[
-                            dbc.CardGroup([
-                                dbc.Card([
-                                    dbc.CardImg(src=interface.get_asset_url('tensão fase a-b.png'), top=True, className='qg-img'),
-                                    dbc.CardFooter('1000.100 W/m²', class_name='cm-val')
-                                ]),
-                                dbc.Card([
-                                    dbc.CardImg(src=interface.get_asset_url('tensão fase b-c.png'), top=True, className='qg-img'),
-                                    dbc.CardFooter('1000.100 kV', class_name='cm-val')
-                                ]),
-                                dbc.Card([
-                                    dbc.CardImg(src=interface.get_asset_url('tensão fase c-a.png'), top=True, className='qg-img'),
-                                    dbc.CardFooter('1000.100 kV', class_name='cm-val')
-                                ]),
-                            ])
-                        ])
-                    ]
-                             ),
+                    ], color='dark')
                 ]),
             ], sm=6)
         ], className="mt-4"),

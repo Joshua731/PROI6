@@ -39,13 +39,17 @@
     width: 100%;
 }
 
-.crd-i, .idgt {
+.crd-i{
     width: 100%;
     height: 100%;
     margin: 0;
     margin-left: 0 rem;
 }
 
+.idgt{
+    width: 66.666666%;
+    height: 100%;
+}
 .container-fluid{
     padding : 0, 0, 0, 0;
     padding-right: 0;
@@ -91,8 +95,8 @@
 
 .cm-img{
     height: 100%;
-    width: 50%;
-    margin: 0 25% 0 25%;
+    width: 60%;
+    margin: 0 20% 0 20%;
 }
 
 .cm-val{
@@ -101,6 +105,6 @@
 
 .qg-img{
     height: 100%;
-    width: 33.333%;
+    width: 29.7%;
     margin: 0 33.333% 0 33.333%;
 }

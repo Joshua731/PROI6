@@ -5,7 +5,7 @@ from app.templates.partials.index import sidebar, navbar
 
 title = None
 index = Dash(__name__, server=app, external_stylesheets=[dbc.themes.SOLAR], url_base_pathname='/index/')
-index.title = f'{title} - SunDataHub' if title else 'Welcome to SunDataHub'
+index.title = f'{title} - Dashua' if title else 'Welcome to Dashua'
 user = {'username': 'Joshua'}
 index.layout = dbc.Container(
     [
@@ -16,8 +16,8 @@ index.layout = dbc.Container(
             dbc.Col([
                 dbc.Card([
                     dbc.CardBody([
-                        html.H4("SunDataHub", className="card-title"),
-                        html.H5("Bem vindo(a) ao Sun Data Hub."),
+                        html.H4("Dashua", className="card-title"),
+                        html.H5("Bem vindo(a) ao Dashua."),
                         html.P("Análise em tempo real de dados remententes a energia solar."),
                     ])
                 ], color='dark', className='crd mx-auto bg-grey'),
