@@ -49,17 +49,17 @@ day = current_date.day
 month = current_date.month
 year = current_date.year
 
-print(f"Produção de energia diária atual: {daily_energy[datetime.datetime.now().hour]:.2f} kWs")
-print(f"Produção de energia mensal atual: {monthly_energy[day - 1]:.2f} kWs")
-print(f"Produção de energia anual atual: {yearly_energy[month - 1]:.2f} kWs")
+# print(f"Produção de energia diária atual: {daily_energy[datetime.datetime.now().hour]:.2f} kWs")
+# print(f"Produção de energia mensal atual: {monthly_energy[day - 1]:.2f} kWs")
+# print(f"Produção de energia anual atual: {yearly_energy[month - 1]:.2f} kWs")
 
 # Obtém a informação do monitor
 monitors = get_monitors()
 
 caminho_csv_cidades_escolhidas = r"app/files/ids_das_cidades.csv"
 # Itera sobre os monitores (em caso de vários monitores)
-for m in monitors:
-    print("Largura:", m.width, "Altura:", m.height)
+# for m in monitors:
+#     print("Largura:", m.width, "Altura:", m.height)
 
 df = pd.read_csv(r"app\files\saida_atualizado.csv")
 
@@ -163,7 +163,7 @@ interface.layout = dbc.Container(
             dbc.Col([
                 dbc.Row([
                     dbc.Card([
-                        dbc.CardHeader('Usinas existentes'),
+                        dbc.CardHeader('Cidades'),
                         dcc.Graph(figure=fig, className='map', id='mapa',
                                   style={"height": f"{([m.height for m in get_monitors()][0] * 0.50)}px"})
                     ], color='dark')
@@ -311,7 +311,7 @@ interface.layout = dbc.Container(
     Input('url', 'pathname')
 )
 def mostra_pagina(path):
-    print(path)
+    # print(path)
     return path
 
 
@@ -320,7 +320,7 @@ def mostra_pagina(path):
     Input('mapa', 'clickData')
 )
 def gera_novos_graficos_de_linha(click):
-    print(click['points'][0]['location'])
+    # print(click['points'][0]['location'])
     id_da_cidade_selecionada = click['points'][0]['location']
     filtro_id_selecionado_com_csv = df.query(f'id == {id_da_cidade_selecionada}')
     nome_usina = filtro_id_selecionado_com_csv['name'].values[0]
