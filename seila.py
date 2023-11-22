@@ -1,9 +1,18 @@
-import datetime
+import dash_auth
+from dash import Dash, html
+import dash_bootstrap_components as dbc
 
-from screeninfo import get_monitors
+VALID_USERNAME_PASSWORD_PAIRS = {
+    'username': 'password'
+}
 
-print("Hello World")
+app = Dash(__name__, external_stylesheets=[dbc.themes.SOLAR])
+auth = dash_auth.basic_auth(
+    app,
+    VALID_USERNAME_PASSWORD_PAIRS
+)
+app.layout = dbc.Container([
+    html.P('Hello, World!')
+])
 
-print(datetime.date(2023,1,1))
-
-print(get_monitors()[0])
+app.run_server(debug=True)

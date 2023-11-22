@@ -3,11 +3,12 @@ from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import relationship
 from datetime import datetime
 from .bases_selecionadas import BasesSelecionadas
+from ..configs import db
 
 Base = declarative_base()
 
 
-class UsuarioSistema(Base):
+class UsuarioSistema(db.Model):
     __tablename__ = 'usuario_sistema'
 
     id_login = Column(Integer, primary_key=True)

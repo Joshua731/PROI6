@@ -8,7 +8,7 @@ custom_css = {
     'text-light': {'color': 'white'},
     'bg-light': {'background-color': 'white'},
     '.body': {'background-color': '#A9A9A9'},
-    'font':'dict(color='#cccccc)',
+    'font': 'dict(color='  # cccccc)',
 }
 
 login_page = Dash(__name__, server=app, external_stylesheets=[dbc.themes.SOLAR], url_base_pathname="/login/")
@@ -25,10 +25,13 @@ login_page.layout = dbc.Container(
                         dbc.CardBody([
                             html.H4("Login", className="card-title"),
                             html.Label("Usuario"),
-                            dcc.Input(type="text", id="username-input", placeholder="Entre com seu Usuario", className="form-control"),
+                            dcc.Input(type="text", id="username-input", placeholder="Entre com seu Usuario",
+                                      className="form-control"),
                             html.Label("Senha"),
-                            dcc.Input(type="password", id="password-input", placeholder="Entre com a sua Senha", className="form-control"),
-                            dbc.Button("Login", id="login-button", className="btn btn-block", n_clicks=0, outline=True, color='light'),
+                            dcc.Input(type="password", id="password-input", placeholder="Entre com a sua Senha",
+                                      className="form-control"),
+                            dbc.Button("Login", id="login-button", className="btn btn-block", n_clicks=0, outline=True,
+                                       color='light'),
                             html.Div(id="login-message", className="mt-3"),
                         ])
                     ], color='dark', className='crd'),
@@ -39,6 +42,7 @@ login_page.layout = dbc.Container(
     ],
     fluid=True,
 )
+
 
 # Callback to handle login logic
 @login_page.callback(

@@ -1,8 +1,11 @@
 import json
+
+import dash
+
 from app import app
-from dash import Dash, html, dcc, Input, Output
+from dash import Dash, html, dcc, Input, Output, State
 import dash_bootstrap_components as dbc
-from app.templates.partials.index import navbar
+from app.templates.partials.index import navbar, get_local_ip
 
 custom_css = {
     'text-light': {'color': 'white'},
@@ -11,8 +14,8 @@ custom_css = {
     'font': 'dict(color='  # cccccc)',
 }
 
-login_page = Dash(__name__, server=app, external_stylesheets=[dbc.themes.SOLAR], url_base_pathname="/login/")
-login_page.layout = dbc.Container(
+cadastro = Dash(__name__, server=app, external_stylesheets=[dbc.themes.SOLAR], url_base_pathname="/cadastro/")
+cadastro.layout = dbc.Container(
     [
         # Navbar
         navbar,
@@ -48,26 +51,27 @@ login_page.layout = dbc.Container(
     ],
     fluid=True,
 )
+import requests
 
 
-# Callback to handle login logic
-@login_page.callback(
-    Output("signup-message", "children"),
-    Input("redirecionar-home", "n_clicks"),
-    Input("username-input", "value"),
-    Input("company-input", "value"),
-    Input("email-input", "value"),
-    Input("password-input", "value"),
+@cadastro.callback(
+    Output('signup-message', 'children'),
+    [Input('redirecionar-home', 'n_clicks')],
+    [State('username-input', 'value'),
+     State('company-input', 'value'),
+     State('email-input', 'value'),
+     State('password-input', 'value')]
 )
-def handle_login(n_clicks, username, password):
-    if n_clicks > 0:
-        if username == "your_username" and password == "your_password":
-            return "Login successful. Redirecting..."
-        else:
-            return "Login failed. Please check your credentials."
+def cadastrar_usuario(n_clicks, nome, empresa, email, senha):
+    if dash.ctx.triggered_id == 'redirecionar-home':
+        url = f'http://{get_local_ip()}:5000/cadastro'  # URL da rota do Flask
+        data = {'username-input': nome, 'company-input': empresa, 'email-input': email, 'password-input': senha}
+
+        response = requests.post(url, data=data)  # Envia os dados para o Flask
+        return response.text  # Exibe a mensagem de resposta do Flask na interface Dash
 
 
-@login_page.callback(
+@cadastro.callback(
     Output('drop-nav', 'label'),
     Input('url', 'pathname')
 )
