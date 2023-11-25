@@ -6,7 +6,7 @@ from datetime import datetime, timedelta
 from dateutil.relativedelta import relativedelta
 
 from app import app
-from app.templates.partials.index import navbar
+from app.templates.partials.index import navbar, autenticacao
 
 # Crie uma instância do aplicativo Dash
 desempenho_geral = Dash(__name__, external_stylesheets=[dbc.themes.SOLAR], server=app,
@@ -303,3 +303,6 @@ def render_tab_content(value):
 def mostra_pagina(path):
     print(path)
     return path
+
+
+# autenticacao(desempenho_geral)

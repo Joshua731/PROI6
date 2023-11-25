@@ -5,6 +5,8 @@ import dash
 from app import app
 from dash import Dash, html, dcc, Input, Output, State
 import dash_bootstrap_components as dbc
+
+from app.templates import index
 from app.templates.partials.index import navbar, get_local_ip
 
 custom_css = {
@@ -55,7 +57,8 @@ import requests
 
 
 @cadastro.callback(
-    Output('signup-message', 'children'),
+    # Output('signup-message', 'children'),
+    Output('redirecionar-home', 'href'),
     [Input('redirecionar-home', 'n_clicks')],
     [State('username-input', 'value'),
      State('company-input', 'value'),

@@ -1,6 +1,6 @@
 from app import app
 from dash import Dash, html, dcc, Output, Input
-from app.templates.partials.index import navbar
+from app.templates.partials.index import navbar, autenticacao
 import dash_bootstrap_components as dbc
 
 # Crie uma instância do aplicativo Dash
@@ -102,3 +102,6 @@ def enviar_notificacao(n_clicks):
 def mostra_pagina(path):
     print(path)
     return path
+
+
+# autenticacao(alertas_notificacoes)

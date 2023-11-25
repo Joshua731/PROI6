@@ -2,7 +2,7 @@ from app import app
 from dash import Dash, dcc, html, Input, Output
 import dash_bootstrap_components as dbc
 
-from app.templates.partials.index import navbar
+from app.templates.partials.index import navbar, autenticacao
 
 status_tempo_real = Dash(__name__, server=app, external_stylesheets=[dbc.themes.SOLAR],
                          url_base_pathname='/status_tempo_real/')
@@ -100,3 +100,6 @@ status_tempo_real.layout = dbc.Container(
 def mostra_pagina(path):
     print(path)
     return path
+
+
+# autenticacao(status_tempo_real)

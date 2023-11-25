@@ -3,7 +3,7 @@ from dash import Dash, dcc, html, Input, Output
 import dash_bootstrap_components as dbc
 import plotly.graph_objects as go
 
-from app.templates.partials.index import navbar
+from app.templates.partials.index import navbar, autenticacao
 
 producao_energia = Dash(__name__, server=app, external_stylesheets=[dbc.themes.SOLAR],
                         url_base_pathname='/producao_energia/')
@@ -131,3 +131,6 @@ def atualizar_grafico(tipo_grafico, usina_selecionada):
 def mostra_pagina(path):
     print(path)
     return path
+
+
+# autenticacao(producao_energia)

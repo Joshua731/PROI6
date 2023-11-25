@@ -2,7 +2,7 @@ import dash
 
 from app import app
 from dash import Dash, dcc, html, Input, Output
-from app.templates.partials.index import sidebar, navbar, caminho_http
+from app.templates.partials.index import sidebar, navbar, caminho_http, autenticacao
 import dash_bootstrap_components as dbc
 
 cad_banco_1 = Dash(__name__, external_stylesheets=[dbc.themes.SOLAR], server=app, url_base_pathname='/formulario_db/')
@@ -80,3 +80,6 @@ def redireciona(db, usuario, senha, IP, porta, n_cliques):
         return f'/formulario_db/2'
     else:
         return '/'
+
+
+# autenticacao(cad_banco_1)

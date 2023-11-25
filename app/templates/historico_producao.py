@@ -5,7 +5,7 @@ import pandas as pd
 from screeninfo import get_monitors
 
 from app import app
-from app.templates.partials.index import navbar
+from app.templates.partials.index import navbar, autenticacao
 from dash import Dash, html, dcc, Input, Output
 import dash_bootstrap_components as dbc
 import plotly.graph_objects as go
@@ -119,3 +119,6 @@ def mostra_pagina(path):
 )
 def mostra_nome_cidade(dados_cidade):
     return f"""Cidade {df.query(f"id == {dados_cidade['points'][0]['location']}")["name"].values[0]} selecionada"""
+
+
+# autenticacao(historico_producao)

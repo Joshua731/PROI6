@@ -6,7 +6,7 @@ import plotly.graph_objects as go
 import pandas as pd
 import plotly.express as px
 import numpy as np
-from app.templates.partials.index import sidebar, navbar
+from app.templates.partials.index import sidebar, navbar, autenticacao
 from screeninfo import get_monitors
 from sqlalchemy import create_engine
 
@@ -387,3 +387,6 @@ def mostra_producoes_de_energia(cidade_selecionada):
         return retorna_unidade(daily_energy_simulation(hora_atual)), \
             retorna_unidade(monthly_energy_simulation(None)), \
             retorna_unidade(yearly_energy_simulation(None))
+
+
+# autenticacao(interface)

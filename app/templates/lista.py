@@ -1,4 +1,8 @@
 import json
+
+import dash_auth
+from sqlalchemy import create_engine
+
 from app import app
 from dash import Dash, html, dcc, Input, Output
 import dash_bootstrap_components as dbc
@@ -6,7 +10,7 @@ import plotly.graph_objects as go
 import pandas as pd
 import plotly.express as px
 import numpy as np
-from app.templates.partials.index import sidebar, navbar
+from app.templates.partials.index import sidebar, navbar, autenticacao
 
 df = pd.read_csv(r"app\files\saida_atualizado.csv")
 
@@ -47,3 +51,18 @@ lista.layout = dbc.Container(
 def mostra_pagina(path):
     print(path)
     return path
+
+# string_conexao = f'mysql+mysqlconnector://root:Joshua10!@localhost/dashua'
+#
+# # Cria a engine usando o create_engine do SQLAlchemy
+# engine = create_engine(string_conexao)
+#
+# df = pd.read_sql('SELECT nome_usuario, senha_login FROM usuario_sistema', con=engine)
+# VALID_USERNAME_PASSWORD_PAIRS = {}
+# for i in range(len(df)):
+#     VALID_USERNAME_PASSWORD_PAIRS[f'{df["nome_usuario"].values[i]}'] = f'{df["senha_login"].values[i]}'
+#     print(VALID_USERNAME_PASSWORD_PAIRS)
+# auth = dash_auth.BasicAuth(lista, VALID_USERNAME_PASSWORD_PAIRS)
+
+
+# autenticacao(lista)

@@ -1,8 +1,15 @@
 import json
+
+import dash
+import dash_auth
+import pandas as pd
+import requests
+from sqlalchemy import create_engine
+
 from app import app
 from dash import Dash, html, dcc, Input, Output
 import dash_bootstrap_components as dbc
-from app.templates.partials.index import navbar
+from app.templates.partials.index import navbar, get_local_ip
 
 custom_css = {
     'text-light': {'color': 'white'},
@@ -31,7 +38,7 @@ login_page.layout = dbc.Container(
                             dcc.Input(type="password", id="password-input", placeholder="Entre com a sua Senha",
                                       className="form-control"),
                             dbc.Button("Login", id="login-button", className="btn btn-block", n_clicks=0, outline=True,
-                                       color='light'),
+                                       color='light', href=f'http://{get_local_ip()}:5000/index'),
                             html.Div(id="login-message", className="mt-3"),
                         ])
                     ], color='dark', className='crd'),
@@ -51,12 +58,19 @@ login_page.layout = dbc.Container(
     Input("username-input", "value"),
     Input("password-input", "value"),
 )
-def handle_login(n_clicks, username, password):
-    if n_clicks > 0:
-        if username == "your_username" and password == "your_password":
-            return "Login successful. Redirecting..."
-        else:
-            return "Login failed. Please check your credentials."
+def handle_login(n_clicks, usuario, senha):
+    if dash.ctx.triggered_id == 'login-button':
+        url = f'http://{get_local_ip()}:5000/login'  # URL da rota do Flask
+        data = {'usuario': usuario, 'senha': senha}
+
+        response = requests.post(url, data=data)  # Envia os dados para o Flask
+
+        if response.status_code == 200:  # Assumindo que o código 200 indica sucesso
+            return ''  # Redireciona para a página 'index'
+
+        return response.text
+
+
 
 
 @login_page.callback(
