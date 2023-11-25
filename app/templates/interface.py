@@ -1,4 +1,7 @@
 import json
+
+import dash_auth
+
 from app import app
 from dash import Dash, html, dcc, Input, Output
 import dash_bootstrap_components as dbc
@@ -6,7 +9,7 @@ import plotly.graph_objects as go
 import pandas as pd
 import plotly.express as px
 import numpy as np
-from app.templates.partials.index import sidebar, navbar, autenticacao
+from app.templates.partials.index import sidebar, navbar
 from screeninfo import get_monitors
 from sqlalchemy import create_engine
 
@@ -389,4 +392,14 @@ def mostra_producoes_de_energia(cidade_selecionada):
             retorna_unidade(yearly_energy_simulation(None))
 
 
-# autenticacao(interface)
+string_conexao = f'mysql+mysqlconnector://root:Joshua10!@localhost/dashua'
+
+# Cria a engine usando o create_engine do SQLAlchemy
+engine = create_engine(string_conexao)
+
+# df = pd.read_sql('SELECT nome_usuario, senha_login FROM usuario_sistema', con=engine)
+# VALID_USERNAME_PASSWORD_PAIRS = {}
+# for i in range(len(df)):
+#     VALID_USERNAME_PASSWORD_PAIRS[f'{df["nome_usuario"].values[i]}'] = f'{df["senha_login"].values[i]}'
+#     print(VALID_USERNAME_PASSWORD_PAIRS)
+# dash_auth.BasicAuth(interface, VALID_USERNAME_PASSWORD_PAIRS)

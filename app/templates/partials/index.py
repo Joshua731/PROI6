@@ -71,19 +71,3 @@ content = html.Div(id="page-content")
 header = html.H4(
     "Side Example.py", className="bg-primary text-white p-2 mb-2 text-center"
 )
-
-
-def autenticacao(pagina):
-    string_conexao = f'mysql+mysqlconnector://root:Joshua10!@localhost/dashua'
-
-    # Cria a engine usando o create_engine do SQLAlchemy
-    engine = create_engine(string_conexao)
-
-    df = pd.read_sql('SELECT nome_usuario, senha_login FROM usuario_sistema', con=engine)
-    VALID_USERNAME_PASSWORD_PAIRS = {}
-    for i in range(len(df)):
-        VALID_USERNAME_PASSWORD_PAIRS[f'{df["nome_usuario"].values[i]}'] = f'{df["senha_login"].values[i]}'
-        print(VALID_USERNAME_PASSWORD_PAIRS)
-    auth = dash_auth.BasicAuth(pagina, VALID_USERNAME_PASSWORD_PAIRS)
-
-    return auth

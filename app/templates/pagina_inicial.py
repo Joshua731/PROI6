@@ -17,8 +17,8 @@ inicial.layout = dbc.Container([
                 dbc.CardHeader('Seja bem-vindo ao Dashua!'),
                 dbc.CardBody([
                     dbc.ButtonGroup([
-                        dbc.Button('Login', href=f'http://{get_local_ip()}:5000/home', color='dark'),
-                        dbc.Button('Cadastro', href=f'http://{get_local_ip()}:5000/cadastro', color='dark')
+                        dbc.Button('Login', href=f'http://{get_local_ip()}:5001/home', color='dark'),
+                        dbc.Button('Cadastro', href=f'http://{get_local_ip()}:5001/cadastro', color='dark')
                     ])
                 ])
             ], color='dark', class_name='card-home')

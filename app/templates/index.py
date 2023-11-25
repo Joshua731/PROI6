@@ -5,7 +5,7 @@ from sqlalchemy import create_engine
 from app import app
 from dash import Dash, html, dcc, Output, Input
 import dash_bootstrap_components as dbc
-from app.templates.partials.index import sidebar, navbar, get_local_ip, autenticacao
+from app.templates.partials.index import sidebar, navbar, get_local_ip
 
 title = None
 index = Dash(__name__, server=app, external_stylesheets=[dbc.themes.SOLAR], url_base_pathname='/home/')
@@ -23,7 +23,7 @@ index.layout = dbc.Container(
                         html.H4("Dashua", className="card-title"),
                         html.H5("Bem vindo(a) ao Dashua."),
                         html.P("Análise em tempo real de dados remententes a energia solar."),
-                        dbc.Button('Logout', href=f'http://{get_local_ip()}:5000/logout')
+                        dbc.Button('Logout', href=f'http://{get_local_ip()}:5001/logout')
                     ])
                 ], color='dark', className='crd mx-auto bg-grey'),
             ], sm=6),
@@ -41,6 +41,3 @@ index.layout = dbc.Container(
 def mostra_pagina(path):
     print(path)
     return path
-
-
-# autenticacao(index)
