@@ -27,7 +27,7 @@ caminho_http = f'http://{get_local_ip()}:5000'
 navbar = html.Div([
     dbc.NavbarSimple(
         brand="Bem-vindo a Dashua",
-        brand_href=f"{caminho_http}:5000/",
+        brand_href=f"{caminho_http}:5001/",
         color="dark",
         dark=True,
         children=[
