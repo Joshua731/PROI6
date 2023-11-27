@@ -7,7 +7,7 @@ from dash import Dash, html, dcc, Input, Output, State
 import dash_bootstrap_components as dbc
 
 from app.templates import index
-from app.templates.partials.index import navbar, get_local_ip
+from app.templates.partials.index import navbar, get_local_ip, caminho_http
 
 custom_css = {
     'text-light': {'color': 'white'},
@@ -44,7 +44,7 @@ cadastro.layout = dbc.Container(
 
                             html.Div(id="signup-message", className="mt-3"),
                         ]),
-                        dbc.CardFooter(html.A('Concluir', id='redirecionar-home'))
+                        dbc.CardFooter(html.A('Concluir', id='redirecionar-home', href=f'{caminho_http}/'))
                     ], color='dark', className='crd'),
                 ]),
             ], sm=6),
@@ -57,8 +57,7 @@ import requests
 
 
 @cadastro.callback(
-    # Output('signup-message', 'children'),
-    Output('redirecionar-home', 'href'),
+    Output('signup-message', 'children'),
     [Input('redirecionar-home', 'n_clicks')],
     [State('username-input', 'value'),
      State('company-input', 'value'),

@@ -22,12 +22,12 @@ def get_local_ip():
         return f"Ocorreu um erro ao tentar obter o IP interno: {e}"
 
 
-caminho_http = f'http://{get_local_ip()}:5000'
+caminho_http = f'http://{get_local_ip()}:5001'
 
 navbar = html.Div([
     dbc.NavbarSimple(
         brand="Bem-vindo a Dashua",
-        brand_href=f"{caminho_http}:5001/",
+        brand_href=f"{caminho_http}/",
         color="dark",
         dark=True,
         children=[
@@ -37,7 +37,7 @@ navbar = html.Div([
                     dbc.DropdownMenuItem("Home", href=f"{caminho_http}/"),
                     # dbc.DropdownMenuItem("Login", href=f"{caminho_http}/login"),
                     dbc.DropdownMenuItem("Formulario", href=f"{caminho_http}/formulario_db"),
-                    dbc.DropdownMenuItem("Mapa", href=f"{caminho_http}/interface"),
+                    dbc.DropdownMenuItem("Mapa", href=f"{caminho_http}/overview"),
                     dbc.DropdownMenuItem("Lista", href=f"{caminho_http}/lista"),
                     dbc.DropdownMenuItem("Desempenho Geral", href=f"{caminho_http}/desempenho_geral"),
                     dbc.DropdownMenuItem("Histórico de Produção", href=f"{caminho_http}/historico_producao"),
@@ -56,18 +56,15 @@ navbar = html.Div([
 ],
 )
 
-sidebar = html.Div(
-    [
-        html.H2("Sidebar", className="display-4"),
-        html.Hr(),
-        html.P(
-            "A simple sidebar layout with navigation links", className="lead"
-        ),
-        navbar,
-    ],
-)
 
-content = html.Div(id="page-content")
-header = html.H4(
-    "Side Example.py", className="bg-primary text-white p-2 mb-2 text-center"
-)
+def basic_auth_wrapper(basic_auth, func):
+    """Updated auth wrapper to work on all pages rather than just index"""
+
+    def wrap(*args, **kwargs):
+        if basic_auth.is_authorized() or 'inicial' in func.__module__:
+            return func(*args, **kwargs)
+        # if basic_auth.is_authorized() and 'inicial' in func.__module__:
+        #     return func(*args, **kwargs)
+        return basic_auth.login_request()
+
+    return wrap

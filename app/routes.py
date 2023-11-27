@@ -1,3 +1,4 @@
+import dash
 import dash_auth
 import pandas as pd
 from dash_auth import BasicAuth
@@ -8,6 +9,8 @@ from app import app
 from app.configs import db
 from app.models.usuario_sistema import UsuarioSistema
 from app.templates import index, interface, pagina_inicial
+from app.templates.formularios import cadastro_banco_parte_1
+from app.templates.partials.index import basic_auth_wrapper
 from app.templates.usuario import cadastro
 
 string_conexao = f'mysql+mysqlconnector://root:Joshua10!@localhost/dashua'
@@ -16,34 +19,18 @@ string_conexao = f'mysql+mysqlconnector://root:Joshua10!@localhost/dashua'
 engine = create_engine(string_conexao)
 
 df = pd.read_sql('SELECT nome_usuario, senha_login FROM usuario_sistema', con=engine)
-VALID_USERNAME_PASSWORD_PAIRS = {}
+VALID_USERNAME_PASSWORD_PAIRS = {'admin': '123'}
 for i in range(len(df)):
     VALID_USERNAME_PASSWORD_PAIRS[f'{df["nome_usuario"].values[i]}'] = f'{df["senha_login"].values[i]}'
     print(VALID_USERNAME_PASSWORD_PAIRS)
 
 
 # Monkey patch basic auth to work on non-index pages
-def basic_auth_wrapper(basic_auth, func):
-    """Updated auth wrapper to work on all pages rather than just index"""
-
-    def wrap(*args, **kwargs):
-        if basic_auth.is_authorized():
-            return func(*args, **kwargs)
-        return basic_auth.login_request()
-
-    return wrap
+BasicAuth(pagina_inicial.inicial, VALID_USERNAME_PASSWORD_PAIRS)
+# BasicAuth(interface.interface, VALID_USERNAME_PASSWORD_PAIRS)
 
 
-BasicAuth.auth_wrapper = basic_auth_wrapper
-
-auth_home = BasicAuth(index.index, VALID_USERNAME_PASSWORD_PAIRS)
-# auth_overview = BasicAuth(interface.interface, VALID_USERNAME_PASSWORD_PAIRS)
-
-# auth_home = dash_auth.BasicAuth(index.index, VALID_USERNAME_PASSWORD_PAIRS)
-# auth_overview = dash_auth.BasicAuth(interface.interface, VALID_USERNAME_PASSWORD_PAIRS)
-
-
-@app.route("/overview")
+@app.route("/interface")
 def redirecionar_home():
     return interface.interface.index()
 
@@ -76,3 +63,8 @@ def cadastrar_usuario():
 @app.route('/')
 def redireciona_inicio():
     return pagina_inicial.inicial.index()
+
+
+@app.route('/cadastro-1')
+def redireciona_cadastro():
+    return cadastro_banco_parte_1.cad_banco_1.index()

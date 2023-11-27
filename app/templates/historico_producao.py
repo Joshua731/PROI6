@@ -5,7 +5,7 @@ import pandas as pd
 from screeninfo import get_monitors
 
 from app import app
-from app.templates.partials.index import navbar, autenticacao
+from app.templates.partials.index import navbar
 from dash import Dash, html, dcc, Input, Output
 import dash_bootstrap_components as dbc
 import plotly.graph_objects as go
