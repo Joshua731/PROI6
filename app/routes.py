@@ -4,7 +4,7 @@ import pandas as pd
 import os
 from dash_auth import BasicAuth
 from flask import request
-from sqlalchemy import create_engine
+from sqlalchemy import MetaData, Table, Column, Integer, String, create_engine
 
 from app import app
 from app.configs import db
@@ -13,24 +13,14 @@ from app.templates import index, interface, pagina_inicial
 from app.templates.formularios import cadastro_banco_parte_1
 from app.templates.partials.index import basic_auth_wrapper
 from app.templates.usuario import cadastro
-from sqlalchemy import MetaData, Table, Column, Integer, String, create_engine
+
 
 engine = create_engine('sqlite:///./database/database.db')
-
-metadata = MetaData()
-
-usuario_sistema = Table(
-   'usuario_sistema', metadata,
-   Column('id', Integer, primary_key=True),
-   Column('nome_usuario', String),
-   Column('senha_login', String),
-)
-
-metadata.create_all(engine)
 
 # Create the directory if it does not exist
 if not os.path.exists('database'):
     os.makedirs('database')
+
 # string_conexao = 'mysql+mysqlconnector://aluno:aluno123@localhost/dashua'
 
 df = pd.read_sql('SELECT nome_usuario, senha_login FROM usuario_sistema', con=engine)
