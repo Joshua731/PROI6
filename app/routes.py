@@ -21,7 +21,6 @@ engine = create_engine('sqlite:///./database/database.db')
 if not os.path.exists('database'):
     os.makedirs('database')
 
-# string_conexao = 'mysql+mysqlconnector://aluno:aluno123@localhost/dashua'
 
 df = pd.read_sql('SELECT nome_usuario, senha_login FROM usuario_sistema', con=engine)
 VALID_USERNAME_PASSWORD_PAIRS = {'admin': '123'}
