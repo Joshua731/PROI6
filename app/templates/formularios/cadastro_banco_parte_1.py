@@ -45,8 +45,8 @@ estados = [
 
 variaveis_globais = {}
 
-df_variaveis = pd.DataFrame({'quantidade_de_inversores': [4]})
-df_variaveis.to_excel(r'app\templates\formularios\temp.xlsx', index=False)
+df_variaveis = pd.DataFrame({'teste': ['teste']})
+df_variaveis.to_excel(r'app\templates\formularios\assets\database_temp.xlsx', index=False)
 df = pd.read_csv(r'app\files\saida_atualizado.csv')
 
 cad_banco_1 = Dash(__name__, external_stylesheets=[dbc.themes.SOLAR], server=app, url_base_pathname='/cadastro-1/')
@@ -95,22 +95,24 @@ cad_banco_1.layout = dbc.Container([
                     dbc.Row([
                         dbc.Col(sm=3),
                         dbc.Col([
-                            dbc.Card([
-                                dbc.CardHeader("Integração da fonte de dados", class_name='card-header-banco'),
-                                dbc.CardBody([
-                                    dbc.Row([
-                                        dcc.Dropdown(
-                                            id='drop-origem',
-                                            placeholder='Origem dos dados',
-                                            options=[
-                                                {"label": 'MySQL', 'value': 'mysql'},
-                                                {'label': 'SQL Server', 'value': 'sql-server'},
-                                            ],
-                                        )
-                                    ]),
-                                    dbc.Row(id='conteudo-origem'),
-                                ])
-                            ], color='dark', id='card-banco')
+                            dcc.Loading([
+                                dbc.Card([
+                                    dbc.CardHeader("Integração da fonte de dados", class_name='card-header-banco'),
+                                    dbc.CardBody([
+                                        dbc.Row([
+                                            dcc.Dropdown(
+                                                id='drop-origem',
+                                                placeholder='Origem dos dados',
+                                                options=[
+                                                    {"label": 'MySQL', 'value': 'mysql'},
+                                                    {'label': 'SQL Server', 'value': 'sql-server'},
+                                                ],
+                                            )
+                                        ]),
+                                        dbc.Row(id='conteudo-origem'),
+                                    ])
+                                ], color='dark', id='card-banco')
+                            ], type='cube'),
                         ], sm=6),
                         dbc.Col(sm=3),
                     ])
@@ -370,7 +372,7 @@ def redireciona_para_colunas(tipo, base, usuario, senha, ip, porta, botao):
                 df_variaveis['senha'] = senha
                 df_variaveis['ip'] = ip
                 df_variaveis['porta'] = porta
-                df_variaveis.to_excel(r'app\templates\formularios\temp.xlsx', index=False)
+                df_variaveis.to_excel(r'app\templates\formularios\database_temp.xlsx', index=False)
                 query_teste = f'''
                         SELECT DISTINCT schema_name(schema_id)
                         FROM sys.tables;
@@ -428,25 +430,34 @@ def mostra_opcoes_dos_inversores(mostrar):
 )
 def mostra_dropdown_das_colunas_das_tabelas(tabela, n):
     try:
-        df2 = pd.read_excel(r'app\templates\formularios\temp.xlsx')
+        df_db = pd.read_excel(r'app\templates\formularios\database_temp.xlsx')
+        df2 = pd.read_excel(r'app\templates\formularios\inversores_temp.xlsx')
         df2['tabela_dos_inversores'] = tabela
         df2['quantidade_de_inversores'] = n
-        df2.to_excel(r'app\templates\formularios\temp.xlsx', index=False)
+        n_inv = []
+        id_inv = []
+        for i in range(len(n)):
+            n_inv.append(i)
+            id_inv.append(f'drop-inv-{i}')
+        df2['n_inv'] = n_inv
+        df2['id_inv'] = id_inv
         query_colunas = f'''
-        select * from {tabela}
+        select top 1 * from {tabela}
         '''
-        df_colunas = pd.read_sql(query_colunas, create_engine(str(df2['engine'].values[0]))).columns
+        df_colunas = pd.read_sql(query_colunas, create_engine(df_db['engine'])).columns
+        df2.to_excel(r'app\templates\formularios\assets\inversores_temp.xlsx', index=False)
         return [dbc.Row([
             dbc.Col([
                 dbc.Card([
                     dbc.CardHeader(f'Inversor {i + 1}'),
                     dbc.CardBody([
                         dcc.Dropdown(
-                            id=f'drop-inv-{i}',
+                            id=f'drop-inv-{i + 1}',
                             placeholder='Coluna respectiva',
                             options=[
                                 {'label': coluna, 'value': coluna}
-                                for coluna in df_colunas],
+                                for coluna in df_colunas
+                            ],
                         ),
                     ])
                 ], color='dark')
@@ -459,22 +470,30 @@ def mostra_dropdown_das_colunas_das_tabelas(tabela, n):
         return html.P('Tabela não encontrada')
 
 
-csv = pd.read_excel(r'app\templates\formularios\temp.xlsx')
+invs = pd.read_excel(r'app\templates\formularios\assets\inversores_temp.xlsx')
 
 
 @cad_banco_1.callback(
     Output('tabs-cols-db', 'active_tab'),
+    Input('check-invs', 'value'),
     Input('red-cm', 'n_clicks'),
     Input('ipt-n-invs', 'value'),
     Input('ipt-tbl-base', 'value'),
-    [Input(f'drop-inv-{i}', 'value') for i in range(int(csv['quantidade_de_inversores']))]
+    [Input(ids, 'value') for ids in invs['id_inv']]
 )
 def redireciona_para_cm(*args):
-    df3 = pd.read_excel(r'app\templates\formularios\temp.xlsx')
-    if dash.ctx.triggered_id == 'red-cm' and args[1] and args[2] and args[3:]:
-        for i in range(3, int(df3['quantidade_de_inversores'])):
-            df3['colunas_dos_inversores'] = args[i]
-        return 'tab-cm'
+    print(dash.ctx.triggered_id)
+    if dash.ctx.triggered_id == 'red-cm':
+        if not args[0]:
+            return 'tab-cm'
+        else:
+            if args[1:]:
+                return 'tab-cm'
+            else:
+                return 'tab-invs'
+    else:
+        raise PreventUpdate
+
 
 @cad_banco_1.callback(
     Output('row-cm', 'children'),
@@ -482,20 +501,105 @@ def redireciona_para_cm(*args):
 )
 def mostra_opcoes_cm(tem):
     if tem:
-        return dbc.Col([
-            dbc.Row([
-                dbc.Checkbox(id='check-irrad-h', label='Possui Irradiação Solar Horizontal?', value=False)
-            ]),
-            dbc.Row([
-                dbc.Checkbox(id='check-irrad-i', label='Possui Irradiação Solar Inclinada?', value=False)
-            ]),
-            dbc.Row([
-                dbc.Checkbox(id='check-temp-amb', label='Possui Temperatura Ambiente?', value=False)
-            ]),
-            dbc.Row([
-                dbc.Checkbox(id='check-temp-plc', label='Possui Temperatura das Placas?', value=False)
-            ]),
-            dbc.Row([
-                dbc.Checkbox(id='check-umd-rel-ar', label='Possui Umidade Relativa do Ar?', value=False)
-            ]),
-        ], sm=12)
+        return [
+            dbc.Col([
+                dbc.Row([
+                    dbc.Input(id='ipt-tbl-cm', placeholder='Tabela da Central Meteorológica', type='text'),
+                    dbc.Card([
+                        dbc.CardHeader('Componentes'),
+                        dbc.CardBody([
+                            dbc.Row([
+                                dbc.Col([
+                                    dbc.Checkbox(id='check-irrad-h', label='Possui Irradiação Solar Horizontal?',
+                                                 value=False)
+                                ], sm=6),
+                                dbc.Col([
+                                    dbc.Checkbox(id='check-irrad-i', label='Possui Irradiação Solar Inclinada?',
+                                                 value=False)
+                                ], sm=6),
+                            ]),
+                            dbc.Row([
+                                dbc.Col([
+                                    dbc.Checkbox(id='check-temp-amb', label='Possui Temperatura Ambiente?',
+                                                 value=False)
+                                ], sm=6),
+                                dbc.Col([
+                                    dbc.Checkbox(id='check-temp-plc', label='Possui Temperatura das Placas?',
+                                                 value=False)
+                                ], sm=6),
+                            ]),
+                            dbc.Row([
+                                dbc.Col([
+                                    dbc.Checkbox(id='check-umd-rel-ar', label='Possui Umidade Relativa do Ar?',
+                                                 value=False)
+                                ], sm=6),
+                                dbc.Col([
+                                    dbc.Checkbox(id='check-frq', label='Possui Frequência?', value=False)
+                                ], sm=6),
+                                dbc.Row([
+                                    dbc.Col([
+                                        dbc.Checkbox(id='check-dir-vt', label='Possui Direção do Vento?', value=False)
+                                    ], sm=6),
+                                    dbc.Col([
+                                        dbc.Checkbox(id='check-vel-vt', label='Possui Velocidade do Vento?',
+                                                     value=False)
+                                    ], sm=6),
+                                ])
+                            ]),
+                        ])
+                    ], color='dark'),
+                ]),
+                dbc.Row(id='row-cm-comps')
+            ], sm=12),
+        ]
+
+
+@cad_banco_1.callback(
+    Output('row-cm-comps', 'children'),
+    Input('ipt-tbl-cm', 'value'),
+    Input('check-irrad-h', 'value'),
+    Input('check-irrad-i', 'value'),
+    Input('check-temp-amb', 'value'),
+    Input('check-temp-plc', 'value'),
+    Input('check-umd-rel-ar', 'value'),
+    Input('check-frq', 'value'),
+    Input('check-dir-vt', 'value'),
+    Input('check-vel-vt', 'value'),
+)
+def mostra_colunas_cm(tabela, irrad_h, irrad_i, temp_amb, temp_plc, umidade, freq, dir_vt, vel_vt):
+    df4 = pd.read_excel(r'app\templates\formularios\assets\temp.xlsx')
+    df4['tabela_da_central_meteorologica'] = tabela
+    query = pd.read_sql(f'SELECT TOP 1 * FROM {tabela}', df4['engine'].values[0]).columns
+    drops = []
+    componentes = [
+        'ipt-tbl-cm',
+        'check-irrad-h',
+        'check-irrad-i',
+        'check-temp-amb',
+        'check-temp-plc',
+        'check-umd-rel-ar',
+        'check-frq',
+        'check-dir-vt',
+        'check-vel-vt'
+    ]
+    lista_checks = [irrad_h, irrad_i, temp_amb, temp_plc, umidade, freq, dir_vt, vel_vt]
+    dict_comps = {
+        componentes[0]: 'Irradiação Solar Horizontal',
+        componentes[1]: 'Irradiação Solar Inclinada',
+        componentes[2]: 'Temperatura Ambiente',
+        componentes[3]: 'Temperatura das Placas',
+        componentes[4]: 'Umidade Relativa do Ar',
+        componentes[5]: 'Frequência',
+        componentes[6]: 'Direção do Vento',
+        componentes[7]: 'Velocidade do Vento',
+    }
+    for i in range(len(componentes)):
+        if lista_checks[i]:
+            drops.append(
+                dcc.Dropdown(
+                    id=f'drop-col-{list(dict_comps.keys())[i]}',
+                    placeholder=f'Coluna para {dict_comps[componentes[i]]}',
+                    options=[{'label': q, 'value': q} for q in query]
+                ),
+            )
+    return drops
