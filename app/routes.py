@@ -1,19 +1,10 @@
-import dash
-import dash_auth
 import pandas as pd
 import os
 from dash_auth import BasicAuth
-from flask import request
-from sqlalchemy import MetaData, Table, Column, Integer, String, create_engine
-
+from sqlalchemy import create_engine
 from app import app
-from app.configs import db
-from app.models.usuario_sistema import UsuarioSistema
 from app.templates import index, interface, pagina_inicial
-from app.templates.formularios import cadastro_banco_parte_1
-from app.templates.partials.index import basic_auth_wrapper
-from app.templates.usuario import cadastro
-
+from app.templates.cadastros import base_de_dados, usuario
 
 engine = create_engine('sqlite:///./database/database.db')
 
@@ -22,7 +13,7 @@ if not os.path.exists('database'):
     os.makedirs('database')
 
 
-df = pd.read_sql('SELECT nome_usuario, senha_login FROM usuario_sistema', con=engine)
+df = pd.read_sql('SELECT nome_usuario, senha_login FROM usuario', con=engine)
 VALID_USERNAME_PASSWORD_PAIRS = {'admin': '123'}
 for i in range(len(df)):
     VALID_USERNAME_PASSWORD_PAIRS[f'{df["nome_usuario"].values[i]}'] = f'{df["senha_login"].values[i]}'
@@ -39,29 +30,9 @@ def redirecionar_home():
     return interface.interface.index()
 
 
-@app.route('/cadastro', methods=['POST'])
+@app.route('/cad-usu')
 def cadastrar_usuario():
-    if request.method == 'POST':
-        # Obter os dados do formulário enviado pela interface Dash
-        nome = request.form['username-input']
-        empresa = request.form['company-input']
-        email = request.form['email-input']
-        senha = request.form['password-input']
-
-        # Criar um novo objeto UsuarioSistema com os dados recebidos
-        novo_usuario = UsuarioSistema(
-            nome_usuario=nome,
-            nome_empresa=empresa,
-            email_login=email,
-            senha_login=senha
-        )
-        # Adicionar o novo usuário ao banco de dados
-        db.session.add(novo_usuario)
-        db.session.commit()
-
-        # Retornar uma resposta para a interface Dash
-        return index.index.index()
-    return cadastro.cadastro.index()
+    return usuario.cad_usuario.index()
 
 
 @app.route('/')
@@ -69,6 +40,6 @@ def redireciona_inicio():
     return pagina_inicial.inicial.index()
 
 
-@app.route('/cadastro-1')
+@app.route('/cad-db')
 def redireciona_cadastro():
-    return cadastro_banco_parte_1.cad_banco_1.index()
+    return base_de_dados.cad_banco.index()

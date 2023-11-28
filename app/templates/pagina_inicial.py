@@ -1,3 +1,4 @@
+import dash
 import dash_auth
 import pandas as pd
 from dash import Dash, html, dcc, Input, Output
@@ -10,6 +11,7 @@ from app.templates.partials.index import get_local_ip
 
 inicial = Dash(__name__, server=app, external_stylesheets=[dbc.themes.SOLAR], url_base_pathname='/')
 inicial.layout = dbc.Container([
+    dcc.Location(id='url'),
     dbc.Row([
         dbc.Col(sm=3),
         dbc.Col([
@@ -18,7 +20,7 @@ inicial.layout = dbc.Container([
                 dbc.CardBody([
                     dbc.ButtonGroup([
                         # dbc.Button('Entrar', href=f'http://{get_local_ip()}:5001/home', color='dark'),
-                        dbc.Button('Cadastrar', href=f'http://{get_local_ip()}:5001/cadastro-1', color='dark')
+                        dbc.Button('Cadastrar', id='redi-cad', color='dark')
                     ])
                 ])
             ], color='dark', class_name='card-home')
@@ -28,3 +30,10 @@ inicial.layout = dbc.Container([
 ], fluid=True)
 
 
+@inicial.callback(
+    Output('url', 'pathname'),
+    Input('redi-cad', 'n_clicks')
+)
+def mudar_pagina_para_cadastro(botao):
+    if dash.ctx.triggered_id == 'redi-cad':
+        return '/cad-usu/'

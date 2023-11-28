@@ -1,6 +1,7 @@
 import json
 import socket
 
+import bcrypt
 import dash_auth
 from sqlalchemy import create_engine
 
@@ -11,6 +12,21 @@ import plotly.graph_objects as go
 import pandas as pd
 import plotly.express as px
 import numpy as np
+
+
+def criptografar_senha(senha):
+    # Gere um salt (um valor aleatório único)
+    salt = bcrypt.gensalt()
+
+    # Hash da senha usando o salt
+    senha_hash = bcrypt.hashpw(senha.encode('utf-8'), salt)
+
+    return senha_hash
+
+
+def verificar_senha(senha, senha_hash):
+    # Verifique se a senha fornecida corresponde ao hash
+    return bcrypt.checkpw(senha.encode('utf-8'), senha_hash)
 
 
 def get_local_ip():
