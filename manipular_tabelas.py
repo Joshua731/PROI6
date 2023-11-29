@@ -10,25 +10,7 @@ q_db = """CREATE TABLE IF NOT EXISTS database (id_db INTEGER PRIMARY KEY, tipo_b
 
 q_del = """DROP TABLE IF EXISTS usuario_sistema;"""
 
-q_cd = """
-CREATE TABLE colunas_database (
-    id_coluna INTEGER NOT NULL,
-    database_id INTEGER,
-    data DATETIME,
-    lista_colunas ARRAY
-)
-"""
-
-q_qtdd = """
-CREATE TABLE quantidade (
-    id INTEGER PRIMARY KEY,
-    quantidade INTEGER,
-    tabela TEXT,
-    data DATETIME DEFAULT CURRENT_TIMESTAMP,
-    colunas_database_id INTEGER,
-    FOREIGN KEY(colunas_database_id) REFERENCES colunas_database(id_coluna)
-);
-"""
+q_del_row = "DELETE FROM database"
 Session = sessionmaker(bind=engine)
 session = Session()
 
@@ -37,6 +19,7 @@ session = Session()
 # session.execute(text(q_usuario))
 # session.execute(text(q_db))
 # session.execute(text(q_del))
+# session.execute(text(q_del_row))
 # Commit para confirmar as alterações no banco de dados
 session.commit()
 

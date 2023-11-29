@@ -14,6 +14,5 @@ class Database(db.Model):
     ip = db.Column(String)
     porta = db.Column(Integer)
     data_insercao = db.Column(DateTime, default=datetime.now())
-    string_engine = db.Column(String)
     usuario_id = db.Column(Integer, ForeignKey('usuario.id_login'))
     usuario = db.relationship("Usuario", backref="database")

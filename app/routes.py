@@ -46,6 +46,6 @@ def redireciona_cadastro():
     return base_de_dados.cad_banco.index()
 
 
-@app.route('/cadastro/colunas/inversores/check')
+@app.route('/cadastro/colunas/inversores')
 def redirecionar_para_cadastro_dos_inversores():
     return inversores.inversores.index()

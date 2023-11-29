@@ -2,7 +2,7 @@ import pandas as pd
 from sqlalchemy import create_engine
 
 engine = create_engine('sqlite:///./database/database.db')
-engine_sql_server = create_engine(f'mssql+pyodbc://capua:Capua123#@201.48.100.251:1434/bancobrasil?driver=ODBC+Driver+17+for+SQL+Server')
+engine_sql_server = create_engine('mssql+pyodbc://capua:Capua123#@201.48.100.251:1434/bancobrasil?driver=ODBC+Driver+17+for+SQL+Server')
 
 
 df = pd.read_sql("SELECT name FROM sqlite_master WHERE type='table';", con=engine)

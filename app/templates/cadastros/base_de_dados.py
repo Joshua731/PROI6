@@ -4,7 +4,6 @@ import pandas as pd
 from app import app
 from app.configs import db
 from app.models.database import Database
-from app.models.temp.cols_db import ColunasDatabase
 from app.templates.cadastros.usuario import novo_usuario
 from app.templates.partials.index import navbar, criptografar_senha
 from dash.exceptions import PreventUpdate
@@ -12,14 +11,12 @@ from dash import Dash, dcc, html, Input, Output
 from sqlalchemy import create_engine
 import datetime
 
-nova_database = Database(base_de_dados='teste', string_engine='teste')
-# string_engine = 'teste'
+nova_database = Database(base_de_dados='teste')
+string_engine = 'teste'
 
 df = pd.read_csv(r'app\files\saida_atualizado.csv')
 
 engine = create_engine('sqlite:///./database/database.db')
-
-query = pd.read_sql(f'SELECT id_login FROM usuario WHERE nome_usuario = "{novo_usuario.nome_usuario}"', con=engine)
 
 cad_banco = Dash(__name__, external_stylesheets=[dbc.themes.SOLAR], server=app, url_base_pathname='/cadastro/database/')
 cad_banco.layout = dbc.Container([
@@ -252,10 +249,11 @@ def redireciona_para_colunas(tipo, base, u, senha, ip, porta, botao):
     global nova_database
     try:
         if tipo == 'sql-server':
+            driver = 'mssql+pyodbc'
             if dash.ctx.triggered_id == 'red-cols':
-                string_engine = f'mssql+pyodbc://{u}:{senha}@{ip}:{porta}/{base}?driver=ODBC+Driver+17+for+SQL+Server'
+                string_ = f'mssql+pyodbc://{u}:{senha}@{ip}:{porta}/{base}?driver=ODBC+Driver+17+for+SQL+Server'
                 engine_sql_server = create_engine(
-                    string_engine
+                    string_
                 )
                 query_teste = f'''
                             SELECT DISTINCT schema_name(schema_id)
@@ -264,27 +262,21 @@ def redireciona_para_colunas(tipo, base, u, senha, ip, porta, botao):
                 pd.read_sql(query_teste, engine_sql_server)
 
                 nova_database = Database(
-                    tipo_banco=tipo,
+                    tipo_banco=driver,
                     base_de_dados=base,
                     usuario_db=u,
                     senha_db=criptografar_senha(senha),
                     ip=ip,
                     porta=porta,
-                    string_engine=string_engine,
                     usuario=novo_usuario
                 )
-                colunas = pd.read_sql('SELECT TABLE_NAME FROM INFORMATION_SCHEMA.COLUMNS', con=engine_sql_server)
-                novas_colunas = ColunasDatabase(
-                    database_id=nova_database,
-                    lista_colunas=colunas['TABLE_NAME'].unique()
-                )
-                db.session.add(novas_colunas)
+                db.session.add(nova_database)
                 db.session.commit()
                 return '/cadastro/colunas/inversores', html.P('OK'), 'success', 'success'
     except Exception as e:
         print(e)
         print(datetime.datetime.now())
-        return '/cadastro/database', html.P('Ocorreu um erro. Cheque suas informações'), 'danger', 'danger'
+        return None, html.P('Ocorreu um erro. Cheque suas informações'), 'danger', 'danger'
     raise PreventUpdate
 
 #

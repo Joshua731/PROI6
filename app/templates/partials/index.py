@@ -38,7 +38,7 @@ def get_local_ip():
         return f"Ocorreu um erro ao tentar obter o IP interno: {e}"
 
 
-caminho_http = f'http://{get_local_ip()}:5000'
+caminho_http = f'http://{get_local_ip()}:5002'
 
 navbar = html.Div([
     dbc.NavbarSimple(
