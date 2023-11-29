@@ -10,7 +10,7 @@ q_db = """CREATE TABLE IF NOT EXISTS database (id_db INTEGER PRIMARY KEY, tipo_b
 
 q_del = """DROP TABLE IF EXISTS usuario_sistema;"""
 
-q_del_row = "DELETE FROM database"
+q_del_row = "DELETE FROM usuario"
 Session = sessionmaker(bind=engine)
 session = Session()
 

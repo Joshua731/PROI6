@@ -9,11 +9,15 @@ import plotly.graph_objects as go
 import pandas as pd
 import plotly.express as px
 import numpy as np
+
+from app.configs import usuario, senha, ip, porta, base
 from app.templates.partials.index import navbar
 from screeninfo import get_monitors
 from sqlalchemy import create_engine
 
 import datetime
+
+engine = create_engine(f'mssql+pyodbc://{usuario}:{senha}@{ip}:{porta}/{base}?driver=ODBC+Driver+17+for+SQL+Server')
 
 
 # Simulação de dados diários de produção de energia
@@ -152,7 +156,7 @@ for i in range(num_abas):
     aba = dbc.Tab(label=f'Grupo {i + 1}', tab_id=f'grupo-{i + 1}', children=[table])
     abas_tabela.children.append(aba)
 
-interface = Dash(__name__, server=app, external_stylesheets=[dbc.themes.SOLAR], url_base_pathname="/interface/")
+interface = Dash(__name__, server=app, external_stylesheets=[dbc.themes.SOLAR], url_base_pathname="/overview/")
 interface.layout = dbc.Container(
     [
         # Navbar
@@ -357,6 +361,7 @@ def gera_novos_graficos_de_linha(click):
                                                               )
         return grafico_irradiancia_potencia_atualizado
 
+
 # Função para salvar os dados no MySQL
 
 @interface.callback(
@@ -389,5 +394,3 @@ def mostra_producoes_de_energia(cidade_selecionada):
         return retorna_unidade(daily_energy_simulation(hora_atual)), \
             retorna_unidade(monthly_energy_simulation(None)), \
             retorna_unidade(yearly_energy_simulation(None))
-
-
