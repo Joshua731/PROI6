@@ -3,8 +3,8 @@ import os
 from dash_auth import BasicAuth
 from sqlalchemy import create_engine
 from app import app
-from app.templates import index, interface, pagina_inicial
-from app.templates.cadastros import base_de_dados, usuario
+from app.templates import interface, pagina_inicial
+from app.templates.cadastros import base_de_dados, usuario, inversores
 
 engine = create_engine('sqlite:///./database/database.db')
 
@@ -17,7 +17,8 @@ df = pd.read_sql('SELECT nome_usuario, senha_login FROM usuario', con=engine)
 VALID_USERNAME_PASSWORD_PAIRS = {'admin': '123'}
 for i in range(len(df)):
     VALID_USERNAME_PASSWORD_PAIRS[f'{df["nome_usuario"].values[i]}'] = f'{df["senha_login"].values[i]}'
-    print(VALID_USERNAME_PASSWORD_PAIRS)
+
+print(VALID_USERNAME_PASSWORD_PAIRS)
 
 
 # Monkey patch basic auth to work on non-index pages
@@ -30,7 +31,7 @@ def redirecionar_home():
     return interface.interface.index()
 
 
-@app.route('/cad-usu')
+@app.route('/cadastro/usuario')
 def cadastrar_usuario():
     return usuario.cad_usuario.index()
 
@@ -40,6 +41,11 @@ def redireciona_inicio():
     return pagina_inicial.inicial.index()
 
 
-@app.route('/cad-db')
+@app.route('/cadastro/database')
 def redireciona_cadastro():
     return base_de_dados.cad_banco.index()
+
+
+@app.route('/cadastro/colunas/inversores/check')
+def redirecionar_para_cadastro_dos_inversores():
+    return inversores.inversores.index()

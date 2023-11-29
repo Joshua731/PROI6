@@ -16,7 +16,8 @@ novo_usuario = Usuario(nome_usuario='teste')
 
 engine = create_engine('sqlite:///./database/database.db')
 
-cad_usuario = Dash(__name__, server=app, external_stylesheets=[dbc.themes.SOLAR], url_base_pathname="/cad-usu/")
+cad_usuario = Dash(__name__, server=app, external_stylesheets=[dbc.themes.SOLAR],
+                   url_base_pathname="/cadastro/usuario/")
 cad_usuario.layout = dbc.Container(
     [
         # Navbar
@@ -77,11 +78,9 @@ def cadastrar_usuario(n_clicks, nome, empresa, email, senha):
             )
             db.session.add(novo_usuario)
             db.session.commit()
-            return '/cad-db/'
+            return '/cadastro/database'
         else:
-            return '/cad-usu/'
-
-
+            return '/cadastro/usuario'
 
 
 @cad_usuario.callback(

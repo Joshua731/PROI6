@@ -1,5 +1,4 @@
-from sqlalchemy import Column, Integer, String, DateTime, ForeignKey
-from sqlalchemy.orm import relationship
+from sqlalchemy import Integer, String, DateTime, ForeignKey
 from datetime import datetime
 from app.configs import db
 
@@ -15,5 +14,6 @@ class Database(db.Model):
     ip = db.Column(String)
     porta = db.Column(Integer)
     data_insercao = db.Column(DateTime, default=datetime.now())
+    string_engine = db.Column(String)
     usuario_id = db.Column(Integer, ForeignKey('usuario.id_login'))
     usuario = db.relationship("Usuario", backref="database")

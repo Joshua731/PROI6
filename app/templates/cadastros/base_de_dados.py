@@ -1,22 +1,19 @@
+import dash
+import dash_bootstrap_components as dbc
+import pandas as pd
+from app import app
+from app.configs import db
+from app.models.database import Database
+from app.models.temp.cols_db import ColunasDatabase
+from app.templates.cadastros.usuario import novo_usuario
+from app.templates.partials.index import navbar, criptografar_senha
+from dash.exceptions import PreventUpdate
+from dash import Dash, dcc, html, Input, Output
+from sqlalchemy import create_engine
 import datetime
 
-import dash
-import pandas as pd
-import pyodbc
-import requests
-import sqlalchemy
-from dash.exceptions import PreventUpdate
-from sqlalchemy import create_engine
-
-from app import app
-from dash import Dash, dcc, html, Input, Output
-
-from app.configs import db
-from app.templates.cadastros.usuario import novo_usuario
-from app.models.database import Database
-from app.models.usuario import Usuario
-from app.templates.partials.index import navbar, caminho_http, criptografar_senha
-import dash_bootstrap_components as dbc
+nova_database = Database(base_de_dados='teste', string_engine='teste')
+# string_engine = 'teste'
 
 df = pd.read_csv(r'app\files\saida_atualizado.csv')
 
@@ -24,7 +21,7 @@ engine = create_engine('sqlite:///./database/database.db')
 
 query = pd.read_sql(f'SELECT id_login FROM usuario WHERE nome_usuario = "{novo_usuario.nome_usuario}"', con=engine)
 
-cad_banco = Dash(__name__, external_stylesheets=[dbc.themes.SOLAR], server=app, url_base_pathname='/cad-db/')
+cad_banco = Dash(__name__, external_stylesheets=[dbc.themes.SOLAR], server=app, url_base_pathname='/cadastro/database/')
 cad_banco.layout = dbc.Container([
     # Navbar
     dbc.Row([
@@ -37,26 +34,26 @@ cad_banco.layout = dbc.Container([
             dbc.Row([
                 dbc.Col(sm=3),
                 dbc.Col([
-                    dcc.Loading([
-                        dbc.Card([
-                            dbc.CardHeader("Integração da fonte de dados", class_name='card-header-banco'),
-                            dbc.CardBody([
-                                dbc.Row([
-                                    dbc.Col([
-                                        dcc.Dropdown(
-                                            id='drop-origem',
-                                            placeholder='Origem dos dados',
-                                            options=[
-                                                {"label": 'MySQL', 'value': 'mysql'},
-                                                {'label': 'SQL Server', 'value': 'sql-server'},
-                                            ],
-                                        )
-                                    ], sm=12)
-                                ]),
-                                dbc.Row(id='conteudo-origem'),
-                            ])
-                        ], color='dark', id='card-banco')
-                    ], type='cube'),
+                    # dcc.Loading([
+                    dbc.Card([
+                        dbc.CardHeader("Integração da fonte de dados", class_name='card-header-banco'),
+                        dbc.CardBody([
+                            dbc.Row([
+                                dbc.Col([
+                                    dcc.Dropdown(
+                                        id='drop-origem',
+                                        placeholder='Origem dos dados',
+                                        options=[
+                                            {"label": 'MySQL', 'value': 'mysql'},
+                                            {'label': 'SQL Server', 'value': 'sql-server'},
+                                        ],
+                                    )
+                                ], sm=12)
+                            ]),
+                            dbc.Row(id='conteudo-origem'),
+                        ])
+                    ], color='dark', id='card-banco')
+                    # ], type='cube'),
                 ], sm=6),
                 dbc.Col(sm=3),
             ]),
@@ -66,21 +63,6 @@ cad_banco.layout = dbc.Container([
             #         dbc.Card([
             #             dbc.CardBody([
             #                 dbc.Tabs(id='tabs-cols-db', active_tab='tab-invs', children=[
-            #                     dbc.Tab(tab_id='tab-invs', label='Inversores', children=[
-
-            #                     ]),
-            #                     dbc.Tab(tab_id='tab-cm', label='Central Meteorológica', children=[
-            #                         dbc.Row([
-            #                             dbc.Col([
-            #                                 dbc.Checkbox(
-            #                                     id='check-cm',
-            #                                     label='Possui Central Meteorológica? (caso não possuir, apenas ignore)',
-            #                                     value=False,
-            #                                 )
-            #                             ], sm=12)
-            #                         ]),
-            #                         dbc.Row(id='row-cm')
-            #                     ]),
             #                     dbc.Tab(tab_id='tab-idgt', label='IDGT', children=[
             #                         dbc.Row([
             #                             dbc.Col([
@@ -267,131 +249,44 @@ def mostrar_dados_pelo_tipo_de_cadastro(tipo):
     Input('red-cols', 'n_clicks'),
 )
 def redireciona_para_colunas(tipo, base, u, senha, ip, porta, botao):
-    if dash.ctx.triggered_id == 'red-cols':
+    global nova_database
+    try:
         if tipo == 'sql-server':
-            try:
-                engine = create_engine(
-                    f'mssql+pyodbc://{u}:{senha}@{ip}:{porta}/{base}?driver=ODBC+Driver+17+for+SQL+Server')
+            if dash.ctx.triggered_id == 'red-cols':
+                string_engine = f'mssql+pyodbc://{u}:{senha}@{ip}:{porta}/{base}?driver=ODBC+Driver+17+for+SQL+Server'
+                engine_sql_server = create_engine(
+                    string_engine
+                )
                 query_teste = f'''
-                        SELECT DISTINCT schema_name(schema_id)
-                        FROM sys.tables;
-                        '''
-                pd.read_sql(query_teste, engine)
+                            SELECT DISTINCT schema_name(schema_id)
+                            FROM sys.tables;
+                            '''
+                pd.read_sql(query_teste, engine_sql_server)
 
-                database = Database(
+                nova_database = Database(
                     tipo_banco=tipo,
                     base_de_dados=base,
                     usuario_db=u,
                     senha_db=criptografar_senha(senha),
                     ip=ip,
                     porta=porta,
+                    string_engine=string_engine,
                     usuario=novo_usuario
                 )
-                db.session.add(database)
+                colunas = pd.read_sql('SELECT TABLE_NAME FROM INFORMATION_SCHEMA.COLUMNS', con=engine_sql_server)
+                novas_colunas = ColunasDatabase(
+                    database_id=nova_database,
+                    lista_colunas=colunas['TABLE_NAME'].unique()
+                )
+                db.session.add(novas_colunas)
                 db.session.commit()
-                return '/cad-cols/', html.P('OK'), 'success', 'success'
-            except Exception as e:
-                print(e)
-                print(datetime.datetime.now())
-                return '/cad-db/', html.P('Ocorreu um erro. Cheque suas informações'), 'danger', 'danger'
+                return '/cadastro/colunas/inversores', html.P('OK'), 'success', 'success'
+    except Exception as e:
+        print(e)
+        print(datetime.datetime.now())
+        return '/cadastro/database', html.P('Ocorreu um erro. Cheque suas informações'), 'danger', 'danger'
     raise PreventUpdate
 
-# @cad_banco_1.callback(
-#     Output('row-invs', 'children'),
-#     Input('check-invs', 'value'),
-# )
-# def mostra_opcoes_dos_inversores(mostrar):
-#     if mostrar:
-#         return [
-#             dbc.Col([
-#                 dbc.Row([
-#                     dcc.Loading([
-#                         dbc.Card([
-#                             dbc.CardHeader('Inversores'),
-#                             dbc.CardBody([
-#                                 dbc.InputGroup([
-#                                     dbc.Col([
-#                                         dbc.Input(id='ipt-n-invs', placeholder='Quantidade', type='number')
-#                                     ], sm=4),
-#                                     dbc.Col([
-#                                         dbc.Input(id='ipt-tbl-base', placeholder='Tabela', type='text')
-#                                     ], sm=8),
-#                                 ]),
-#                             ])
-#                         ], color='dark'),
-#                     ])
-#                 ]),
-#                 dbc.Row([
-#                     dcc.Loading([
-#                         dbc.Card([
-#                             dbc.CardHeader("Colunas"),
-#                             dbc.CardBody(id='cd-bd-cols-invs')
-#                         ], color='dark')
-#                     ], type='default')
-#                 ]),
-#             ], sm=12),
-#         ]
-
-
-# @cad_banco_1.callback(
-#     Output('cd-bd-cols-invs', 'children'),
-#     Input('ipt-tbl-base', 'value'),
-#     Input('ipt-n-invs', 'value'),
-# )
-# def mostra_dropdown_das_colunas_das_tabelas(tabela, n):
-#     try:
-#         n_inv = []
-#         id_inv = []
-#         for i in range(len(n)):
-#             n_inv.append(i)
-#             id_inv.append(f'drop-inv-{i}')
-#         query_colunas = f'''
-#         select top 1 * from {tabela}
-#         '''
-#         df_colunas = pd.read_sql(query_colunas, create_engine(df_db['engine'])).columns
-#         return [dbc.Row([
-#             dbc.Col([
-#                 dbc.Card([
-#                     dbc.CardHeader(f'Inversor {i + 1}'),
-#                     dbc.CardBody([
-#                         dcc.Dropdown(
-#                             id=f'drop-inv-{i + 1}',
-#                             placeholder='Coluna respectiva',
-#                             options=[
-#                                 {'label': coluna, 'value': coluna}
-#                                 for coluna in df_colunas
-#                             ],
-#                         ),
-#                     ])
-#                 ], color='dark')
-#             ], sm=4)
-#             for i in range(int(n))
-#         ]),
-#         ]
-#     except Exception as e:
-#         print(e)
-#         return html.P('Tabela não encontrada')
-
-# @cad_banco_1.callback(
-#     Output('tabs-cols-db', 'active_tab'),
-#     Input('check-invs', 'value'),
-#     Input('red-cm', 'n_clicks'),
-#     Input('ipt-n-invs', 'value'),
-#     Input('ipt-tbl-base', 'value'),
-#     [Input(ids, 'value') for ids in invs['id_inv']]
-# )
-# def redireciona_para_cm(*args):
-#     print(dash.ctx.triggered_id)
-#     if dash.ctx.triggered_id == 'red-cm':
-#         if not args[0]:
-#             return 'tab-cm'
-#         else:
-#             if args[1:]:
-#                 return 'tab-cm'
-#             else:
-#                 return 'tab-invs'
-#     else:
-#         raise PreventUpdate
 #
 #
 # @cad_banco_1.callback(
