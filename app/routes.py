@@ -3,7 +3,7 @@ import os
 from dash_auth import BasicAuth
 from sqlalchemy import create_engine
 from app import app
-from app.templates import interface, pagina_inicial, index, historico_producao
+from app.templates import interface, pagina_inicial, index, historico_producao, alertas_notificacoes
 from app.templates.cadastros import base_de_dados, usuario, inversores
 
 engine = create_engine('sqlite:///./database/database.db')
@@ -59,3 +59,8 @@ def redirecionar_para_tela_home():
 @app.route('/historico_producao')
 def redirecionar_para_historico_de_producao():
     return historico_producao.historico_producao.index()
+
+
+@app.route('/alertas_notificacoes')
+def redirecionar_para_alarmes():
+    return alertas_notificacoes.alertas_notificacoes.index()

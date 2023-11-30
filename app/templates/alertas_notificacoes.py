@@ -1,15 +1,23 @@
+import pandas as pd
+from sqlalchemy import create_engine
+
 from app import app
 from dash import Dash, html, dcc, Output, Input
-from app.templates.partials.index import navbar, autenticacao
+
+from app.configs import usuario, senha, ip, porta, base
+from app.templates.partials.index import navbar
 import dash_bootstrap_components as dbc
 
 # Crie uma instância do aplicativo Dash
 alertas_notificacoes = Dash(__name__, server=app, external_stylesheets=[dbc.themes.SOLAR],
                             url_base_pathname='/alertas_notificacoes/')
 
+engine = create_engine(f'mssql+pyodbc://administrador:20ca11ad20!!@40.114.35.162:1433/UFV_Orindiuva')
+
 # Layout do corpo da tela
 alertas_notificacoes.layout = dbc.Container([
     navbar,
+    dcc.Interval(id='intervalo', interval=15000, n_intervals=0),
     dcc.Location(id='url', refresh=False),
     html.H1('Alertas e Notificações', className="mb-4 text-center"),
     dbc.Row([
@@ -21,7 +29,7 @@ alertas_notificacoes.layout = dbc.Container([
                         html.Li('Alerta 1: Descrição do alerta ou notificação.', className="mb-2"),
                         html.Li('Alerta 2: Descrição do alerta ou notificação.', className="mb-2"),
                         html.Li('Alerta 3: Descrição do alerta ou notificação.', className="mb-2")
-                    ])
+                    ], id='lista-alarmes')
                 ])
             ], className="mb-4")
         ], md=6),
@@ -104,4 +112,10 @@ def mostra_pagina(path):
     return path
 
 
-# autenticacao(alertas_notificacoes)
+# @alertas_notificacoes.callback(
+#     Output('lista-alarmes', 'children'),
+#     Input('intervalo', 'n_intervals')
+# )
+# def mostrar_lista_de_alarmes(n):
+#     df = pd.read_sql("SELECT Message FROM Alarms", con=engine)
+#     lista_alertas = []

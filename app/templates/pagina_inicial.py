@@ -20,7 +20,9 @@ inicial.layout = dbc.Container([
                 dbc.CardBody([
                     dbc.ButtonGroup([
                         # dbc.Button('Entrar', href=f'http://{get_local_ip()}:5001/home', color='dark'),
-                        dbc.Button('Cadastrar', id='redi-cad', color='dark')
+                        dbc.Button('Cadastrar', id='redi-cad', color='dark'),
+                        dbc.Button('Home', id='redi-home', color='dark'),
+
                     ])
                 ])
             ], color='dark', class_name='card-home')
@@ -32,8 +34,12 @@ inicial.layout = dbc.Container([
 
 @inicial.callback(
     Output('url', 'pathname'),
-    Input('redi-cad', 'n_clicks')
+    Input('redi-cad', 'n_clicks'),
+    Input('redi-home', 'n_clicks'),
 )
-def mudar_pagina_para_cadastro(botao):
+def mudar_pagina_para_cadastro(botao1, botao2):
     if dash.ctx.triggered_id == 'redi-cad':
         return '/cadastro/usuario'
+    if dash.ctx.triggered_id == 'redi-home':
+        return '/home'
+
