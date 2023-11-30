@@ -3,7 +3,7 @@ import os
 from dash_auth import BasicAuth
 from sqlalchemy import create_engine
 from app import app
-from app.templates import interface, pagina_inicial, index
+from app.templates import interface, pagina_inicial, index, historico_producao
 from app.templates.cadastros import base_de_dados, usuario, inversores
 
 engine = create_engine('sqlite:///./database/database.db')
@@ -54,3 +54,8 @@ def redirecionar_para_cadastro_dos_inversores():
 @app.route('/home')
 def redirecionar_para_tela_home():
     return index.index.index()
+
+
+@app.route('/historico_producao')
+def redirecionar_para_historico_de_producao():
+    return historico_producao.historico_producao.index()

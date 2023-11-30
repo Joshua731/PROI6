@@ -19,3 +19,6 @@ print(df['TABLE_NAME'].unique())
 
 df = pd.read_sql('SELECT * FROM colunas_database', con=engine)
 print(df)
+
+df = pd.read_sql('SELECT * FROM bancos', con=engine)
+print(df)

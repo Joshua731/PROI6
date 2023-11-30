@@ -1,6 +1,8 @@
 from sqlalchemy import create_engine, text
 from sqlalchemy.orm import sessionmaker
 
+from app.models.bancos import Bancos
+
 # Criar um engine para o banco de dados SQLite
 engine = create_engine('sqlite:///./database/database.db', echo=True)  # Substitua pelo nome do seu banco de dados
 
@@ -24,9 +26,16 @@ CREATE TABLE bancos (
     date DATETIME DEFAULT CURRENT_TIMESTAMP
 );
 """
+
+q_update = """
+UPDATE cidades
+SET value = 1
+WHERE name = 'Cachoeira Paulista';
+"""
+
 Session = sessionmaker(bind=engine)
 session = Session()
-
+session.execute(text(q_update))
 # session.execute(text(q_qtdd))
 # session.execute(text(q_cd))
 # session.execute(text(q_usuario))
@@ -37,5 +46,15 @@ session = Session()
 # Commit para confirmar as alterações no banco de dados
 session.commit()
 
+# novo_banco = Bancos(
+#     tipo='SQL Server',
+#     base='UFV_Suzano',
+#     user='administrador',
+#     pwd='20ca11ad20!!',
+#     ip='40.114.35.162',
+#     port=1433,
+# )
+# session.add(novo_banco)
+# session.commit()
 # Fechar a sessão
 session.close()
