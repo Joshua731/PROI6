@@ -149,8 +149,8 @@ fig3.update_layout(plot_bgcolor='rgba(0, 0, 0, 0)',  # Fundo transparente
 
 tempo_i_p = pd.read_sql(f"""SELECT ISI, PU, timestamp
                         FROM Central_Meteorologica
-                        WHERE timestamp > "{datetime.datetime.now().strftime('%Y-%m-%d')} 00:00:00.000000"
-                        AND timestamp < "{datetime.datetime.now().strftime('%Y-%m-%d')} 23:59:00.000000"
+                        WHERE timestamp > "2023-11-30 00:00:00.000000"
+                        AND timestamp < "2023-11-30 23:59:00.000000"
                         """, con=engine)
 
 # Crie dois arrays de valores de "ruído" para y, um indo de 0 a 100 e o outro de 0 a 50
@@ -159,9 +159,9 @@ tempo_i_p = pd.read_sql(f"""SELECT ISI, PU, timestamp
 
 # Crie os gráficos Scatter
 fig2 = go.Figure()
-fig2.add_trace(go.Scatter(x=tempo_i_p['timestamp'].values, y=tempo_i_p['ISI'].values, mode='lines+markers',
+fig2.add_trace(go.Scatter(x=tempo_i_p['timestamp'].values, y=tempo_i_p['ISI'].values, mode='lines',
                           name='Irradiação Solar (W/m²)', uid=1))
-fig2.add_trace(go.Scatter(x=tempo_i_p['timestamp'].values, y=tempo_i_p['PU'].values, mode='lines+markers',
+fig2.add_trace(go.Scatter(x=tempo_i_p['timestamp'].values, y=tempo_i_p['PU'].values, mode='lines',
                           name='Potência Ativa (kW)', uid=1))
 
 fig2.update_layout(title=None, xaxis_title='Intervalo de Tempo (Horas)',
@@ -174,8 +174,8 @@ fig2.update_layout(title=None, xaxis_title='Intervalo de Tempo (Horas)',
                    )
 fig2.update_xaxes(
     range=[
-        f'{datetime.datetime.now().strftime("%Y-%m-%d")} 00:00:00.000000',
-        f'{datetime.datetime.now().strftime("%Y-%m-%d")} 23:59:00.000000'
+        f'2023-11-30 00:00:00.000000',
+        f'2023-11-30 23:59:00.000000'
     ])
 fig2.update_yaxes(range=[0, 3000])
 inversores = [
@@ -400,14 +400,14 @@ def gera_novos_graficos_de_linha(click):
         con = orindiuva
         i_p = pd.read_sql(f"""SELECT ISI, PU, timestamp
                                 FROM Central_Meteorologica
-                                WHERE timestamp > "{datetime.datetime.now().strftime('%Y-%m-%d')} 00:00:00.000000"
-                                AND timestamp < "{datetime.datetime.now().strftime('%Y-%m-%d')} 23:59:00.000000"
+                                WHERE timestamp > "2023-11-30 00:00:00.000000"
+                                AND timestamp < "2023-11-30 23:59:00.000000"
                                 """, con=con)
 
         figura = go.Figure()
-        figura.add_trace(go.Scatter(x=i_p['timestamp'].values, y=i_p['ISI'].values, mode='lines+markers',
+        figura.add_trace(go.Scatter(x=i_p['timestamp'].values, y=i_p['ISI'].values, mode='lines',
                                     name='Irradiação Solar (W/m²)', uid=1))
-        figura.add_trace(go.Scatter(x=i_p['timestamp'].values, y=i_p['PU'].values, mode='lines+markers',
+        figura.add_trace(go.Scatter(x=i_p['timestamp'].values, y=i_p['PU'].values, mode='lines',
                                     name='Potência Ativa (kW)', uid=1))
         figura.update_layout(title=None, xaxis_title='Intervalo de Tempo (Horas)',
                              yaxis_title='Irradiâncias',
@@ -419,8 +419,8 @@ def gera_novos_graficos_de_linha(click):
                              )
         figura.update_xaxes(
             range=[
-                f'{datetime.datetime.now().strftime("%Y-%m-%d")} 00:00:00.000000',
-                f'{datetime.datetime.now().strftime("%Y-%m-%d")} 23:59:00.000000'
+                f'2023-11-30 00:00:00.000000',
+                f'2023-11-30 23:59:00.000000'
             ])
         figura.update_yaxes(range=[0, 3000])
         return figura
@@ -428,14 +428,14 @@ def gera_novos_graficos_de_linha(click):
         con = elias
         i_p = pd.read_sql(f"""SELECT ISI, PU, timestamp
                                 FROM Central_Meteorologica
-                                WHERE timestamp > "{datetime.datetime.now().strftime('%Y-%m-%d')} 00:00:00.000000"
-                                AND timestamp < "{datetime.datetime.now().strftime('%Y-%m-%d')} 23:59:00.000000"
+                                WHERE timestamp > "2023-11-30 00:00:00.000000"
+                                AND timestamp < "2023-11-30 23:59:00.000000"
                                 """, con=con)
 
         figura = go.Figure()
-        figura.add_trace(go.Scatter(x=i_p['timestamp'].values, y=i_p['ISI'].values, mode='lines+markers',
+        figura.add_trace(go.Scatter(x=i_p['timestamp'].values, y=i_p['ISI'].values, mode='lines',
                                     name='Irradiação Solar (W/m²)', uid=1))
-        figura.add_trace(go.Scatter(x=i_p['timestamp'].values, y=i_p['PU'].values, mode='lines+markers',
+        figura.add_trace(go.Scatter(x=i_p['timestamp'].values, y=i_p['PU'].values, mode='lines',
                                     name='Potência Ativa (kW)', uid=1))
         figura.update_layout(title=None, xaxis_title='Intervalo de Tempo (Horas)',
                              yaxis_title='Irradiâncias',
@@ -447,8 +447,8 @@ def gera_novos_graficos_de_linha(click):
                              )
         figura.update_xaxes(
             range=[
-                f'{datetime.datetime.now().strftime("%Y-%m-%d")} 00:00:00.000000',
-                f'{datetime.datetime.now().strftime("%Y-%m-%d")} 23:59:00.000000'
+                f'2023-11-30 00:00:00.000000',
+                f'2023-11-30 23:59:00.000000'
             ])
         figura.update_yaxes(range=[0, 3000])
         return figura
@@ -456,14 +456,14 @@ def gera_novos_graficos_de_linha(click):
         con = monte
         i_p = pd.read_sql(f"""SELECT ISI, PU, timestamp
                                 FROM Central_Meteorologica
-                                WHERE timestamp > "{datetime.datetime.now().strftime('%Y-%m-%d')} 00:00:00.000000"
-                                AND timestamp < "{datetime.datetime.now().strftime('%Y-%m-%d')} 23:59:00.000000"
+                                WHERE timestamp > "2023-11-30 00:00:00.000000"
+                                AND timestamp < "2023-11-30 23:59:00.000000"
                                 """, con=con)
 
         figura = go.Figure()
-        figura.add_trace(go.Scatter(x=i_p['timestamp'].values, y=i_p['ISI'].values, mode='lines+markers',
+        figura.add_trace(go.Scatter(x=i_p['timestamp'].values, y=i_p['ISI'].values, mode='lines',
                                     name='Irradiação Solar (W/m²)', uid=1))
-        figura.add_trace(go.Scatter(x=i_p['timestamp'].values, y=i_p['PU'].values, mode='lines+markers',
+        figura.add_trace(go.Scatter(x=i_p['timestamp'].values, y=i_p['PU'].values, mode='lines',
                                     name='Potência Ativa (kW)', uid=1))
         figura.update_layout(title=None, xaxis_title='Intervalo de Tempo (Horas)',
                              yaxis_title='Irradiâncias',
@@ -484,14 +484,14 @@ def gera_novos_graficos_de_linha(click):
         con = paraguacu
         i_p = pd.read_sql(f"""SELECT ISI, PU, timestamp
                                 FROM Central_Meteorologica
-                                WHERE timestamp > "{datetime.datetime.now().strftime('%Y-%m-%d')} 00:00:00.000000"
-                                AND timestamp < "{datetime.datetime.now().strftime('%Y-%m-%d')} 23:59:00.000000"
+                                WHERE timestamp > "2023-11-30 00:00:00.000000"
+                                AND timestamp < "2023-11-30 23:59:00.000000"
                                 """, con=con)
 
         figura = go.Figure()
-        figura.add_trace(go.Scatter(x=i_p['timestamp'].values, y=i_p['ISI'].values, mode='lines+markers',
+        figura.add_trace(go.Scatter(x=i_p['timestamp'].values, y=i_p['ISI'].values, mode='lines',
                                     name='Irradiação Solar (W/m²)', uid=1))
-        figura.add_trace(go.Scatter(x=i_p['timestamp'].values, y=i_p['PU'].values, mode='lines+markers',
+        figura.add_trace(go.Scatter(x=i_p['timestamp'].values, y=i_p['PU'].values, mode='lines',
                                     name='Potência Ativa (kW)', uid=1))
         figura.update_layout(title=None, xaxis_title='Intervalo de Tempo (Horas)',
                              yaxis_title='Irradiâncias',
@@ -512,14 +512,14 @@ def gera_novos_graficos_de_linha(click):
         con = suzano
         i_p = pd.read_sql(f"""SELECT ISI, PU, timestamp
                                 FROM Central_Meteorologica
-                                WHERE timestamp > "{datetime.datetime.now().strftime('%Y-%m-%d')} 00:00:00.000000"
-                                AND timestamp < "{datetime.datetime.now().strftime('%Y-%m-%d')} 23:59:00.000000"
+                                WHERE timestamp > "2023-11-30 00:00:00.000000"
+                                AND timestamp < "2023-11-30 23:59:00.000000"
                                 """, con=con)
 
         figura = go.Figure()
-        figura.add_trace(go.Scatter(x=i_p['timestamp'].values, y=i_p['ISI'].values, mode='lines+markers',
+        figura.add_trace(go.Scatter(x=i_p['timestamp'].values, y=i_p['ISI'].values, mode='lines',
                                     name='Irradiação Solar (W/m²)', uid=1))
-        figura.add_trace(go.Scatter(x=i_p['timestamp'].values, y=i_p['PU'].values, mode='lines+markers',
+        figura.add_trace(go.Scatter(x=i_p['timestamp'].values, y=i_p['PU'].values, mode='lines',
                                     name='Potência Ativa (kW)', uid=1))
         figura.update_layout(title=None, xaxis_title='Intervalo de Tempo (Horas)',
                              yaxis_title='Irradiâncias',
