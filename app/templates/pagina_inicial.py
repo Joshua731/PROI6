@@ -39,7 +39,7 @@ inicial.layout = dbc.Container([
 )
 def mudar_pagina_para_cadastro(botao1, botao2):
     if dash.ctx.triggered_id == 'redi-cad':
-        return '/cadastro/usuario'
+        return '/cadastro_usuario'
     if dash.ctx.triggered_id == 'redi-home':
         return '/home'
 

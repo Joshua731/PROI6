@@ -218,7 +218,7 @@ for i in range(num_abas):
     aba = dbc.Tab(label=f'Grupo {i + 1}', tab_id=f'grupo-{i + 1}', children=[table])
     abas_tabela.children.append(aba)
 
-interface = Dash(__name__, server=app, external_stylesheets=[dbc.themes.SOLAR], url_base_pathname="/overview/")
+interface = Dash(__name__, server=app, external_stylesheets=[dbc.themes.SOLAR], url_base_pathname="/cu/")
 interface.layout = dbc.Container(
     [
         # Navbar

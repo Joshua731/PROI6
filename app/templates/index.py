@@ -21,8 +21,8 @@ index.layout = dbc.Container(
                 dbc.Card([
                     dbc.CardBody([
                         html.H4("Dashua", className="card-title"),
-                        html.H5("Bem vindo(a) ao Dashua."),
-                        html.P("Análise em tempo real de dados remententes a energia solar."),
+                        html.H5("Seja bem vindo ao Dashua."),
+                        html.P("Análise em tempo real de dados remetentes a energia solar."),
                         # dbc.Button('Logout', href=f'http://{get_local_ip()}:5000/logout')
                     ])
                 ], color='dark', className='crd mx-auto bg-grey'),

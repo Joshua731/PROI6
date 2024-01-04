@@ -4,9 +4,8 @@ from dash_auth import BasicAuth
 from sqlalchemy import create_engine
 from app import app
 from app.templates import interface, pagina_inicial, index, historico_producao, alertas_notificacoes, \
-    cadastro_do_usuario
+    cadastro_do_usuario, status, editar_status
 
-# from app.templates.cadastros import base_de_dados, usuario, inversores
 
 engine = create_engine('sqlite:///./database/database.db')
 
@@ -71,3 +70,12 @@ def redirecionar_para_alarmes():
 @app.route('/cadastro_usuario')
 def redirecionar_para_cadastro_do_usuario():
     return cadastro_do_usuario.cadastro_do_usuario.index()
+
+
+@app.route('/status')
+def redirecionar_status_inversores():
+    return status.status.index()
+
+@app.route('/editar_status')
+def redirecionar_para_edicao_da_tela_dos_status_dos_inversores():
+    return editar_status.edit_status.index()
