@@ -12,7 +12,7 @@ from dash import Dash, html, dcc, Input, Output
 import dash_bootstrap_components as dbc
 import plotly.graph_objects as go
 
-engine = create_engine('sqlite:///F:/PROI6/database/database.db')
+engine = create_engine('sqlite:///./database/database.db')
 
 cidades = pd.read_sql('SELECT * FROM cidades', con=engine)
 
@@ -36,7 +36,7 @@ historico_producao = Dash(__name__, server=app, external_stylesheets=[dbc.themes
                           url_base_pathname='/historico_producao/')
 
 
-inicio = pd.read_sql("SELECT timestamp FROM Estado_Inversores ORDER BY timestamp ASC LIMIT 1", con=create_engine("sqlite:///F:/PROI6/database/orindiuva.db"))
+inicio = pd.read_sql("SELECT timestamp FROM Estado_Inversores ORDER BY timestamp ASC LIMIT 1", con=create_engine("sqlite:///./database/orindiuva.db"))
 
 # Layout do corpo da tela
 historico_producao.layout = dbc.Container(
@@ -110,7 +110,7 @@ def plota_producao(comeco, fim, gerar, mapa):
     print(filtro)
     if comeco and fim:
         if filtro == 'Orindiúva':
-            cnxn = create_engine("sqlite:///F:/PROI6/database/orindiuva.db")
+            cnxn = create_engine("sqlite:///./database/orindiuva.db")
             data = pd.read_sql(
                 f"SELECT ISI, PU, timestamp FROM Central_Meteorologica WHERE timestamp > '{comeco} 00:00:00.000000' AND timestamp < '{fim} 23:59:00.000000'", con=cnxn)
             print(data['ISI'])
@@ -130,7 +130,7 @@ def plota_producao(comeco, fim, gerar, mapa):
             figura.update_yaxes(range=[0, 1500])
             return dcc.Graph(figure=figura, config={'displayModeBar': False}), False
         if filtro == 'Elias Fausto':
-            cnxn = create_engine("sqlite:///F:/PROI6/database/elias_fausto.db")
+            cnxn = create_engine("sqlite:///./database/elias_fausto.db")
             data = pd.read_sql(
                 f"SELECT ISI, PU, timestamp FROM Central_Meteorologica WHERE timestamp > '{comeco} 00:00:00.000000' AND timestamp < '{fim} 23:59:00.000000'", con=cnxn)
             figura = go.Figure()
@@ -148,7 +148,7 @@ def plota_producao(comeco, fim, gerar, mapa):
             figura.update_yaxes(range=[0, 1500])
             return dcc.Graph(figure=figura, config={'displayModeBar': False}), False
         if filtro == 'Monte Alto':
-            cnxn = create_engine("sqlite:///F:/PROI6/database/monte_alto.db")
+            cnxn = create_engine("sqlite:///./database/monte_alto.db")
             data = pd.read_sql(
                 f"SELECT ISI, PU, timestamp FROM Central_Meteorologica WHERE timestamp > '{comeco} 00:00:00.000000' AND timestamp < '{fim} 23:59:00.000000'", con=cnxn)
             figura = go.Figure()
@@ -166,7 +166,7 @@ def plota_producao(comeco, fim, gerar, mapa):
             figura.update_yaxes(range=[0, 1500])
             return dcc.Graph(figure=figura, config={'displayModeBar': False}), False
         if filtro == 'Suzano':
-            cnxn = create_engine("sqlite:///F:/PROI6/database/suzano.db")
+            cnxn = create_engine("sqlite:///./database/suzano.db")
             data = pd.read_sql(
                 f"SELECT ISI, PU, timestamp FROM Central_Meteorologica WHERE timestamp > '{comeco} 00:00:00.000000' AND timestamp < '{fim} 23:59:00.000000'", con=cnxn)
             figura = go.Figure()
@@ -184,7 +184,7 @@ def plota_producao(comeco, fim, gerar, mapa):
             figura.update_yaxes(range=[0, 2250])
             return dcc.Graph(figure=figura, config={'displayModeBar': False}), False
         if filtro == 'Paraguaçu Paulista':
-            cnxn = create_engine("sqlite:///F:/PROI6/database/paraguacu.db")
+            cnxn = create_engine("sqlite:///./database/paraguacu.db")
             data = pd.read_sql(
                 f"SELECT ISI, PU, timestamp FROM Central_Meteorologica WHERE timestamp > '{comeco} 00:00:00.000000' AND timestamp < '{fim} 23:59:00.000000'", con=cnxn)
             figura = go.Figure()
@@ -230,11 +230,11 @@ def mostra_nome_cidade(dados_cidade):
 )
 def baixar_planilha(btn, clique, comeco, fim):
     selecionei = clique['points'][0]['location']
-    city = pd.read_sql('SELECT * FROM cidades', con=create_engine('sqlite:///F:/PROI6/database/database.db'))
+    city = pd.read_sql('SELECT * FROM cidades', con=create_engine('sqlite:///./database/database.db'))
     filtro = city[city['id'] == selecionei]['name'].values[0]
     if dash.ctx.triggered_id == 'gerar':
         if filtro == 'Elias Fausto':
-            engine = create_engine('sqlite:///F:/PROI6/database/elias_fausto.db')
+            engine = create_engine('sqlite:///./database/elias_fausto.db')
             conteudo = pd.read_sql(f"""
             SELECT ISI, PU, timestamp 
             FROM Central_Meteorologica
@@ -243,7 +243,7 @@ def baixar_planilha(btn, clique, comeco, fim):
             """, con=engine)
             return dcc.send_data_frame(conteudo.to_excel, f'relatório_excel_{filtro}_{datetime.datetime.now().strftime("%d_%m_%Y_%H_%M_%S")}.xlsx', index=False)
         if filtro == 'Monte Alto':
-            engine = create_engine('sqlite:///F:/PROI6/database/monte_alto.db')
+            engine = create_engine('sqlite:///./database/monte_alto.db')
             conteudo = pd.read_sql(f"""
                     SELECT ISI, PU, timestamp 
                     FROM Central_Meteorologica
@@ -253,7 +253,7 @@ def baixar_planilha(btn, clique, comeco, fim):
             return dcc.send_data_frame(conteudo.to_excel, f'relatório_excel_{filtro}_{datetime.datetime.now().strftime("%d_%m_%Y_%H_%M_%S")}.xlsx', index=False)
 
         if filtro == 'Orindiúva':
-            engine = create_engine('sqlite:///F:/PROI6/database/orindiuva.db')
+            engine = create_engine('sqlite:///./database/orindiuva.db')
             conteudo = pd.read_sql(f"""
                     SELECT ISI, PU, timestamp 
                     FROM Central_Meteorologica
@@ -263,7 +263,7 @@ def baixar_planilha(btn, clique, comeco, fim):
             return dcc.send_data_frame(conteudo.to_excel, f'relatório_excel_{filtro}_{datetime.datetime.now().strftime("%d_%m_%Y_%H_%M_%S")}.xlsx', index=False)
 
         if filtro == 'Paraguaçu Paulista':
-            engine = create_engine('sqlite:///F:/PROI6/database/paraguacu.db')
+            engine = create_engine('sqlite:///./database/paraguacu.db')
             conteudo = pd.read_sql(f"""
                     SELECT ISI, PU, timestamp 
                     FROM Central_Meteorologica
@@ -273,7 +273,7 @@ def baixar_planilha(btn, clique, comeco, fim):
             return dcc.send_data_frame(conteudo.to_excel, f'relatório_excel_{filtro}_{datetime.datetime.now().strftime("%d_%m_%Y_%H_%M_%S")}.xlsx', index=False)
 
         if filtro == 'Suzano':
-            engine = create_engine('sqlite:///F:/PROI6/database/suzano.db')
+            engine = create_engine('sqlite:///./database/suzano.db')
             conteudo = pd.read_sql(f"""
                     SELECT ISI, PU, timestamp 
                     FROM Central_Meteorologica
