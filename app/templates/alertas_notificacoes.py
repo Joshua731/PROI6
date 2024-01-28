@@ -4,7 +4,6 @@ from sqlalchemy import create_engine
 from app import app
 from dash import Dash, html, dcc, Output, Input
 
-from app.configs import usuario, senha, ip, porta, base
 from app.templates.partials.index import navbar
 import dash_bootstrap_components as dbc
 

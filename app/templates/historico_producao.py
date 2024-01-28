@@ -36,7 +36,7 @@ historico_producao = Dash(__name__, server=app, external_stylesheets=[dbc.themes
                           url_base_pathname='/historico_producao/')
 
 
-inicio = pd.read_sql("SELECT timestamp FROM Estado_Inversores ORDER BY timestamp ASC LIMIT 1", con=create_engine("sqlite:///./database/orindiuva.db"))
+# inicio = pd.read_sql("SELECT timestamp FROM Estado_Inversores ORDER BY timestamp ASC LIMIT 1", con=create_engine("sqlite:///./database/orindiuva.db"))
 
 # Layout do corpo da tela
 historico_producao.layout = dbc.Container(
@@ -56,7 +56,7 @@ historico_producao.layout = dbc.Container(
                                         id='data-producao',
                                         min_date_allowed=datetime.date(1969, 12, 31),
                                         max_date_allowed=datetime.datetime.now().strftime("%Y-%m-%d"),
-                                        initial_visible_month=inicio['timestamp'].values[0]
+                                        # initial_visible_month=inicio['timestamp'].values[0]
                                     )
                                 ], sm=6),
                                 dbc.Col([

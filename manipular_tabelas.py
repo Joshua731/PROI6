@@ -35,10 +35,10 @@ WHERE name = 'Cachoeira Paulista';
 
 Session = sessionmaker(bind=engine)
 session = Session()
-session.execute(text(q_update))
+# session.execute(text(q_update))
 # session.execute(text(q_qtdd))
 # session.execute(text(q_cd))
-# session.execute(text(q_usuario))
+session.execute(text(q_usuario))
 # session.execute(text(q_db))
 # session.execute(text(q_del))
 # session.execute(text(q_del_row))
