@@ -4,8 +4,7 @@ from dash_auth import BasicAuth
 from sqlalchemy import create_engine
 from app import app
 from app.templates import interface, pagina_inicial, index, historico_producao, alertas_notificacoes, \
-    cadastro_do_usuario, status, editar_status
-
+    cadastro_do_usuario, status, editar_status, editar_status_singular
 
 engine = create_engine('sqlite:///./database/database.db')
 
@@ -18,7 +17,7 @@ VALID_USERNAME_PASSWORD_PAIRS = {'admin': '123'}
 for i in range(len(df)):
     VALID_USERNAME_PASSWORD_PAIRS[f'{df["nome_usuario"].values[i]}'] = f'{df["senha_login"].values[i]}'
 
-print(VALID_USERNAME_PASSWORD_PAIRS)
+# print(VALID_USERNAME_PASSWORD_PAIRS)
 
 # Monkey patch basic auth to work on non-index pages
 BasicAuth(pagina_inicial.inicial, VALID_USERNAME_PASSWORD_PAIRS)
@@ -76,6 +75,12 @@ def redirecionar_para_cadastro_do_usuario():
 def redirecionar_status_inversores():
     return status.status.index()
 
+
 @app.route('/editar_status')
 def redirecionar_para_edicao_da_tela_dos_status_dos_inversores():
     return editar_status.edit_status.index()
+
+
+@app.route('/editar/status/2')
+def redirecionar_para_edicao_individual_dos_status():
+    return editar_status_singular.status_individual.index()

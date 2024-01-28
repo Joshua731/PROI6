@@ -126,6 +126,10 @@
     margin-top: 33.333%;
 }
 
-.titulo-cadastro, .col-sgbd, .status-titulo, .status-botao, .edit-status-add-cidade {
+.titulo-cadastro, .col-sgbd, .status-titulo, .status-botao, .edit-status-add-cidade, .edit-status-card, .cidade-selecionada-editar-status {
     text-align: center;
+}
+
+.btn-config-inversor {
+    width: 100%;
 }

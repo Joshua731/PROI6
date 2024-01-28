@@ -1,20 +1,19 @@
 import json
 
-import dash_auth
-from dash.exceptions import PreventUpdate
-from pymodbus.client import ModbusTcpClient
-from pymodbus.constants import Endian
-from pymodbus.payload import BinaryPayloadDecoder
+# import dash_auth
+# from dash.exceptions import PreventUpdate
+# from pymodbus.client import ModbusTcpClient
+# from pymodbus.constants import Endian
+# from pymodbus.payload import BinaryPayloadDecoder
 
 from app import app
 from dash import Dash, html, dcc, Input, Output
 import dash_bootstrap_components as dbc
 import plotly.graph_objects as go
 import pandas as pd
-import plotly.express as px
+# import plotly.express as px
 import numpy as np
 
-from app.configs import usuario, senha, ip, porta, base
 from app.templates.partials.index import navbar
 from screeninfo import get_monitors
 from sqlalchemy import create_engine
@@ -23,51 +22,9 @@ import datetime
 
 engine = create_engine('sqlite:///./database/database.db')
 
-orindiuva = create_engine('sqlite:///F:/PROI6/database/orindiuva.db')
-elias = create_engine('sqlite:///F:/PROI6/database/elias_fausto.db')
-monte = create_engine('sqlite:///F:/PROI6/database/monte_alto.db')
-paraguacu = create_engine('sqlite:///F:/PROI6/database/paraguacu.db')
-rancharia = create_engine('sqlite:///F:/PROI6/database/rancharia.db')
-suzano = create_engine('sqlite:///F:/PROI6/database/suzano.db')
-tropeiros = create_engine('sqlite:///F:/PROI6/database/tropeiros.db')
-databases = {
-    'db': [],
-    'banco': [],
-    'usuario': [],
-    'senha': [],
-    'endereço': [],
-    'porta': []
-}
 
-dados = pd.read_sql('SELECT * FROM bancos', con=engine)
-
-for i in range(len(dados)):
-    databases['db'].append(dados['base'].values[i])
-    databases['banco'].append(dados['tipo'].values[i])
-    databases['usuario'].append(dados['user'].values[i])
-    databases['senha'].append(dados['pwd'].values[i])
-    databases['endereço'].append(dados['ip'].values[i])
-    databases['porta'].append(dados['port'].values[i])
-
-# Supondo que você já tenha importado as bibliotecas necessárias e tenha a variável 'databases' preenchida com os dados
-
-db = databases
-engines = {}
-
-for i in range(len(dados)):
-    connection_str = f'mssql+pyodbc://{db["usuario"][i]}:{db["senha"][i]}@{db["endereço"][i]}/{db["db"][i]}?driver=ODBC+Driver+17+for+SQL+Server'
-    db_name = db['db'][i]
-
-    # Verifica se a chave já existe no dicionário engines
-    if db_name not in engines:
-        engines[db_name] = []  # Inicializa a lista vazia para essa chave se não existir
-
-    # Cria a conexão e adiciona à lista correspondente no dicionário
-    connection = create_engine(connection_str)
-    engines[db_name].append(connection)
-
-print(databases)
-print(engines)
+# print(databases)
+# print(engines)
 
 
 # Simulação de dados diários de produção de energia
@@ -108,13 +65,13 @@ year = current_date.year
 # Obtém a informação do monitor
 monitors = get_monitors()
 
-caminho_csv_cidades_escolhidas = r"app/files/ids_das_cidades.csv"
+caminho_csv_cidades_escolhidas = r"app/geojsons/ids_das_cidades.csv"
 # Itera sobre os monitores (em caso de vários monitores)
 
 cidades = pd.read_sql('SELECT * FROM cidades', con=engine)
 
 colorscale = ["#A98AA9", "#FFFFCC"]  # removi "#808080"
-with open(r"app\files\geojs-35-mun.json", "r", encoding='utf-8') as e:
+with open(r"app\geojsons\sudeste\sp\geojs-35-mun.json", "r", encoding='utf-8') as e:
     geojson_file = json.load(e)
 
 fig = go.Figure(go.Choroplethmapbox(
@@ -132,17 +89,17 @@ fig.update_layout(mapbox=dict(style="carto-darkmatter"), mapbox_zoom=5.5555,
 # x = ['IDGT']
 # y = [100]
 
-idgt = pd.read_sql("SELECT TOP 1 ((MGE_ENER / 1200) * (1000 / PI_ENER)) * 100 FROM PFM2022 ORDER BY E3TimeStamp DESC",
-                   con=engines['UFV_Orindiuva'][0])
+# idgt = pd.read_sql("SELECT TOP 1 ((MGE_ENER / 1200) * (1000 / PI_ENER)) * 100 FROM PFM2022 ORDER BY E3TimeStamp DESC",
+#                    con=engines['UFV_Orindiuva'][0])
 # Crie o gráfico de barras
-fig3 = go.Figure(
-    data=[go.Bar(x=['IDGT'], y=[idgt.values[0]], text=[idgt.values[0]], textposition='inside', marker_color='#cccccc')])
-fig3.update_layout(plot_bgcolor='rgba(0, 0, 0, 0)',  # Fundo transparente
-                   paper_bgcolor='rgba(0, 0, 0, 0)',
-                   margin=dict(l=25, r=0, t=0, b=0),
-                   font=dict(color='#cccccc'),
-                   yaxis_showgrid=False,
-                   yaxis_showticklabels=False)
+# fig3 = go.Figure(
+#     data=[go.Bar(x=['IDGT'], y=[idgt.values[0]], text=[idgt.values[0]], textposition='inside', marker_color='#cccccc')])
+# fig3.update_layout(plot_bgcolor='rgba(0, 0, 0, 0)',  # Fundo transparente
+#                    paper_bgcolor='rgba(0, 0, 0, 0)',
+#                    margin=dict(l=25, r=0, t=0, b=0),
+#                    font=dict(color='#cccccc'),
+#                    yaxis_showgrid=False,
+#                    yaxis_showticklabels=False)
 
 # Crie um array de valores x de 0 a 23 representando as horas do dia
 # x = np.arange(24)
@@ -304,7 +261,9 @@ interface.layout = dbc.Container(
                     dbc.Col([
                         dbc.Card([
                             dbc.CardHeader('I.D.G.T.'),
-                            dcc.Graph(figure=fig3, className='idgt',
+                            dcc.Graph(
+                                # figure=fig3,
+                                className='idgt',
                                       # style={"height": "100%"}
                                       )
                         ], color='dark', class_name='crd-i'),
@@ -377,165 +336,165 @@ interface.layout = dbc.Container(
 )
 
 
-@interface.callback(
-    Output('drop-nav', 'label'),
-    Input('url', 'pathname')
-)
-def mostra_pagina(path):
-    # print(path)
-    return path
-
-
-@interface.callback(
-    Output('graphic', 'figure'),
-    Input('mapa', 'clickData')
-)
-def gera_novos_graficos_de_linha(click):
-    # print(click['points'][0]['location'])
-    cidades = pd.read_sql('SELECT * FROM cidades', con=engine)
-    id_da_cidade_selecionada = click['points'][0]['location']
-    filtro_id_selecionado_com_csv = cidades.query(f'id == {id_da_cidade_selecionada}')
-    nome_usina = filtro_id_selecionado_com_csv['name'].values[0]
-    if nome_usina == 'Orindiúva':
-        con = orindiuva
-        i_p = pd.read_sql(f"""SELECT ISI, PU, timestamp
-                                FROM Central_Meteorologica
-                                WHERE timestamp > "2023-11-30 00:00:00.000000"
-                                AND timestamp < "2023-11-30 23:59:00.000000"
-                                """, con=con)
-
-        figura = go.Figure()
-        figura.add_trace(go.Scatter(x=i_p['timestamp'].values, y=i_p['ISI'].values, mode='lines',
-                                    name='Irradiação Solar (W/m²)', uid=1))
-        figura.add_trace(go.Scatter(x=i_p['timestamp'].values, y=i_p['PU'].values, mode='lines',
-                                    name='Potência Ativa (kW)', uid=1))
-        figura.update_layout(title=None, xaxis_title='Intervalo de Tempo (Horas)',
-                             yaxis_title='Irradiâncias',
-                             legend=dict(orientation='h', y=1.175, x=0.1),
-                             plot_bgcolor='rgba(0, 0, 0, 0)',  # Fundo transparente
-                             paper_bgcolor='rgba(0, 0, 0, 0)',
-                             margin=dict(l=0, r=0, t=0, b=0),
-                             font=dict(color='#cccccc')
-                             )
-        figura.update_xaxes(
-            range=[
-                f'2023-11-30 00:00:00.000000',
-                f'2023-11-30 23:59:00.000000'
-            ])
-        figura.update_yaxes(range=[0, 3000])
-        return figura
-    if nome_usina == 'Elias Fausto':
-        con = elias
-        i_p = pd.read_sql(f"""SELECT ISI, PU, timestamp
-                                FROM Central_Meteorologica
-                                WHERE timestamp > "2023-11-30 00:00:00.000000"
-                                AND timestamp < "2023-11-30 23:59:00.000000"
-                                """, con=con)
-
-        figura = go.Figure()
-        figura.add_trace(go.Scatter(x=i_p['timestamp'].values, y=i_p['ISI'].values, mode='lines',
-                                    name='Irradiação Solar (W/m²)', uid=1))
-        figura.add_trace(go.Scatter(x=i_p['timestamp'].values, y=i_p['PU'].values, mode='lines',
-                                    name='Potência Ativa (kW)', uid=1))
-        figura.update_layout(title=None, xaxis_title='Intervalo de Tempo (Horas)',
-                             yaxis_title='Irradiâncias',
-                             legend=dict(orientation='h', y=1.175, x=0.1),
-                             plot_bgcolor='rgba(0, 0, 0, 0)',  # Fundo transparente
-                             paper_bgcolor='rgba(0, 0, 0, 0)',
-                             margin=dict(l=0, r=0, t=0, b=0),
-                             font=dict(color='#cccccc')
-                             )
-        figura.update_xaxes(
-            range=[
-                f'2023-11-30 00:00:00.000000',
-                f'2023-11-30 23:59:00.000000'
-            ])
-        figura.update_yaxes(range=[0, 3000])
-        return figura
-    if nome_usina == 'Monte Alto':
-        con = monte
-        i_p = pd.read_sql(f"""SELECT ISI, PU, timestamp
-                                FROM Central_Meteorologica
-                                WHERE timestamp > "2023-11-30 00:00:00.000000"
-                                AND timestamp < "2023-11-30 23:59:00.000000"
-                                """, con=con)
-
-        figura = go.Figure()
-        figura.add_trace(go.Scatter(x=i_p['timestamp'].values, y=i_p['ISI'].values, mode='lines',
-                                    name='Irradiação Solar (W/m²)', uid=1))
-        figura.add_trace(go.Scatter(x=i_p['timestamp'].values, y=i_p['PU'].values, mode='lines',
-                                    name='Potência Ativa (kW)', uid=1))
-        figura.update_layout(title=None, xaxis_title='Intervalo de Tempo (Horas)',
-                             yaxis_title='Irradiâncias',
-                             legend=dict(orientation='h', y=1.175, x=0.1),
-                             plot_bgcolor='rgba(0, 0, 0, 0)',  # Fundo transparente
-                             paper_bgcolor='rgba(0, 0, 0, 0)',
-                             margin=dict(l=0, r=0, t=0, b=0),
-                             font=dict(color='#cccccc')
-                             )
-        figura.update_xaxes(
-            range=[
-                f'{datetime.datetime.now().strftime("%Y-%m-%d")} 00:00:00.000000',
-                f'{datetime.datetime.now().strftime("%Y-%m-%d")} 23:59:00.000000'
-            ])
-        figura.update_yaxes(range=[0, 3000])
-        return figura
-    if nome_usina == 'Paraguaçu Paulista':
-        con = paraguacu
-        i_p = pd.read_sql(f"""SELECT ISI, PU, timestamp
-                                FROM Central_Meteorologica
-                                WHERE timestamp > "2023-11-30 00:00:00.000000"
-                                AND timestamp < "2023-11-30 23:59:00.000000"
-                                """, con=con)
-
-        figura = go.Figure()
-        figura.add_trace(go.Scatter(x=i_p['timestamp'].values, y=i_p['ISI'].values, mode='lines',
-                                    name='Irradiação Solar (W/m²)', uid=1))
-        figura.add_trace(go.Scatter(x=i_p['timestamp'].values, y=i_p['PU'].values, mode='lines',
-                                    name='Potência Ativa (kW)', uid=1))
-        figura.update_layout(title=None, xaxis_title='Intervalo de Tempo (Horas)',
-                             yaxis_title='Irradiâncias',
-                             legend=dict(orientation='h', y=1.175, x=0.1),
-                             plot_bgcolor='rgba(0, 0, 0, 0)',  # Fundo transparente
-                             paper_bgcolor='rgba(0, 0, 0, 0)',
-                             margin=dict(l=0, r=0, t=0, b=0),
-                             font=dict(color='#cccccc')
-                             )
-        figura.update_xaxes(
-            range=[
-                f'{datetime.datetime.now().strftime("%Y-%m-%d")} 00:00:00.000000',
-                f'{datetime.datetime.now().strftime("%Y-%m-%d")} 23:59:00.000000'
-            ])
-        figura.update_yaxes(range=[0, 3000])
-        return figura
-    if nome_usina == 'Suzano':
-        con = suzano
-        i_p = pd.read_sql(f"""SELECT ISI, PU, timestamp
-                                FROM Central_Meteorologica
-                                WHERE timestamp > "2023-11-30 00:00:00.000000"
-                                AND timestamp < "2023-11-30 23:59:00.000000"
-                                """, con=con)
-
-        figura = go.Figure()
-        figura.add_trace(go.Scatter(x=i_p['timestamp'].values, y=i_p['ISI'].values, mode='lines',
-                                    name='Irradiação Solar (W/m²)', uid=1))
-        figura.add_trace(go.Scatter(x=i_p['timestamp'].values, y=i_p['PU'].values, mode='lines',
-                                    name='Potência Ativa (kW)', uid=1))
-        figura.update_layout(title=None, xaxis_title='Intervalo de Tempo (Horas)',
-                             yaxis_title='Irradiâncias',
-                             legend=dict(orientation='h', y=1.175, x=0.1),
-                             plot_bgcolor='rgba(0, 0, 0, 0)',  # Fundo transparente
-                             paper_bgcolor='rgba(0, 0, 0, 0)',
-                             margin=dict(l=0, r=0, t=0, b=0),
-                             font=dict(color='#cccccc')
-                             )
-        figura.update_xaxes(
-            range=[
-                f'{datetime.datetime.now().strftime("%Y-%m-%d")} 00:00:00.000000',
-                f'{datetime.datetime.now().strftime("%Y-%m-%d")} 23:59:00.000000'
-            ])
-        figura.update_yaxes(range=[0, 3000])
-        return figura
+# @interface.callback(
+#     Output('drop-nav', 'label'),
+#     Input('url', 'pathname')
+# )
+# def mostra_pagina(path):
+#     # print(path)
+#     return path
+#
+#
+# @interface.callback(
+#     Output('graphic', 'figure'),
+#     Input('mapa', 'clickData')
+# )
+# def gera_novos_graficos_de_linha(click):
+#     # print(click['points'][0]['location'])
+#     cidades = pd.read_sql('SELECT * FROM cidades', con=engine)
+#     id_da_cidade_selecionada = click['points'][0]['location']
+#     filtro_id_selecionado_com_csv = cidades.query(f'id == {id_da_cidade_selecionada}')
+#     nome_usina = filtro_id_selecionado_com_csv['name'].values[0]
+#     if nome_usina == 'Orindiúva':
+#         con = orindiuva
+#         i_p = pd.read_sql(f"""SELECT ISI, PU, timestamp
+#                                 FROM Central_Meteorologica
+#                                 WHERE timestamp > "2023-11-30 00:00:00.000000"
+#                                 AND timestamp < "2023-11-30 23:59:00.000000"
+#                                 """, con=con)
+#
+#         figura = go.Figure()
+#         figura.add_trace(go.Scatter(x=i_p['timestamp'].values, y=i_p['ISI'].values, mode='lines',
+#                                     name='Irradiação Solar (W/m²)', uid=1))
+#         figura.add_trace(go.Scatter(x=i_p['timestamp'].values, y=i_p['PU'].values, mode='lines',
+#                                     name='Potência Ativa (kW)', uid=1))
+#         figura.update_layout(title=None, xaxis_title='Intervalo de Tempo (Horas)',
+#                              yaxis_title='Irradiâncias',
+#                              legend=dict(orientation='h', y=1.175, x=0.1),
+#                              plot_bgcolor='rgba(0, 0, 0, 0)',  # Fundo transparente
+#                              paper_bgcolor='rgba(0, 0, 0, 0)',
+#                              margin=dict(l=0, r=0, t=0, b=0),
+#                              font=dict(color='#cccccc')
+#                              )
+#         figura.update_xaxes(
+#             range=[
+#                 f'2023-11-30 00:00:00.000000',
+#                 f'2023-11-30 23:59:00.000000'
+#             ])
+#         figura.update_yaxes(range=[0, 3000])
+#         return figura
+#     if nome_usina == 'Elias Fausto':
+#         con = elias
+#         i_p = pd.read_sql(f"""SELECT ISI, PU, timestamp
+#                                 FROM Central_Meteorologica
+#                                 WHERE timestamp > "2023-11-30 00:00:00.000000"
+#                                 AND timestamp < "2023-11-30 23:59:00.000000"
+#                                 """, con=con)
+#
+#         figura = go.Figure()
+#         figura.add_trace(go.Scatter(x=i_p['timestamp'].values, y=i_p['ISI'].values, mode='lines',
+#                                     name='Irradiação Solar (W/m²)', uid=1))
+#         figura.add_trace(go.Scatter(x=i_p['timestamp'].values, y=i_p['PU'].values, mode='lines',
+#                                     name='Potência Ativa (kW)', uid=1))
+#         figura.update_layout(title=None, xaxis_title='Intervalo de Tempo (Horas)',
+#                              yaxis_title='Irradiâncias',
+#                              legend=dict(orientation='h', y=1.175, x=0.1),
+#                              plot_bgcolor='rgba(0, 0, 0, 0)',  # Fundo transparente
+#                              paper_bgcolor='rgba(0, 0, 0, 0)',
+#                              margin=dict(l=0, r=0, t=0, b=0),
+#                              font=dict(color='#cccccc')
+#                              )
+#         figura.update_xaxes(
+#             range=[
+#                 f'2023-11-30 00:00:00.000000',
+#                 f'2023-11-30 23:59:00.000000'
+#             ])
+#         figura.update_yaxes(range=[0, 3000])
+#         return figura
+#     if nome_usina == 'Monte Alto':
+#         con = monte
+#         i_p = pd.read_sql(f"""SELECT ISI, PU, timestamp
+#                                 FROM Central_Meteorologica
+#                                 WHERE timestamp > "2023-11-30 00:00:00.000000"
+#                                 AND timestamp < "2023-11-30 23:59:00.000000"
+#                                 """, con=con)
+#
+#         figura = go.Figure()
+#         figura.add_trace(go.Scatter(x=i_p['timestamp'].values, y=i_p['ISI'].values, mode='lines',
+#                                     name='Irradiação Solar (W/m²)', uid=1))
+#         figura.add_trace(go.Scatter(x=i_p['timestamp'].values, y=i_p['PU'].values, mode='lines',
+#                                     name='Potência Ativa (kW)', uid=1))
+#         figura.update_layout(title=None, xaxis_title='Intervalo de Tempo (Horas)',
+#                              yaxis_title='Irradiâncias',
+#                              legend=dict(orientation='h', y=1.175, x=0.1),
+#                              plot_bgcolor='rgba(0, 0, 0, 0)',  # Fundo transparente
+#                              paper_bgcolor='rgba(0, 0, 0, 0)',
+#                              margin=dict(l=0, r=0, t=0, b=0),
+#                              font=dict(color='#cccccc')
+#                              )
+#         figura.update_xaxes(
+#             range=[
+#                 f'{datetime.datetime.now().strftime("%Y-%m-%d")} 00:00:00.000000',
+#                 f'{datetime.datetime.now().strftime("%Y-%m-%d")} 23:59:00.000000'
+#             ])
+#         figura.update_yaxes(range=[0, 3000])
+#         return figura
+#     if nome_usina == 'Paraguaçu Paulista':
+#         con = paraguacu
+#         i_p = pd.read_sql(f"""SELECT ISI, PU, timestamp
+#                                 FROM Central_Meteorologica
+#                                 WHERE timestamp > "2023-11-30 00:00:00.000000"
+#                                 AND timestamp < "2023-11-30 23:59:00.000000"
+#                                 """, con=con)
+#
+#         figura = go.Figure()
+#         figura.add_trace(go.Scatter(x=i_p['timestamp'].values, y=i_p['ISI'].values, mode='lines',
+#                                     name='Irradiação Solar (W/m²)', uid=1))
+#         figura.add_trace(go.Scatter(x=i_p['timestamp'].values, y=i_p['PU'].values, mode='lines',
+#                                     name='Potência Ativa (kW)', uid=1))
+#         figura.update_layout(title=None, xaxis_title='Intervalo de Tempo (Horas)',
+#                              yaxis_title='Irradiâncias',
+#                              legend=dict(orientation='h', y=1.175, x=0.1),
+#                              plot_bgcolor='rgba(0, 0, 0, 0)',  # Fundo transparente
+#                              paper_bgcolor='rgba(0, 0, 0, 0)',
+#                              margin=dict(l=0, r=0, t=0, b=0),
+#                              font=dict(color='#cccccc')
+#                              )
+#         figura.update_xaxes(
+#             range=[
+#                 f'{datetime.datetime.now().strftime("%Y-%m-%d")} 00:00:00.000000',
+#                 f'{datetime.datetime.now().strftime("%Y-%m-%d")} 23:59:00.000000'
+#             ])
+#         figura.update_yaxes(range=[0, 3000])
+#         return figura
+#     if nome_usina == 'Suzano':
+#         con = suzano
+#         i_p = pd.read_sql(f"""SELECT ISI, PU, timestamp
+#                                 FROM Central_Meteorologica
+#                                 WHERE timestamp > "2023-11-30 00:00:00.000000"
+#                                 AND timestamp < "2023-11-30 23:59:00.000000"
+#                                 """, con=con)
+#
+#         figura = go.Figure()
+#         figura.add_trace(go.Scatter(x=i_p['timestamp'].values, y=i_p['ISI'].values, mode='lines',
+#                                     name='Irradiação Solar (W/m²)', uid=1))
+#         figura.add_trace(go.Scatter(x=i_p['timestamp'].values, y=i_p['PU'].values, mode='lines',
+#                                     name='Potência Ativa (kW)', uid=1))
+#         figura.update_layout(title=None, xaxis_title='Intervalo de Tempo (Horas)',
+#                              yaxis_title='Irradiâncias',
+#                              legend=dict(orientation='h', y=1.175, x=0.1),
+#                              plot_bgcolor='rgba(0, 0, 0, 0)',  # Fundo transparente
+#                              paper_bgcolor='rgba(0, 0, 0, 0)',
+#                              margin=dict(l=0, r=0, t=0, b=0),
+#                              font=dict(color='#cccccc')
+#                              )
+#         figura.update_xaxes(
+#             range=[
+#                 f'{datetime.datetime.now().strftime("%Y-%m-%d")} 00:00:00.000000',
+#                 f'{datetime.datetime.now().strftime("%Y-%m-%d")} 23:59:00.000000'
+#             ])
+#         figura.update_yaxes(range=[0, 3000])
+#         return figura
         # df = pd.read_sql('SELECT * FROM obra_cm_invs')
 
 
@@ -573,410 +532,401 @@ def mostra_producoes_de_energia(cidade_selecionada):
 
         return "-", "-", "-"
 
-
-cliente_modbus_de_paragucu = ModbusTcpClient('191.242.49.24', port=1002)
-cliente_modbus_de_suzano = ModbusTcpClient('45.182.195.252', port=1002)
-cliente_modbus_de_monte = ModbusTcpClient('45.170.209.104', port=1002)
-cliente_modbus_de_elias = ModbusTcpClient('177.101.74.222', port=1002)
-cliente_modbus_de_orindiuva = ModbusTcpClient('45.176.175.27', port=1002)
-cliente_modbus_de_elias2 = ModbusTcpClient('177.101.74.222', port=502)
-cliente_modbus_de_orindiuva2 = ModbusTcpClient('45.176.175.27', port=502)
-
-lista_modbus = [cliente_modbus_de_suzano, cliente_modbus_de_monte, cliente_modbus_de_paragucu]
+# lista_modbus = [cliente_modbus_de_suzano, cliente_modbus_de_monte, cliente_modbus_de_paragucu]
 
 
-def ler_dados_da_cm(registro, cliente):
-    try:
-        val = cliente.read_holding_registers(registro, 2, slave=1 if cliente in lista_modbus else 10)
-        dec = BinaryPayloadDecoder.fromRegisters(val.registers,
-                                                 byteorder=Endian.LITTLE if cliente in lista_modbus else Endian.BIG,
-                                                 wordorder=Endian.BIG if cliente in lista_modbus else Endian.LITTLE)
-        final = dec.decode_32bit_float()
-        return final
-    except Exception as e:
-        return 0
+# def ler_dados_da_cm(registro, cliente):
+#     try:
+#         val = cliente.read_holding_registers(registro, 2, slave=1 if cliente in lista_modbus else 10)
+#         dec = BinaryPayloadDecoder.fromRegisters(val.registers,
+#                                                  byteorder=Endian.LITTLE if cliente in lista_modbus else Endian.BIG,
+#                                                  wordorder=Endian.BIG if cliente in lista_modbus else Endian.LITTLE)
+#         final = dec.decode_32bit_float()
+#         return final
+#     except Exception as e:
+#         return 0
 
 
-@interface.callback(
-    Output('ish', 'children'),
-    Output('isi', 'children'),
-    Output('ta', 'children'),
-    Output('tp', 'children'),
-    Output('ura', 'children'),
-    Output('freq', 'children'),
-    Output('a-b', 'children'),
-    Output('b-c', 'children'),
-    Output('c-a', 'children'),
-    Input('tabs', 'active_tab'),
-    Input('intervalo', 'n_intervals'),
-    Input('mapa', 'clickData'),
-)
-def mostrar_valores_da_centrak_meteorologica(aba, itvl, clickData):
-    if aba in ['cm', 'qgbt']:
-        id_usina = clickData['points'][0]['location']
-        nome_usina = cidades.query(f"id == {id_usina}")['name'].values[0]
-        if nome_usina == 'Orindiúva':
-            client = cliente_modbus_de_orindiuva
-            lista = [237, 223, 225, 233, 227]
-            return round(ler_dados_da_cm(lista[0], client)), \
-                round(ler_dados_da_cm(lista[1], client)), \
-                round(ler_dados_da_cm(lista[2], client)), \
-                round(ler_dados_da_cm(lista[3], client)), \
-                round(ler_dados_da_cm(lista[4], client)), \
-                "-", "-", "-", "-"
-        if nome_usina == 'Elias Fausto':
-            lista = [223, 225, 227, 235, 229]
-            client = cliente_modbus_de_elias
-            return round(ler_dados_da_cm(lista[0], client)), \
-                round(ler_dados_da_cm(lista[1], client)), \
-                round(ler_dados_da_cm(lista[2], client)), \
-                round(ler_dados_da_cm(lista[3], client)), \
-                round(ler_dados_da_cm(lista[4], client)), \
-                "-", "-", "-", "-"
-        if nome_usina == 'Monte Alto':
-            lista = [1, 3, 5, 9]
-            client = cliente_modbus_de_monte
-            return round(ler_dados_da_cm(lista[0], client)), \
-                round(ler_dados_da_cm(lista[1], client)), \
-                round(ler_dados_da_cm(lista[2], client)), \
-                round(ler_dados_da_cm(lista[3], client)), \
-                "-", "-", "-", "-", '-'
-            # round(ler_dados_da_cm(lista[4], client)), \
-        if nome_usina == 'Paraguaçu Paulista':
-            lista = [1, 3, 5, 9, None]
-            client = cliente_modbus_de_paragucu
-            return round(ler_dados_da_cm(lista[0], client)), \
-                round(ler_dados_da_cm(lista[1], client)), \
-                round(ler_dados_da_cm(lista[2], client)), \
-                round(ler_dados_da_cm(lista[3], client)), \
-                "-", "-", "-", "-", '-'
-            # round(ler_dados_da_cm(lista[4], client)), \
-        if nome_usina == 'Suzano':
-            lista = [1, 3, 5, 9, None]
-            client = cliente_modbus_de_suzano
-            return round(ler_dados_da_cm(lista[0], client)), \
-                round(ler_dados_da_cm(lista[1], client)), \
-                round(ler_dados_da_cm(lista[2], client)), \
-                round(ler_dados_da_cm(lista[3], client)), \
-                "-", "-", "-", "-", '-'
-            # round(ler_dados_da_cm(lista[4], client)), \
-    raise PreventUpdate
+# @interface.callback(
+#     Output('ish', 'children'),
+#     Output('isi', 'children'),
+#     Output('ta', 'children'),
+#     Output('tp', 'children'),
+#     Output('ura', 'children'),
+#     Output('freq', 'children'),
+#     Output('a-b', 'children'),
+#     Output('b-c', 'children'),
+#     Output('c-a', 'children'),
+#     Input('tabs', 'active_tab'),
+#     Input('intervalo', 'n_intervals'),
+#     Input('mapa', 'clickData'),
+# )
+# def mostrar_valores_da_centrak_meteorologica(aba, itvl, clickData):
+#     if aba in ['cm', 'qgbt']:
+#         id_usina = clickData['points'][0]['location']
+#         nome_usina = cidades.query(f"id == {id_usina}")['name'].values[0]
+#         if nome_usina == 'Orindiúva':
+#             client = cliente_modbus_de_orindiuva
+#             lista = [237, 223, 225, 233, 227]
+#             return round(ler_dados_da_cm(lista[0], client)), \
+#                 round(ler_dados_da_cm(lista[1], client)), \
+#                 round(ler_dados_da_cm(lista[2], client)), \
+#                 round(ler_dados_da_cm(lista[3], client)), \
+#                 round(ler_dados_da_cm(lista[4], client)), \
+#                 "-", "-", "-", "-"
+#         if nome_usina == 'Elias Fausto':
+#             lista = [223, 225, 227, 235, 229]
+#             client = cliente_modbus_de_elias
+#             return round(ler_dados_da_cm(lista[0], client)), \
+#                 round(ler_dados_da_cm(lista[1], client)), \
+#                 round(ler_dados_da_cm(lista[2], client)), \
+#                 round(ler_dados_da_cm(lista[3], client)), \
+#                 round(ler_dados_da_cm(lista[4], client)), \
+#                 "-", "-", "-", "-"
+#         if nome_usina == 'Monte Alto':
+#             lista = [1, 3, 5, 9]
+#             client = cliente_modbus_de_monte
+#             return round(ler_dados_da_cm(lista[0], client)), \
+#                 round(ler_dados_da_cm(lista[1], client)), \
+#                 round(ler_dados_da_cm(lista[2], client)), \
+#                 round(ler_dados_da_cm(lista[3], client)), \
+#                 "-", "-", "-", "-", '-'
+#             # round(ler_dados_da_cm(lista[4], client)), \
+#         if nome_usina == 'Paraguaçu Paulista':
+#             lista = [1, 3, 5, 9, None]
+#             client = cliente_modbus_de_paragucu
+#             return round(ler_dados_da_cm(lista[0], client)), \
+#                 round(ler_dados_da_cm(lista[1], client)), \
+#                 round(ler_dados_da_cm(lista[2], client)), \
+#                 round(ler_dados_da_cm(lista[3], client)), \
+#                 "-", "-", "-", "-", '-'
+#             # round(ler_dados_da_cm(lista[4], client)), \
+#         if nome_usina == 'Suzano':
+#             lista = [1, 3, 5, 9, None]
+#             client = cliente_modbus_de_suzano
+#             return round(ler_dados_da_cm(lista[0], client)), \
+#                 round(ler_dados_da_cm(lista[1], client)), \
+#                 round(ler_dados_da_cm(lista[2], client)), \
+#                 round(ler_dados_da_cm(lista[3], client)), \
+#                 "-", "-", "-", "-", '-'
+#             # round(ler_dados_da_cm(lista[4], client)), \
+#     raise PreventUpdate
 
 
-def ler_os_estados_dos_inversores(registro, cliente_modbus):
-    try:
-        if cliente_modbus in lista_modbus:
-            leitura = cliente_modbus.read_holding_registers(registro, 2, slave=1)
-            decodificacao = BinaryPayloadDecoder.fromRegisters(leitura.registers, byteorder=Endian.BIG,
-                                                               wordorder=Endian.LITTLE)
-            conversao = decodificacao.decode_16bit_int()
-            print(f"pp/su/ma:{conversao}")
+# def ler_os_estados_dos_inversores(registro, cliente_modbus):
+#     try:
+#         if cliente_modbus in lista_modbus:
+#             leitura = cliente_modbus.read_holding_registers(registro, 2, slave=1)
+#             decodificacao = BinaryPayloadDecoder.fromRegisters(leitura.registers, byteorder=Endian.BIG,
+#                                                                wordorder=Endian.LITTLE)
+#             conversao = decodificacao.decode_16bit_int()
+#             print(f"pp/su/ma:{conversao}")
+#
+#             if conversao == 0:
+#                 return 'Em espera'
+#             if conversao == 1:
+#                 return 'Gerando'
+#             if conversao == 2:
+#                 return 'Falha'
+#             if conversao == 3:
+#                 return 'Falha permanente'
+#             if conversao == 6 or conversao == 4:
+#                 return 'Não encontrado'
+#         else:
+#             val = cliente_modbus.read_input_registers(5037, 2, slave=registro)
+#             dec = BinaryPayloadDecoder.fromRegisters(val.registers, byteorder=Endian.BIG, wordorder=Endian.LITTLE)
+#             final = dec.decode_32bit_uint()
+#             if final == 0:
+#                 return "Funcionando"
+#
+#             elif final == 4864:
+#                 return "Chave de parada"
+#
+#             elif final == 5376:
+#                 return "Parada de emergência"
+#
+#             elif final == 4608:
+#                 return "Iniciando espera"
+#
+#             elif final == 5120 or final == 5210:
+#                 return "Em espera"
+#
+#             elif final == 5632:
+#                 return "Partindo"
+#
+#             elif final == 9472:
+#                 return "Falha de comunicação"
+#
+#             elif final == 21760:
+#                 return "Falha"
+#
+#             elif final == 32768:
+#                 return "Parado"
+#
+#             elif final == 33024:
+#                 return "Desclassificação"
+#
+#             elif final == 33280:
+#                 return "Expedição"
+#
+#             elif final == 37120:
+#                 return "Alarme ativo"
+#
+#     except Exception as e:
+#         print(e)
+#         return "Erro"
 
-            if conversao == 0:
-                return 'Em espera'
-            if conversao == 1:
-                return 'Gerando'
-            if conversao == 2:
-                return 'Falha'
-            if conversao == 3:
-                return 'Falha permanente'
-            if conversao == 6 or conversao == 4:
-                return 'Não encontrado'
-        else:
-            val = cliente_modbus.read_input_registers(5037, 2, slave=registro)
-            dec = BinaryPayloadDecoder.fromRegisters(val.registers, byteorder=Endian.BIG, wordorder=Endian.LITTLE)
-            final = dec.decode_32bit_uint()
-            if final == 0:
-                return "Funcionando"
 
-            elif final == 4864:
-                return "Chave de parada"
-
-            elif final == 5376:
-                return "Parada de emergência"
-
-            elif final == 4608:
-                return "Iniciando espera"
-
-            elif final == 5120 or final == 5210:
-                return "Em espera"
-
-            elif final == 5632:
-                return "Partindo"
-
-            elif final == 9472:
-                return "Falha de comunicação"
-
-            elif final == 21760:
-                return "Falha"
-
-            elif final == 32768:
-                return "Parado"
-
-            elif final == 33024:
-                return "Desclassificação"
-
-            elif final == 33280:
-                return "Expedição"
-
-            elif final == 37120:
-                return "Alarme ativo"
-
-    except Exception as e:
-        print(e)
-        return "Erro"
-
-
-@interface.callback(
-    Output('card-tabela', 'children'),
-    Input('intervalo', 'n_intervals'),
-    Input('mapa', 'clickData'),
-)
-def mostrar_inversores(n, clique):
-    id_usina = clique['points'][0]['location']
-    nome_usina = cidades.query(f"id == {id_usina}")['name'].values[0]
-    if nome_usina == 'Orindiúva':
-        inv1 = ler_os_estados_dos_inversores(4, cliente_modbus_de_orindiuva2)
-        inv2 = ler_os_estados_dos_inversores(1, cliente_modbus_de_orindiuva2)
-        inv3 = ler_os_estados_dos_inversores(3, cliente_modbus_de_orindiuva2)
-        inv4 = ler_os_estados_dos_inversores(2, cliente_modbus_de_orindiuva2)
-        invs = [
-            {"id": 1, "status": inv1},
-            {"id": 2, "status": inv2},
-            {"id": 3, "status": inv3},
-            {"id": 4, "status": inv4},
-            # Adicione mais inversores conforme necessário
-        ]
-        inversores_por_aba = 2  # Número de inversores por aba
-        abas = -(-len(invs) // inversores_por_aba)  # Calcula o número de abas necessárias
-
-        tabela = dbc.Tabs(id='inversores', active_tab='grupo-1', children=[])
-
-        for i in range(abas):
-            start = i * inversores_por_aba
-            end = min((i + 1) * inversores_por_aba, len(invs))
-            grupo = invs[start:end]
-
-            rows = [
-                html.Tr([
-                    html.Td(f"Inversor {grupo[i]['id']}"),
-                    html.Td(grupo[i]['status'])
-                ]) for i in range(len(grupo))
-            ]
-
-            tbl = dbc.Table(
-                children=[
-                    html.Thead(html.Tr([html.Th("Inversor"), html.Th("Status")])),
-                    html.Tbody(rows),
-                ],
-                bordered=True,
-                hover=True,
-                responsive=True,
-                striped=True,
-                # id='tabela'
-            )
-
-            aba = dbc.Tab(label=f'Grupo {i + 1}', tab_id=f'grupo-{i + 1}', children=[tbl])
-            tabela.children.append(aba)
-
-        return tabela
-    if nome_usina == 'Elias Fausto':
-        inv1 = ler_os_estados_dos_inversores(1, cliente_modbus_de_elias2)
-        inv2 = ler_os_estados_dos_inversores(2, cliente_modbus_de_elias2)
-        inv3 = ler_os_estados_dos_inversores(3, cliente_modbus_de_elias2)
-        inv4 = ler_os_estados_dos_inversores(4, cliente_modbus_de_elias2)
-        invs = [
-            {"id": 1, "status": inv1},
-            {"id": 2, "status": inv2},
-            {"id": 3, "status": inv3},
-            {"id": 4, "status": inv4},
-            # Adicione mais inversores conforme necessário
-        ]
-        inversores_por_aba = 2  # Número de inversores por aba
-        abas = -(-len(invs) // inversores_por_aba)  # Calcula o número de abas necessárias
-
-        tabela = dbc.Tabs(id='inversores', active_tab='grupo-1', children=[])
-
-        for i in range(abas):
-            start = i * inversores_por_aba
-            end = min((i + 1) * inversores_por_aba, len(invs))
-            grupo = invs[start:end]
-
-            rows = [
-                html.Tr([
-                    html.Td(f"Inversor {grupo[i]['id']}"),
-                    html.Td(grupo[i]['status'])
-                ]) for i in range(len(grupo))
-            ]
-
-            tbl = dbc.Table(
-                children=[
-                    html.Thead(html.Tr([html.Th("Inversor"), html.Th("Status")])),
-                    html.Tbody(rows),
-                ],
-                bordered=True,
-                hover=True,
-                responsive=True,
-                striped=True,
-                # id='tabela'
-            )
-
-            aba = dbc.Tab(label=f'Grupo {i + 1}', tab_id=f'grupo-{i + 1}', children=[tbl])
-            tabela.children.append(aba)
-
-        return tabela
-
-    if nome_usina == 'Monte Alto':
-        inv1 = ler_os_estados_dos_inversores(157, cliente_modbus_de_monte)
-        inv2 = ler_os_estados_dos_inversores(257, cliente_modbus_de_monte)
-        inv3 = ler_os_estados_dos_inversores(357, cliente_modbus_de_monte)
-        inv4 = ler_os_estados_dos_inversores(457, cliente_modbus_de_monte)
-        invs = [
-            {"id": 1, "status": inv1},
-            {"id": 2, "status": inv2},
-            {"id": 3, "status": inv3},
-            {"id": 4, "status": inv4},
-            # Adicione mais inversores conforme necessário
-        ]
-        inversores_por_aba = 2  # Número de inversores por aba
-        abas = -(-len(invs) // inversores_por_aba)  # Calcula o número de abas necessárias
-
-        tabela = dbc.Tabs(id='inversores', active_tab='grupo-1', children=[])
-
-        for i in range(abas):
-            start = i * inversores_por_aba
-            end = min((i + 1) * inversores_por_aba, len(invs))
-            grupo = invs[start:end]
-
-            rows = [
-                html.Tr([
-                    html.Td(f"Inversor {grupo[i]['id']}"),
-                    html.Td(grupo[i]['status'])
-                ]) for i in range(len(grupo))
-            ]
-
-            tbl = dbc.Table(
-                children=[
-                    html.Thead(html.Tr([html.Th("Inversor"), html.Th("Status")])),
-                    html.Tbody(rows),
-                ],
-                bordered=True,
-                hover=True,
-                responsive=True,
-                striped=True,
-                # id='tabela'
-            )
-
-            aba = dbc.Tab(label=f'Grupo {i + 1}', tab_id=f'grupo-{i + 1}', children=[tbl])
-            tabela.children.append(aba)
-
-        return tabela
-
-    if nome_usina == 'Paraguaçu Paulista':
-        inv1 = ler_os_estados_dos_inversores(157, cliente_modbus_de_paragucu)
-        inv2 = ler_os_estados_dos_inversores(257, cliente_modbus_de_paragucu)
-        inv3 = ler_os_estados_dos_inversores(357, cliente_modbus_de_paragucu)
-        inv4 = ler_os_estados_dos_inversores(457, cliente_modbus_de_paragucu)
-        inv5 = ler_os_estados_dos_inversores(557, cliente_modbus_de_paragucu)
-        inv6 = ler_os_estados_dos_inversores(657, cliente_modbus_de_paragucu)
-        inv7 = ler_os_estados_dos_inversores(757, cliente_modbus_de_paragucu)
-        inv8 = ler_os_estados_dos_inversores(857, cliente_modbus_de_paragucu)
-        invs = [
-            {"id": 1, "status": inv1},
-            {"id": 2, "status": inv2},
-            {"id": 3, "status": inv3},
-            {"id": 4, "status": inv4},
-            {"id": 5, "status": inv5},
-            {"id": 6, "status": inv6},
-            {"id": 7, "status": inv7},
-            {"id": 8, "status": inv8},
-            # Adicione mais inversores conforme necessário
-        ]
-        inversores_por_aba = 2  # Número de inversores por aba
-        abas = -(-len(invs) // inversores_por_aba)  # Calcula o número de abas necessárias
-
-        tabela = dbc.Tabs(id='inversores', active_tab='grupo-1', children=[])
-
-        for i in range(abas):
-            start = i * inversores_por_aba
-            end = min((i + 1) * inversores_por_aba, len(invs))
-            grupo = invs[start:end]
-
-            rows = [
-                html.Tr([
-                    html.Td(f"Inversor {grupo[i]['id']}"),
-                    html.Td(grupo[i]['status'])
-                ]) for i in range(len(grupo))
-            ]
-
-            tbl = dbc.Table(
-                children=[
-                    html.Thead(html.Tr([html.Th("Inversor"), html.Th("Status")])),
-                    html.Tbody(rows),
-                ],
-                bordered=True,
-                hover=True,
-                responsive=True,
-                striped=True,
-                # id='tabela'
-            )
-
-            aba = dbc.Tab(label=f'Grupo {i + 1}', tab_id=f'grupo-{i + 1}', children=[tbl])
-            tabela.children.append(aba)
-
-        return tabela
-
-    if nome_usina == 'Suzano':
-        inv1 = ler_os_estados_dos_inversores(157, cliente_modbus_de_suzano)
-        inv2 = ler_os_estados_dos_inversores(257, cliente_modbus_de_suzano)
-        inv3 = ler_os_estados_dos_inversores(357, cliente_modbus_de_suzano)
-        inv4 = ler_os_estados_dos_inversores(457, cliente_modbus_de_suzano)
-        inv5 = ler_os_estados_dos_inversores(557, cliente_modbus_de_suzano)
-        inv6 = ler_os_estados_dos_inversores(657, cliente_modbus_de_suzano)
-        inv7 = ler_os_estados_dos_inversores(757, cliente_modbus_de_suzano)
-        inv8 = ler_os_estados_dos_inversores(857, cliente_modbus_de_suzano)
-        invs = [
-            {"id": 1, "status": inv1},
-            {"id": 2, "status": inv2},
-            {"id": 3, "status": inv3},
-            {"id": 4, "status": inv4},
-            {"id": 5, "status": inv5},
-            {"id": 6, "status": inv6},
-            {"id": 7, "status": inv7},
-            {"id": 8, "status": inv8},
-            # Adicione mais inversores conforme necessário
-        ]
-        inversores_por_aba = 2  # Número de inversores por aba
-        abas = -(-len(invs) // inversores_por_aba)  # Calcula o número de abas necessárias
-
-        tabela = dbc.Tabs(id='inversores', active_tab='grupo-1', children=[])
-
-        for i in range(abas):
-            start = i * inversores_por_aba
-            end = min((i + 1) * inversores_por_aba, len(invs))
-            grupo = invs[start:end]
-
-            rows = [
-                html.Tr([
-                    html.Td(f"Inversor {grupo[i]['id']}"),
-                    html.Td(grupo[i]['status'])
-                ]) for i in range(len(grupo))
-            ]
-
-            tbl = dbc.Table(
-                children=[
-                    html.Thead(html.Tr([html.Th("Inversor"), html.Th("Status")])),
-                    html.Tbody(rows),
-                ],
-                bordered=True,
-                hover=True,
-                responsive=True,
-                striped=True,
-                # id='tabela'
-            )
-
-            aba = dbc.Tab(label=f'Grupo {i + 1}', tab_id=f'grupo-{i + 1}', children=[tbl])
-            tabela.children.append(aba)
-
-        return tabela
-    raise PreventUpdate
+# @interface.callback(
+#     Output('card-tabela', 'children'),
+#     Input('intervalo', 'n_intervals'),
+#     Input('mapa', 'clickData'),
+# )
+# def mostrar_inversores(n, clique):
+#     id_usina = clique['points'][0]['location']
+#     nome_usina = cidades.query(f"id == {id_usina}")['name'].values[0]
+#     if nome_usina == 'Orindiúva':
+#         inv1 = ler_os_estados_dos_inversores(4, cliente_modbus_de_orindiuva2)
+#         inv2 = ler_os_estados_dos_inversores(1, cliente_modbus_de_orindiuva2)
+#         inv3 = ler_os_estados_dos_inversores(3, cliente_modbus_de_orindiuva2)
+#         inv4 = ler_os_estados_dos_inversores(2, cliente_modbus_de_orindiuva2)
+#         invs = [
+#             {"id": 1, "status": inv1},
+#             {"id": 2, "status": inv2},
+#             {"id": 3, "status": inv3},
+#             {"id": 4, "status": inv4},
+#             # Adicione mais inversores conforme necessário
+#         ]
+#         inversores_por_aba = 2  # Número de inversores por aba
+#         abas = -(-len(invs) // inversores_por_aba)  # Calcula o número de abas necessárias
+#
+#         tabela = dbc.Tabs(id='inversores', active_tab='grupo-1', children=[])
+#
+#         for i in range(abas):
+#             start = i * inversores_por_aba
+#             end = min((i + 1) * inversores_por_aba, len(invs))
+#             grupo = invs[start:end]
+#
+#             rows = [
+#                 html.Tr([
+#                     html.Td(f"Inversor {grupo[i]['id']}"),
+#                     html.Td(grupo[i]['status'])
+#                 ]) for i in range(len(grupo))
+#             ]
+#
+#             tbl = dbc.Table(
+#                 children=[
+#                     html.Thead(html.Tr([html.Th("Inversor"), html.Th("Status")])),
+#                     html.Tbody(rows),
+#                 ],
+#                 bordered=True,
+#                 hover=True,
+#                 responsive=True,
+#                 striped=True,
+#                 # id='tabela'
+#             )
+#
+#             aba = dbc.Tab(label=f'Grupo {i + 1}', tab_id=f'grupo-{i + 1}', children=[tbl])
+#             tabela.children.append(aba)
+#
+#         return tabela
+#     if nome_usina == 'Elias Fausto':
+#         inv1 = ler_os_estados_dos_inversores(1, cliente_modbus_de_elias2)
+#         inv2 = ler_os_estados_dos_inversores(2, cliente_modbus_de_elias2)
+#         inv3 = ler_os_estados_dos_inversores(3, cliente_modbus_de_elias2)
+#         inv4 = ler_os_estados_dos_inversores(4, cliente_modbus_de_elias2)
+#         invs = [
+#             {"id": 1, "status": inv1},
+#             {"id": 2, "status": inv2},
+#             {"id": 3, "status": inv3},
+#             {"id": 4, "status": inv4},
+#             # Adicione mais inversores conforme necessário
+#         ]
+#         inversores_por_aba = 2  # Número de inversores por aba
+#         abas = -(-len(invs) // inversores_por_aba)  # Calcula o número de abas necessárias
+#
+#         tabela = dbc.Tabs(id='inversores', active_tab='grupo-1', children=[])
+#
+#         for i in range(abas):
+#             start = i * inversores_por_aba
+#             end = min((i + 1) * inversores_por_aba, len(invs))
+#             grupo = invs[start:end]
+#
+#             rows = [
+#                 html.Tr([
+#                     html.Td(f"Inversor {grupo[i]['id']}"),
+#                     html.Td(grupo[i]['status'])
+#                 ]) for i in range(len(grupo))
+#             ]
+#
+#             tbl = dbc.Table(
+#                 children=[
+#                     html.Thead(html.Tr([html.Th("Inversor"), html.Th("Status")])),
+#                     html.Tbody(rows),
+#                 ],
+#                 bordered=True,
+#                 hover=True,
+#                 responsive=True,
+#                 striped=True,
+#                 # id='tabela'
+#             )
+#
+#             aba = dbc.Tab(label=f'Grupo {i + 1}', tab_id=f'grupo-{i + 1}', children=[tbl])
+#             tabela.children.append(aba)
+#
+#         return tabela
+#
+#     if nome_usina == 'Monte Alto':
+#         inv1 = ler_os_estados_dos_inversores(157, cliente_modbus_de_monte)
+#         inv2 = ler_os_estados_dos_inversores(257, cliente_modbus_de_monte)
+#         inv3 = ler_os_estados_dos_inversores(357, cliente_modbus_de_monte)
+#         inv4 = ler_os_estados_dos_inversores(457, cliente_modbus_de_monte)
+#         invs = [
+#             {"id": 1, "status": inv1},
+#             {"id": 2, "status": inv2},
+#             {"id": 3, "status": inv3},
+#             {"id": 4, "status": inv4},
+#             # Adicione mais inversores conforme necessário
+#         ]
+#         inversores_por_aba = 2  # Número de inversores por aba
+#         abas = -(-len(invs) // inversores_por_aba)  # Calcula o número de abas necessárias
+#
+#         tabela = dbc.Tabs(id='inversores', active_tab='grupo-1', children=[])
+#
+#         for i in range(abas):
+#             start = i * inversores_por_aba
+#             end = min((i + 1) * inversores_por_aba, len(invs))
+#             grupo = invs[start:end]
+#
+#             rows = [
+#                 html.Tr([
+#                     html.Td(f"Inversor {grupo[i]['id']}"),
+#                     html.Td(grupo[i]['status'])
+#                 ]) for i in range(len(grupo))
+#             ]
+#
+#             tbl = dbc.Table(
+#                 children=[
+#                     html.Thead(html.Tr([html.Th("Inversor"), html.Th("Status")])),
+#                     html.Tbody(rows),
+#                 ],
+#                 bordered=True,
+#                 hover=True,
+#                 responsive=True,
+#                 striped=True,
+#                 # id='tabela'
+#             )
+#
+#             aba = dbc.Tab(label=f'Grupo {i + 1}', tab_id=f'grupo-{i + 1}', children=[tbl])
+#             tabela.children.append(aba)
+#
+#         return tabela
+#
+#     if nome_usina == 'Paraguaçu Paulista':
+#         inv1 = ler_os_estados_dos_inversores(157, cliente_modbus_de_paragucu)
+#         inv2 = ler_os_estados_dos_inversores(257, cliente_modbus_de_paragucu)
+#         inv3 = ler_os_estados_dos_inversores(357, cliente_modbus_de_paragucu)
+#         inv4 = ler_os_estados_dos_inversores(457, cliente_modbus_de_paragucu)
+#         inv5 = ler_os_estados_dos_inversores(557, cliente_modbus_de_paragucu)
+#         inv6 = ler_os_estados_dos_inversores(657, cliente_modbus_de_paragucu)
+#         inv7 = ler_os_estados_dos_inversores(757, cliente_modbus_de_paragucu)
+#         inv8 = ler_os_estados_dos_inversores(857, cliente_modbus_de_paragucu)
+#         invs = [
+#             {"id": 1, "status": inv1},
+#             {"id": 2, "status": inv2},
+#             {"id": 3, "status": inv3},
+#             {"id": 4, "status": inv4},
+#             {"id": 5, "status": inv5},
+#             {"id": 6, "status": inv6},
+#             {"id": 7, "status": inv7},
+#             {"id": 8, "status": inv8},
+#             # Adicione mais inversores conforme necessário
+#         ]
+#         inversores_por_aba = 2  # Número de inversores por aba
+#         abas = -(-len(invs) // inversores_por_aba)  # Calcula o número de abas necessárias
+#
+#         tabela = dbc.Tabs(id='inversores', active_tab='grupo-1', children=[])
+#
+#         for i in range(abas):
+#             start = i * inversores_por_aba
+#             end = min((i + 1) * inversores_por_aba, len(invs))
+#             grupo = invs[start:end]
+#
+#             rows = [
+#                 html.Tr([
+#                     html.Td(f"Inversor {grupo[i]['id']}"),
+#                     html.Td(grupo[i]['status'])
+#                 ]) for i in range(len(grupo))
+#             ]
+#
+#             tbl = dbc.Table(
+#                 children=[
+#                     html.Thead(html.Tr([html.Th("Inversor"), html.Th("Status")])),
+#                     html.Tbody(rows),
+#                 ],
+#                 bordered=True,
+#                 hover=True,
+#                 responsive=True,
+#                 striped=True,
+#                 # id='tabela'
+#             )
+#
+#             aba = dbc.Tab(label=f'Grupo {i + 1}', tab_id=f'grupo-{i + 1}', children=[tbl])
+#             tabela.children.append(aba)
+#
+#         return tabela
+#
+#     if nome_usina == 'Suzano':
+#         inv1 = ler_os_estados_dos_inversores(157, cliente_modbus_de_suzano)
+#         inv2 = ler_os_estados_dos_inversores(257, cliente_modbus_de_suzano)
+#         inv3 = ler_os_estados_dos_inversores(357, cliente_modbus_de_suzano)
+#         inv4 = ler_os_estados_dos_inversores(457, cliente_modbus_de_suzano)
+#         inv5 = ler_os_estados_dos_inversores(557, cliente_modbus_de_suzano)
+#         inv6 = ler_os_estados_dos_inversores(657, cliente_modbus_de_suzano)
+#         inv7 = ler_os_estados_dos_inversores(757, cliente_modbus_de_suzano)
+#         inv8 = ler_os_estados_dos_inversores(857, cliente_modbus_de_suzano)
+#         invs = [
+#             {"id": 1, "status": inv1},
+#             {"id": 2, "status": inv2},
+#             {"id": 3, "status": inv3},
+#             {"id": 4, "status": inv4},
+#             {"id": 5, "status": inv5},
+#             {"id": 6, "status": inv6},
+#             {"id": 7, "status": inv7},
+#             {"id": 8, "status": inv8},
+#             # Adicione mais inversores conforme necessário
+#         ]
+#         inversores_por_aba = 2  # Número de inversores por aba
+#         abas = -(-len(invs) // inversores_por_aba)  # Calcula o número de abas necessárias
+#
+#         tabela = dbc.Tabs(id='inversores', active_tab='grupo-1', children=[])
+#
+#         for i in range(abas):
+#             start = i * inversores_por_aba
+#             end = min((i + 1) * inversores_por_aba, len(invs))
+#             grupo = invs[start:end]
+#
+#             rows = [
+#                 html.Tr([
+#                     html.Td(f"Inversor {grupo[i]['id']}"),
+#                     html.Td(grupo[i]['status'])
+#                 ]) for i in range(len(grupo))
+#             ]
+#
+#             tbl = dbc.Table(
+#                 children=[
+#                     html.Thead(html.Tr([html.Th("Inversor"), html.Th("Status")])),
+#                     html.Tbody(rows),
+#                 ],
+#                 bordered=True,
+#                 hover=True,
+#                 responsive=True,
+#                 striped=True,
+#                 # id='tabela'
+#             )
+#
+#             aba = dbc.Tab(label=f'Grupo {i + 1}', tab_id=f'grupo-{i + 1}', children=[tbl])
+#             tabela.children.append(aba)
+#
+#         return tabela
+#     raise PreventUpdate
